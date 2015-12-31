@@ -10,7 +10,8 @@ struct Record {
     lon: f32,
     name: String,
     admin1: String,
-    admin2: String
+    admin2: String,
+    admin3: String
 }
 
 
@@ -53,7 +54,7 @@ fn main() {
     let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
     for record in rdr.decode() {
         let r: Record = record.unwrap();
-        println!("({}, {}): {}", r.lat, r.lon, r.name);
+        println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
         // kdtree.add()
     }
 }
