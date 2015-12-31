@@ -16,7 +16,7 @@ struct Record {
 }
 
 
-fn geodetic_in_ecef(geo_coords: (f32, f32)) {
+fn geodetic_in_ecef(geo_coords: (f32, f32)) -> (f32, f32, f32) {
     let A = 6378.137; // major axis in kms
     let E2 = 0.00669437999014;
 
@@ -27,16 +27,12 @@ fn geodetic_in_ecef(geo_coords: (f32, f32)) {
     let lon_r = lon.to_radians();
     let normal = A / (1f32 - E2 * lat_r.sin().powi(2));
 
-
-    // lat_r = np.radians(lat)
-    // lon_r = np.radians(lon)
-    // normal = A / (np.sqrt(1 - E2*(np.sin(lat_r) ** 2)))
-    //
-    // x = normal * np.cos(lat_r) * np.cos(lon_r)
-    // y = normal * np.cos(lat_r) * np.sin(lon_r)
-    // z = normal * (1 - E2) * np.sin(lat)
+    let x = normal * lat_r.cos() * lon_r.cos();
+    let y = normal * lat_r.cos() * lon_r.sin();
+    let z = normal * (1f32 - E2) * lat.sin();
     //
     // return np.column_stack([x,y,z])
+    (x, y, z)
 }
 
 fn main() {
