@@ -1,0 +1,9 @@
+[package]
+name = "rreverse"
+version = "0.1.0"
+authors = ["Grant Miner <xxgsoftware@gmail.com>"]
+
+[dependencies]
+kdtree = "~0.2.0"
+csv = "0.14"
+rustc-serialize = "0.3"
