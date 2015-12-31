@@ -15,21 +15,39 @@ struct Record {
     admin2: String
 }
 
-fn main() {
 
+fn geodetic_in_ecef(geo_coords: (f32, f32)) {
+    let A = 6378.137; // major axis in kms
+    let E2 = 0.00669437999014;
+
+    let lat = geo_coords.0;
+    let lon = geo_coords.1;
+
+    let lat_r = lat.to_radians();
+    let lon_r = lon.to_radians();
+    let normal = A / (1f32 - E2 * lat_r.sin().powi(2));
+
+
+    // lat_r = np.radians(lat)
+    // lon_r = np.radians(lon)
+    // normal = A / (np.sqrt(1 - E2*(np.sin(lat_r) ** 2)))
+    //
+    // x = normal * np.cos(lat_r) * np.cos(lon_r)
+    // y = normal * np.cos(lat_r) * np.sin(lon_r)
+    // z = normal * (1 - E2) * np.sin(lat)
+    //
+    // return np.column_stack([x,y,z])
+}
+
+fn main() {
+    let dimensions = 2;
+    let mut kdtree = KdTree::new(dimensions);
 
     let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
     for record in rdr.decode() {
         let r: Record = record.unwrap();
         println!("({}, {}): {}", r.lat, r.lon, r.name);
-        // match record.unwrap() {
-        //     None => println!("Butts!"),
-        //     Some(item: Record) => {
-        //         println!("{}", item)
-        //     }
-        // }
-
-        // let (s1, s2, dist): (String, String, usize) = record.unwrap();
+        // kdtree.add()
     }
 
     //
@@ -38,8 +56,6 @@ fn main() {
     // let c: ([f64; 2], usize) = ([2f64, 2f64], 2);
     // let d: ([f64; 2], usize) = ([3f64, 3f64], 3);
     //
-    // let dimensions = 2;
-    // let mut kdtree = KdTree::new(dimensions);
     //
     // kdtree.add(&a.0, a.1).unwrap();
     // kdtree.add(&b.0, b.1).unwrap();
