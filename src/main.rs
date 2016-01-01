@@ -32,6 +32,10 @@ fn geodetic_in_ecef(geo_coords: (f32, f32)) -> (f32, f32, f32) {
     (x, y, z)
 }
 
+fn printRecord(r: &Record) {
+    println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
+}
+
 fn main() {
     use kdtree::KdTree;
     use kdtree::ErrorKind;
@@ -46,7 +50,7 @@ fn main() {
     let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
     for record in rdr.decode() {
         let r: Record = record.unwrap();
-        println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
+        // printRecord(&r);
         coords.push([r.lat, r.lon]);
         records.push(r);
     }
@@ -54,4 +58,11 @@ fn main() {
     for i in 0..coords.len() {
         kdtree.add(&coords[i], &records[i]);
     }
+
+    let y = kdtree.nearest(&[44.962786, -93.344722], 100, &squared_euclidean).unwrap();
+
+    if y.len() > 0 {
+        printRecord(&y[0].1);
+    }
+    // printRecord(y);
 }
