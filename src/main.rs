@@ -38,7 +38,7 @@ fn print_record(r: &Record) {
     println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
 }
 
-fn search(my_kdtree: KdTree<&Record>, loc: &[f64; 2]) -> Option<Record> {
+fn search(my_kdtree: &KdTree<&Record>, loc: &[f64; 2]) -> Option<Record> {
     use kdtree::distance::squared_euclidean;
 
     let y = my_kdtree.nearest(loc, 1, &squared_euclidean).unwrap();
@@ -58,7 +58,7 @@ fn main() {
     let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
     for record in rdr.decode() {
         let r: Record = record.unwrap();
-        // printRecord(&r);
+        // print_record(&r);
         coords.push([r.lat, r.lon]);
         records.push(r);
     }
@@ -70,7 +70,7 @@ fn main() {
     println!("Loading complete.");
 
     // let y = kdtree.nearest(&[44.962786, -93.344722], 100, &squared_euclidean).unwrap();
-    let y = search(kdtree, &[44.962786, -93.344722]).unwrap();
+    let y = search(&kdtree, &[44.962786, -93.344722]).unwrap();
 
     print_record(&y);
 }
