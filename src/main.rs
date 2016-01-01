@@ -3,7 +3,11 @@ extern crate kdtree;
 extern crate csv;
 extern crate rustc_serialize;
 
-#[derive(RustcDecodable)]
+use kdtree::KdTree;
+use kdtree::ErrorKind;
+use kdtree::distance::squared_euclidean;
+
+#[derive(Clone, RustcDecodable)]
 struct Record {
     lat: f64,
     lon: f64,
@@ -35,16 +39,20 @@ fn printRecord(r: &Record) {
     println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
 }
 
-fn main() {
-    use kdtree::KdTree;
-    use kdtree::ErrorKind;
-    use kdtree::distance::squared_euclidean;
+fn search(my_kdtree: KdTree<Record>, loc: &[f64; 2]) -> Option<Record> {
+    let y = my_kdtree.nearest(loc, 1, &squared_euclidean).unwrap();
 
+    if y.len() > 0 {
+        return Some((*y[0].1).clone());
+    } else {
+        return None;
+    }
+}
+
+fn main() {
     let mut coords = Vec::new();
     let mut records = Vec::new();
-
-    let dimensions = 2;
-    let mut kdtree = KdTree::new(dimensions);
+    let mut kdtree = KdTree::new(2);
 
     let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
     for record in rdr.decode() {
