@@ -4,8 +4,7 @@ extern crate csv;
 extern crate rustc_serialize;
 
 use kdtree::KdTree;
-use kdtree::ErrorKind;
-use kdtree::distance::squared_euclidean;
+// use kdtree::ErrorKind;
 
 #[derive(Clone, RustcDecodable)]
 struct Record {
@@ -40,6 +39,8 @@ fn print_record(r: &Record) {
 }
 
 fn search(my_kdtree: KdTree<&Record>, loc: &[f64; 2]) -> Option<Record> {
+    use kdtree::distance::squared_euclidean;
+
     let y = my_kdtree.nearest(loc, 1, &squared_euclidean).unwrap();
 
     if y.len() > 0 {
