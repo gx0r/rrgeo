@@ -35,11 +35,11 @@ fn geodetic_in_ecef(geo_coords: (f32, f32)) -> (f32, f32, f32) {
     (x, y, z)
 }
 
-fn printRecord(r: &Record) {
+fn print_record(r: &Record) {
     println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
 }
 
-fn search(my_kdtree: KdTree<Record>, loc: &[f64; 2]) -> Option<Record> {
+fn search(my_kdtree: KdTree<&Record>, loc: &[f64; 2]) -> Option<Record> {
     let y = my_kdtree.nearest(loc, 1, &squared_euclidean).unwrap();
 
     if y.len() > 0 {
@@ -68,10 +68,8 @@ fn main() {
 
     println!("Loading complete.");
 
-    let y = kdtree.nearest(&[44.962786, -93.344722], 100, &squared_euclidean).unwrap();
+    // let y = kdtree.nearest(&[44.962786, -93.344722], 100, &squared_euclidean).unwrap();
+    let y = search(kdtree, &[44.962786, -93.344722]).unwrap();
 
-    if y.len() > 0 {
-        printRecord(&y[0].1);
-    }
-    // printRecord(y);
+    print_record(&y);
 }
