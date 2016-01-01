@@ -27,8 +27,7 @@ fn geodetic_in_ecef(geo_coords: (f32, f32)) -> (f32, f32, f32) {
     let x = normal * lat_r.cos() * lon_r.cos();
     let y = normal * lat_r.cos() * lon_r.sin();
     let z = normal * (1f32 - e2) * lat.sin();
-    //
-    // return np.column_stack([x,y,z])
+
     (x, y, z)
 }
 
@@ -58,6 +57,8 @@ fn main() {
     for i in 0..coords.len() {
         kdtree.add(&coords[i], &records[i]);
     }
+
+    println!("Loading complete.");
 
     let y = kdtree.nearest(&[44.962786, -93.344722], 100, &squared_euclidean).unwrap();
 
