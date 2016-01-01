@@ -6,8 +6,8 @@ extern crate rustc_serialize;
 
 #[derive(RustcDecodable)]
 struct Record {
-    lat: f32,
-    lon: f32,
+    lat: f64,
+    lon: f64,
     name: String,
     admin1: String,
     admin2: String,
@@ -38,23 +38,28 @@ fn main() {
     use kdtree::KdTree;
     use kdtree::ErrorKind;
     use kdtree::distance::squared_euclidean;
-
-    let a: ([f64; 2], usize) = ([0f64, 0f64], 0);
-    let b: ([f64; 2], usize) = ([1f64, 1f64], 1);
-    let c: ([f64; 2], usize) = ([2f64, 2f64], 2);
-    let d: ([f64; 2], usize) = ([3f64, 3f64], 3);
+    //
+    // let a: ([f64; 2], usize) = ([0f64, 0f64], 0);
+    // let b: ([f64; 2], usize) = ([1f64, 1f64], 1);
+    // let c: ([f64; 2], usize) = ([2f64, 2f64], 2);
+    // let d: ([f64; 2], usize) = ([3f64, 3f64], 3);
+    let mut vec = Vec::new();
 
     let dimensions = 2;
     let mut kdtree = KdTree::new(dimensions);
-    kdtree.add(&a.0, a.1).unwrap();
-    kdtree.add(&b.0, b.1).unwrap();
-    kdtree.add(&c.0, c.1).unwrap();
-    kdtree.add(&d.0, d.1).unwrap();
+    // kdtree.add(&a.0, a.1).unwrap();
+    // kdtree.add(&b.0, b.1).unwrap();
+    // kdtree.add(&c.0, c.1).unwrap();
+    // kdtree.add(&d.0, d.1).unwrap();
 
     let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
     for record in rdr.decode() {
         let r: Record = record.unwrap();
         println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
-        // kdtree.add()
+        let item: ([f64; 2]) = [r.lat, r.lon];
+        // let a  = Box::new([r.lat, r.lon]);
+        vec.push(item);
+        // vec.push([r.lat, r.lon]);
+        kdtree.add(&vec[0], r);
     }
 }
