@@ -5,7 +5,9 @@ extern crate test;
 extern crate kdtree;
 extern crate csv;
 extern crate rustc_serialize;
-
+use std::rc::Rc;
+use std::rc::Weak;
+use std::cell::RefCell;
 use kdtree::KdTree;
 // use kdtree::ErrorKind;
 
@@ -26,25 +28,12 @@ pub struct ReverseGeocoder<'a> {
 }
 
 impl<'a> ReverseGeocoder<'a> {
-    // fn new() -> ReverseGeocoder<'a> {
-    //
-    //     return ReverseGeocoder::<'a> {
-    //         tree: KdTree::<'a>::new(2),
-    //         coords: Vec::new(),
-    //         records: Vec::new(),
-    //     }.initialize();
-    // }
-
     fn new() -> ReverseGeocoder<'a> {
-
         let r = ReverseGeocoder::<'a> {
             tree: KdTree::<'a>::new(2),
             coords: Vec::new(),
             records: Vec::new(),
         };
-
-         r.initialize();
-
         r
     }
 
@@ -102,34 +91,12 @@ fn print_record(r: &Record) {
 }
 
 fn main() {
-    // let mut coords = Vec::new();
-    // let mut records = Vec::new();
-    // let mut kdtree = KdTree::new(2);
-    //
-    // let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
-    // for record in rdr.decode() {
-    //     let r: Record = record.unwrap();
-    //     // print_record(&r);
-    //     coords.push([r.lat, r.lon]);
-    //     records.push(r);
-    // }
-    //
-    // for i in 0..coords.len() {
-    //     kdtree.add(&coords[i], &records[i]);
-    // }
-    //
-    // println!("Loading complete.");
-
-    let geocoder = ReverseGeocoder::new();
-    // {
-    //     let mut geoc = &mut geocoder;
-    //     geoc.initialize();
-    //     drop(geoc);
-    // }
-
-    // let geocoder = geocoder;
-    // let y = kdtree.nearest(&[44.962786, -93.344722], 100, &squared_euclidean).unwrap();
-    let y = geocoder.search(&[44.962786, -93.344722]).unwrap();
+    let mut coder = ReverseGeocoder::new();
+    {
+        let i = &mut coder;
+        i.initialize();
+    }
+    let y = coder.search(&[44.962786, -93.344722]).unwrap();
 
     print_record(&y);
 }
