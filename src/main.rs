@@ -43,7 +43,7 @@ impl<'a> ReverseGeocoder<'a> {
             records: Vec::new(),
         };
 
-        // r.initialize();
+         r.initialize();
 
         r
     }
@@ -63,6 +63,19 @@ impl<'a> ReverseGeocoder<'a> {
 
         println!("Loading complete.");
     }
+
+    fn search(&self, loc: &[f64; 2]) -> Option<Record> {
+        use kdtree::distance::squared_euclidean;
+
+        let y = self.tree.nearest(loc, 1, &squared_euclidean).unwrap();
+
+        if y.len() > 0 {
+            return Some((*y[0].1).clone());
+        } else {
+            return None;
+        }
+    }
+
 }
 
 
@@ -88,39 +101,35 @@ fn print_record(r: &Record) {
     println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
 }
 
-fn search(my_kdtree: &KdTree<&Record>, loc: &[f64; 2]) -> Option<Record> {
-    use kdtree::distance::squared_euclidean;
-
-    let y = my_kdtree.nearest(loc, 1, &squared_euclidean).unwrap();
-
-    if y.len() > 0 {
-        return Some((*y[0].1).clone());
-    } else {
-        return None;
-    }
-}
-
 fn main() {
-    let mut coords = Vec::new();
-    let mut records = Vec::new();
-    let mut kdtree = KdTree::new(2);
+    // let mut coords = Vec::new();
+    // let mut records = Vec::new();
+    // let mut kdtree = KdTree::new(2);
+    //
+    // let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
+    // for record in rdr.decode() {
+    //     let r: Record = record.unwrap();
+    //     // print_record(&r);
+    //     coords.push([r.lat, r.lon]);
+    //     records.push(r);
+    // }
+    //
+    // for i in 0..coords.len() {
+    //     kdtree.add(&coords[i], &records[i]);
+    // }
+    //
+    // println!("Loading complete.");
 
-    let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
-    for record in rdr.decode() {
-        let r: Record = record.unwrap();
-        // print_record(&r);
-        coords.push([r.lat, r.lon]);
-        records.push(r);
-    }
+    let geocoder = ReverseGeocoder::new();
+    // {
+    //     let mut geoc = &mut geocoder;
+    //     geoc.initialize();
+    //     drop(geoc);
+    // }
 
-    for i in 0..coords.len() {
-        kdtree.add(&coords[i], &records[i]);
-    }
-
-    println!("Loading complete.");
-
+    // let geocoder = geocoder;
     // let y = kdtree.nearest(&[44.962786, -93.344722], 100, &squared_euclidean).unwrap();
-    let y = search(&kdtree, &[44.962786, -93.344722]).unwrap();
+    let y = geocoder.search(&[44.962786, -93.344722]).unwrap();
 
     print_record(&y);
 }
