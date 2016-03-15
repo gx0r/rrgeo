@@ -7,3 +7,4 @@ authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 kdtree = "~0.2.1"
 csv = "0.14.3"
 rustc-serialize = "0.3"
+time = "*"
