@@ -57,10 +57,12 @@ impl<'a> ReverseGeocoder<'a> {
     }
 
     fn initialize(&mut self, loc: &'a Locations) {
+        let start = PreciseTime::now();
         for record in &loc.records {
             self.tree.add(&record.0, &record.1).unwrap();
         }
-        println!("Loading complete.");
+        let end = PreciseTime::now();
+        println!("{} seconds to build the KdTree", start.to(end));
     }
 
     fn search(&self, loc: &[f64; 2]) -> Option<Record> {
@@ -97,13 +99,20 @@ mod tests {
     #[test]
     fn it_works() {
         let loc = super::Locations::from_file();
-
         let geocoder = super::ReverseGeocoder::new(&loc);
-
         let y = geocoder.search(&[44.962786, -93.344722]);
         assert_eq!(y.is_some(), true);
-        let x = y.unwrap();
+        let slp = y.unwrap();
 
+        assert_eq!(slp.name, "Saint Louis Park");
+
+        // [44.894519, -93.308702] is 60 St W @ Penn Ave S, Minneapolis, Minnesota; however, this is physically closer to Richfield
+        let mpls = geocoder.search(&[44.894519, -93.308702]).unwrap();
+        assert_eq!(mpls.name, "Richfield");
+
+        // [44.887055, -93.334204] is HWY 62 and Valley View Road, whish is in Edina
+        let edina = geocoder.search(&[44.887055, -93.334204]).unwrap();
+        assert_eq!(edina.name, "Edina");
     }
 
     // #[bench]
