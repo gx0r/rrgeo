@@ -5,6 +5,7 @@ extern crate rustc_serialize;
 extern crate time;
 
 use kdtree::KdTree;
+use kdtree::distance::squared_euclidean;
 use time::PreciseTime;
 
 #[derive(Clone, RustcDecodable)]
@@ -50,7 +51,7 @@ pub struct ReverseGeocoder<'a> {
 impl<'a> ReverseGeocoder<'a> {
     fn new(loc: &'a Locations) -> ReverseGeocoder<'a> {
         let mut r = ReverseGeocoder::<'a> {
-            tree: KdTree::new(2),
+            tree: KdTree::new_with_capacity(2, loc.records.len()),
         };
         r.initialize(loc);
         r
@@ -65,15 +66,12 @@ impl<'a> ReverseGeocoder<'a> {
         println!("{} seconds to build the KdTree", start.to(end));
     }
 
-    fn search(&self, loc: &[f64; 2]) -> Option<Record> {
-        use kdtree::distance::squared_euclidean;
-
+    fn search(&'a self, loc: &[f64; 2]) -> Option<&'a Record> {
         let y = self.tree.nearest(loc, 1, &squared_euclidean).unwrap();
-
-        if y.len() > 0 {
-            return Some((*y[0].1).clone());
+        if y.is_empty() {
+            None
         } else {
-            return None;
+            Some(&y[0].1)
         }
     }
 
@@ -89,7 +87,7 @@ fn main() {
 
     let y = geocoder.search(&[44.962786, -93.344722]).unwrap();
 
-    print_record(&y);
+    print_record(y);
 }
 
 extern crate test;
