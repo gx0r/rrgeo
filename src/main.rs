@@ -91,9 +91,7 @@ fn main() {
 }
 
 extern crate test;
-
 mod tests {
-
     #[test]
     fn it_works() {
         let loc = super::Locations::from_file();
@@ -112,30 +110,4 @@ mod tests {
         let edina = geocoder.search(&[44.887055, -93.334204]).unwrap();
         assert_eq!(edina.name, "Edina");
     }
-
-    // #[bench]
-    // fn bench_lookup(b: &mut Bencher) {
-    //
-    // }
 }
-
-
-/*
-fn geodetic_in_ecef(geo_coords: (f32, f32)) -> (f32, f32, f32) {
-    let a = 6378.137; // major axis in kms
-    let e2 = 0.00669437999014;
-
-    let lat = geo_coords.0;
-    let lon = geo_coords.1;
-
-    let lat_r = lat.to_radians();
-    let lon_r = lon.to_radians();
-    let normal = a / (1f32 - e2 * lat_r.sin().powi(2));
-
-    let x = normal * lat_r.cos() * lon_r.cos();
-    let y = normal * lat_r.cos() * lon_r.sin();
-    let z = normal * (1f32 - e2) * lat.sin();
-
-    (x, y, z)
-}
-*/
