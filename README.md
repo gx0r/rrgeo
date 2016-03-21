@@ -5,26 +5,26 @@ Rust port of https://github.com/thampiman/reverse-geocoder
 
 Note: most of the performance differences are going to be in time taken loading CSV file and creating k-d tree, not searching the tree. Searching time resembles algorithmic complexity of [k-d tree](https://en.wikipedia.org/wiki/K-d_tree). Python version is partly implemented in C++ meaning it is not a purely Python implementation. (It might be interesting to see how a pure Python version performs.) Node.js version is pure JavaScript e.g. not using C add ons.
 
-## Rust -release build
+## Rust --release build
 
 ```
-➜  rreverse git:(master) time target/release/rreverse 
-PT0.156617321S seconds to load cities.csv
-PT0.086946967S seconds to build the KdTree
+➜  rreverse git:(master) time target/release/rreverse
+PT0.122817855S seconds to load cities.csv
+PT0.007221280S seconds to build the KdTree
 (44.9483, -93.34801): Saint Louis Park Minnesota Hennepin County US
 
-target/release/rreverse  0.23s user 0.03s system 97% cpu 0.268 total
+target/release/rreverse  0.12s user 0.03s system 95% cpu 0.158 total
 ```
 
-## Rust -debug build
+## Rust --debug build
 
 ```
 ➜  rreverse git:(master) time target/debug/rreverse
-PT2.672206450S seconds to load cities.csv
-PT1.139276524S seconds to build the KdTree
+PT2.896100517S seconds to load cities.csv
+PT0.147031331S seconds to build the KdTree
 (44.9483, -93.34801): Saint Louis Park Minnesota Hennepin County US
 
-target/debug/rreverse  3.80s user 0.04s system 99% cpu 3.861 total
+target/debug/rreverse  3.05s user 0.04s system 99% cpu 3.126 total
 ```
 
 ## Python mode 1 (single threaded K-D tree)
