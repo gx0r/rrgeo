@@ -1,6 +1,6 @@
 #![feature(test)]
 extern crate kdtree;
-extern crate csv;
+extern crate quick_csv;
 extern crate rustc_serialize;
 extern crate time;
 
@@ -26,10 +26,10 @@ impl Locations {
         let start = PreciseTime::now();
         let mut records = Vec::new();
 
-        let mut rdr = csv::Reader::from_file("cities.csv").unwrap();
+        let rdr = quick_csv::Csv::from_file("cities.csv").unwrap().has_header(true);
 
-        for record in rdr.decode() {
-            let r: Record = record.unwrap();
+        for record in rdr {
+            let r: Record = record.unwrap().decode().unwrap();
             records.push(([r.lat, r.lon], r));
         }
 
