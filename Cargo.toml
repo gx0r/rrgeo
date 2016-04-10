@@ -8,3 +8,7 @@ kdtree = "~0.2.1"
 quick-csv = "0.1.4"
 rustc-serialize = "0.3"
 time = "*"
+iron = "*"
+
+[dependencies.queryst]
+git = "https://github.com/rustless/queryst"
