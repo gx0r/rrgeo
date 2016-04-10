@@ -4,8 +4,6 @@ version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-docopt = "^0.6.80"
-docopt_macros = "^0.6.82"
 kdtree = "~0.2.1"
 quick-csv = "0.1.4"
 rustc-serialize = "0.3"
