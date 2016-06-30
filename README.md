@@ -1,4 +1,4 @@
-# rreverse
+# Rust Reverse Geocoder
 Rust port of https://github.com/thampiman/reverse-geocoder
 
 # Performance
