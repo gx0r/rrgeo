@@ -38,7 +38,7 @@ extern crate queryst;
 use iron::prelude::*;
 use iron::status;
 use queryst::parse;
-use rustc_serialize::json::{self, Json};
+use rustc_serialize::json::{self};
 
 fn main() {
 
@@ -46,7 +46,7 @@ fn main() {
         match request.url.query.clone() {
             Some(query) => {
                 println!("{:?}", query);
-                let data: Json = parse(&query).unwrap();
+                let data = parse(&query).unwrap();
                 println!("{:?}", data );
                 println!("{:?}", data.is_object() );
 
