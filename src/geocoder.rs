@@ -33,9 +33,7 @@ impl Locations {
 
         println!("{} seconds to load cities.csv", start.to(end));
 
-        Locations {
-            records: records,
-        }
+        Locations { records: records }
     }
 }
 
@@ -45,9 +43,7 @@ pub struct ReverseGeocoder<'a> {
 
 impl<'a> ReverseGeocoder<'a> {
     pub fn new(loc: &'a Locations) -> ReverseGeocoder<'a> {
-        let mut r = ReverseGeocoder::<'a> {
-            tree: KdTree::new_with_capacity(2, loc.records.len()),
-        };
+        let mut r = ReverseGeocoder::<'a> { tree: KdTree::new_with_capacity(2, loc.records.len()) };
         r.initialize(loc);
         r
     }
@@ -69,11 +65,16 @@ impl<'a> ReverseGeocoder<'a> {
             Some(&y[0].1)
         }
     }
-
 }
 
 pub fn print_record(r: &Record) {
-    println!("({}, {}): {} {} {} {}", r.lat, r.lon, r.name, r.admin1, r.admin2, r.admin3);
+    println!("({}, {}): {} {} {} {}",
+             r.lat,
+             r.lon,
+             r.name,
+             r.admin1,
+             r.admin2,
+             r.admin3);
 }
 
 mod tests {
