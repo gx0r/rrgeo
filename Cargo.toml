@@ -9,6 +9,4 @@ quick-csv = "0.1.5"
 rustc-serialize = "0.3"
 time = "*"
 iron = "*"
-
-[dependencies.queryst]
-git = "https://github.com/rustless/queryst"
+queryst = "1.0.0"

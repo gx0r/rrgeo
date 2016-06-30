@@ -4,7 +4,7 @@ version = "0.1.0"
 dependencies = [
  "iron 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "kdtree 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "queryst 1.0.0 (git+https://github.com/rustless/queryst)",
+ "queryst 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "quick-csv 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -198,7 +198,7 @@ dependencies = [
 [[package]]
 name = "queryst"
 version = "1.0.0"
-source = "git+https://github.com/rustless/queryst#6dc53d08f35679122fc6bcf1bfc416a849c79215"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.1.71 (registry+https://github.com/rust-lang/crates.io-index)",
