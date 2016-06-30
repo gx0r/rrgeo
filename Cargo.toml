@@ -10,3 +10,11 @@ rustc-serialize = "0.3"
 time = "*"
 iron = "*"
 queryst = "1.0.0"
+
+[[bin]]
+name = "webserver"
+path = "src/webserver.rs"
+
+[[bin]]
+name = "rreverse"
+path = "src/cmdline.rs"
