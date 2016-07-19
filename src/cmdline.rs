@@ -1,5 +1,5 @@
 #![cfg_attr(feature="clippy", plugin(clippy))]
-#![feature(custom_derive, plugin, custom_attribute, type_macros)]
+// #![feature(custom_derive, plugin, custom_attribute, type_macros)]
 extern crate kdtree;
 extern crate rustc_serialize;
 extern crate time;
