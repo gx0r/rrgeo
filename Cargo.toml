@@ -5,11 +5,11 @@ authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
 kdtree = "~0.2.1"
-quick-csv = "0.1.5"
-rustc-serialize = "0.3"
-time = "*"
-iron = "*"
-queryst = "1.0.0"
+quick-csv = "~0.1.5"
+rustc-serialize = "~0.3.19"
+time = "~0.1.35"
+iron = "~0.4.0"
+queryst = "~1.0.0"
 
 [[bin]]
 name = "webserver"

@@ -15,7 +15,7 @@ use rustc_serialize::json;
 
 fn main() {
     fn hello_world(request: &mut Request) -> IronResult<Response> {
-        match request.url.query.clone() {
+        match request.url.query().clone() {
             Some(query) => {
                 println!("{:?}", query);
                 let data = parse(&query).unwrap();
