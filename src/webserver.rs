@@ -23,8 +23,8 @@ fn main() {
                 println!("{:?}", data.is_object());
 
                 let obj = data.as_object().unwrap();
-                let lat = obj.get("lat").unwrap().as_string().unwrap().parse::<f64>().unwrap();
-                let long = obj.get("long").unwrap().as_string().unwrap().parse::<f64>().unwrap();
+                let lat = obj.get("lat").unwrap().as_str().unwrap().parse::<f64>().unwrap();
+                let long = obj.get("long").unwrap().as_str().unwrap().parse::<f64>().unwrap();
 
                 let loc = Locations::from_file();
                 let geocoder = ReverseGeocoder::new(&loc);
