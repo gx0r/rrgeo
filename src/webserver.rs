@@ -13,29 +13,29 @@ use iron::status;
 use queryst::parse;
 use rustc_serialize::json;
 
-fn main() {
-    fn hello_world(request: &mut Request) -> IronResult<Response> {
-        match request.url.query().clone() {
-            Some(query) => {
-                println!("{:?}", query);
-                let data = parse(&query).unwrap();
-                println!("{:?}", data);
-                println!("{:?}", data.is_object());
+fn hello_world(request: &mut Request) -> IronResult<Response> {
+    match request.url.query().clone() {
+        Some(query) => {
+            println!("{:?}", query);
+            let data = parse(&query).unwrap();
+            println!("{:?}", data);
+            println!("{:?}", data.is_object());
 
-                let obj = data.as_object().unwrap();
-                let lat = obj.get("lat").unwrap().as_str().unwrap().parse::<f64>().unwrap();
-                let long = obj.get("long").unwrap().as_str().unwrap().parse::<f64>().unwrap();
+            let obj = data.as_object().unwrap();
+            let lat = obj.get("lat").unwrap().as_str().unwrap().parse::<f64>().unwrap();
+            let long = obj.get("long").unwrap().as_str().unwrap().parse::<f64>().unwrap();
 
-                let loc = Locations::from_file();
-                let geocoder = ReverseGeocoder::new(&loc);
+            let loc = Locations::from_file();
+            let geocoder = ReverseGeocoder::new(&loc);
 
-                let y = geocoder.search(&[lat, long]).unwrap();
-                Ok(Response::with((status::Ok, json::encode(y).unwrap())))
-            }
-            None => Ok(Response::with((status::BadRequest, "Need a lat/long"))),
+            let y = geocoder.search(&[lat, long]).unwrap();
+            Ok(Response::with((status::Ok, json::encode(y).unwrap())))
         }
+        None => Ok(Response::with((status::BadRequest, "Need a lat/long"))),
     }
+}
 
+fn main() {
     Iron::new(hello_world).http("localhost:3000").unwrap();
     println!("On 3000");
 }
