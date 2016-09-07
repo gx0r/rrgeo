@@ -9,7 +9,7 @@ quick-csv = "~0.1.5"
 rustc-serialize = "~0.3.19"
 time = "~0.1.35"
 iron = "~0.4.0"
-queryst = "~1.0.0"
+queryst = "~1.0.1"
 
 [[bin]]
 name = "webserver"
