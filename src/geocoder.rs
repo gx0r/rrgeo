@@ -67,15 +67,15 @@ impl<'a> ReverseGeocoder<'a> {
     }
 }
 
-pub fn print_record(r: &Record) {
-    println!("({}, {}): {} {} {} {}",
-             r.lat,
-             r.lon,
-             r.name,
-             r.admin1,
-             r.admin2,
-             r.admin3);
-}
+// pub fn print_record(r: &Record) {
+//     println!("({}, {}): {} {} {} {}",
+//              r.lat,
+//              r.lon,
+//              r.name,
+//              r.admin1,
+//              r.admin2,
+//              r.admin3);
+// }
 
 mod tests {
     #[test]
