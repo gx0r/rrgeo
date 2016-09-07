@@ -43,9 +43,10 @@ pub struct ReverseGeocoder<'a> {
 
 impl<'a> ReverseGeocoder<'a> {
     pub fn new(loc: &'a Locations) -> ReverseGeocoder<'a> {
-        let mut r = ReverseGeocoder::<'a> { tree: KdTree::new_with_capacity(2, loc.records.len()) };
-        r.initialize(loc);
-        r
+        let mut reverse_geocoder =
+            ReverseGeocoder::<'a> { tree: KdTree::new_with_capacity(2, loc.records.len()) };
+        reverse_geocoder.initialize(loc);
+        reverse_geocoder
     }
 
     fn initialize(&mut self, loc: &'a Locations) {
@@ -58,23 +59,23 @@ impl<'a> ReverseGeocoder<'a> {
     }
 
     pub fn search(&'a self, loc: &[f64; 2]) -> Option<&'a Record> {
-        let y = self.tree.nearest(loc, 1, &squared_euclidean).unwrap();
-        if y.is_empty() {
+        let nearest = self.tree.nearest(loc, 1, &squared_euclidean).unwrap();
+        if nearest.is_empty() {
             None
         } else {
-            Some(&y[0].1)
+            Some(&nearest[0].1)
         }
     }
 }
 
-pub fn print_record(r: &Record) {
+pub fn print_record(record: &Record) {
     println!("({}, {}): {} {} {} {}",
-             r.lat,
-             r.lon,
-             r.name,
-             r.admin1,
-             r.admin2,
-             r.admin3);
+             record.lat,
+             record.lon,
+             record.name,
+             record.admin1,
+             record.admin2,
+             record.admin3);
 }
 
 mod tests {
