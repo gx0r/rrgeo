@@ -78,10 +78,12 @@ pub fn print_record(r: &Record) {
 }
 
 mod tests {
+    use super::*;
+
     #[test]
     fn it_works() {
-        let loc = super::Locations::from_file();
-        let geocoder = super::ReverseGeocoder::new(&loc);
+        let loc = Locations::from_file();
+        let geocoder = ReverseGeocoder::new(&loc);
         let y = geocoder.search(&[44.962786, -93.344722]);
         assert_eq!(y.is_some(), true);
         let slp = y.unwrap();
