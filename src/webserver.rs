@@ -1,5 +1,7 @@
 #![cfg_attr(feature="clippy", plugin(clippy))]
 // #![feature(custom_derive, plugin, custom_attribute, type_macros)]
+#[macro_use]
+extern crate lazy_static;
 extern crate kdtree;
 extern crate rustc_serialize;
 extern crate time;
@@ -13,6 +15,10 @@ use iron::status;
 use queryst::parse;
 use rustc_serialize::json;
 
+lazy_static! {
+    static ref LOCATIONS: Locations = Locations::from_file();
+}
+
 fn hello_world(request: &mut Request) -> IronResult<Response> {
     match request.url.query().clone() {
         Some(query) => {
@@ -25,8 +31,7 @@ fn hello_world(request: &mut Request) -> IronResult<Response> {
             let lat = obj.get("lat").unwrap().as_str().unwrap().parse::<f64>().unwrap();
             let long = obj.get("long").unwrap().as_str().unwrap().parse::<f64>().unwrap();
 
-            let loc = Locations::from_file();
-            let geocoder = ReverseGeocoder::new(&loc);
+            let geocoder = ReverseGeocoder::new(&LOCATIONS);
 
             let y = geocoder.search(&[lat, long]).unwrap();
             Ok(Response::with((status::Ok, json::encode(y).unwrap())))
