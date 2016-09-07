@@ -12,9 +12,9 @@ iron = "~0.4.0"
 queryst = "~1.0.1"
 
 [[bin]]
-name = "webserver"
+name = "web"
 path = "src/webserver.rs"
 
 [[bin]]
-name = "rreverse"
+name = "cmd"
 path = "src/cmdline.rs"
