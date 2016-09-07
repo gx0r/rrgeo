@@ -22,11 +22,11 @@ impl Locations {
         let start = PreciseTime::now();
         let mut records = Vec::new();
 
-        let rdr = quick_csv::Csv::from_file("cities.csv").unwrap().has_header(true);
+        let reader = quick_csv::Csv::from_file("cities.csv").unwrap().has_header(true);
 
-        for record in rdr {
-            let r: Record = record.unwrap().decode().unwrap();
-            records.push(([r.lat, r.lon], r));
+        for read_record in reader {
+            let record: Record = read_record.unwrap().decode().unwrap();
+            records.push(([record.lat, record.lon], record));
         }
 
         let end = PreciseTime::now();
@@ -67,15 +67,15 @@ impl<'a> ReverseGeocoder<'a> {
     }
 }
 
-// pub fn print_record(r: &Record) {
-//     println!("({}, {}): {} {} {} {}",
-//              r.lat,
-//              r.lon,
-//              r.name,
-//              r.admin1,
-//              r.admin2,
-//              r.admin3);
-// }
+pub fn print_record(r: &Record) {
+    println!("({}, {}): {} {} {} {}",
+             r.lat,
+             r.lon,
+             r.name,
+             r.admin1,
+             r.admin2,
+             r.admin3);
+}
 
 mod tests {
     #[test]
