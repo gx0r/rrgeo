@@ -17,6 +17,7 @@ use rustc_serialize::json;
 
 lazy_static! {
     static ref LOCATIONS: Locations = Locations::from_file();
+    static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
 }
 
 fn hello_world(request: &mut Request) -> IronResult<Response> {
@@ -31,9 +32,7 @@ fn hello_world(request: &mut Request) -> IronResult<Response> {
             let lat = obj.get("lat").unwrap().as_str().unwrap().parse::<f64>().unwrap();
             let long = obj.get("long").unwrap().as_str().unwrap().parse::<f64>().unwrap();
 
-            let geocoder = ReverseGeocoder::new(&LOCATIONS);
-
-            let y = geocoder.search(&[lat, long]).unwrap();
+            let y = GEOCODER.search(&[lat, long]).unwrap();
             Ok(Response::with((status::Ok, json::encode(y).unwrap())))
         }
         None => Ok(Response::with((status::BadRequest, "Need a lat/long"))),
