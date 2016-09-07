@@ -4,6 +4,7 @@ version = "0.1.0"
 dependencies = [
  "iron 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "kdtree 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "queryst 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "quick-csv 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
