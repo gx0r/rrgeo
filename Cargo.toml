@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-kdtree = "~0.2.1"
+kdtree = "~0.3.1"
 quick-csv = "~0.1.5"
 rustc-serialize = "~0.3.19"
 time = "~0.1.35"

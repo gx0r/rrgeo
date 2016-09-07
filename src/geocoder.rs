@@ -38,7 +38,7 @@ impl Locations {
 }
 
 pub struct ReverseGeocoder<'a> {
-    tree: KdTree<'a, &'a Record>,
+    tree: KdTree<&'a Record, &'a [f64; 2]>,
 }
 
 impl<'a> ReverseGeocoder<'a> {
