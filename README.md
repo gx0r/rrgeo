@@ -1,5 +1,5 @@
 # Rust Reverse Geocoder
-Rust port of https://github.com/thampiman/reverse-geocoder
+A fast, offline reverse geocoder in Rust, inspired by https://github.com/thampiman/reverse-geocoder
 
 # Performance
 
