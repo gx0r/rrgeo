@@ -52,16 +52,22 @@ python mode2.py  2.82s user 0.34s system 142% cpu 2.221 total
 ## [nreverse](https://github.com/llambda/nreverse) (Node.js version)
 
 ```
-➜  nreverse time node index
-load CSV: 1447.281ms
-createTree: 1060.373ms
-search: 1.389ms
-[ { lat: 44.9483,
-    long: -93.34801,
-    name: 'Saint Louis Park',
-    ad1: 'Minnesota',
-    ad2: 'Hennepin County',
-    cc: 'US' },
-  0 ]
-node index  2.57s user 0.09s system 101% cpu 2.630 total
+load modules: 12.619ms
+load cities.csv: 1221.833ms
+create kdtree: 805.310ms
+search tree: 0.758ms
+search tree: 0.086ms
+search tree: 0.198ms
+search tree: 0.104ms
+search tree: 0.031ms
+total_heap_size 114mb
+total_heap_size_executable 5mb
+total_physical_size 112mb
+total_available_size 1325mb
+used_heap_size 83mb
+heap_size_limit 1432mb
+malloced_memory 0mb
+peak_malloced_memory 4mb
+does_zap_garbage 0mb
+
 ```
