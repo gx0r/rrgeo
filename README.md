@@ -8,23 +8,25 @@ Note: most of the performance differences are going to be in time taken loading 
 ## Rust --release build
 
 ```
-➜  rreverse git:(master) time target/release/rreverse
-PT0.122817855S seconds to load cities.csv
-PT0.007221280S seconds to build the KdTree
-(44.9483, -93.34801): Saint Louis Park Minnesota Hennepin County US
+     Running `target/release/web`
+PT0.062677465S seconds to load cities.csv
+PT0.003835230S seconds to build the KdTree
+PT0.068904911S seconds to search
+PT0.002596743S seconds to search
+PT0.002887542S seconds to search
 
-target/release/rreverse  0.12s user 0.03s system 95% cpu 0.158 total
 ```
 
 ## Rust --debug build
 
 ```
-➜  rreverse git:(master) time target/debug/rreverse
-PT2.896100517S seconds to load cities.csv
-PT0.147031331S seconds to build the KdTree
-(44.9483, -93.34801): Saint Louis Park Minnesota Hennepin County US
+     Running `target/debug/web`
+PT1.198010357S seconds to load cities.csv
+PT0.124435778S seconds to build the KdTree
+PT1.401588031S seconds to search
+PT0.077837996S seconds to search
+PT0.078178297S seconds to search
 
-target/debug/rreverse  3.05s user 0.04s system 99% cpu 3.126 total
 ```
 
 ## Python mode 1 (single threaded K-D tree)
