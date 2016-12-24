@@ -31,7 +31,7 @@ impl Locations {
 
         let end = PreciseTime::now();
 
-        println!("{} seconds to load cities.csv", start.to(end));
+        println!("{} ms to load cities.csv", start.to(end).num_milliseconds());
 
         Locations { records: records }
     }
@@ -55,7 +55,7 @@ impl<'a> ReverseGeocoder<'a> {
             self.tree.add(&record.0, &record.1).unwrap();
         }
         let end = PreciseTime::now();
-        println!("{} seconds to build the KdTree", start.to(end));
+        println!("{} ms to build the KdTree", start.to(end).num_milliseconds());
     }
 
     pub fn search(&'a self, loc: &[f64; 2]) -> Option<&'a Record> {
