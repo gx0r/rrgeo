@@ -39,7 +39,7 @@ fn geocoder_middleware(request: &mut Request) -> IronResult<Response> {
             let start = PreciseTime::now();
             let y = GEOCODER.search(&[lat, long]).unwrap();
             let end = PreciseTime::now();
-            println!("{} seconds to search", start.to(end));
+            println!("{} ms to search", start.to(end).num_milliseconds());
 
             Ok(Response::with((status::Ok, json::encode(y).unwrap())))
         }
