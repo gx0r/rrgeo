@@ -3,7 +3,7 @@ use kdtree::distance::squared_euclidean;
 use time::PreciseTime;
 extern crate quick_csv;
 
-#[derive(Clone, RustcDecodable, RustcEncodable)]
+#[derive(Debug, Clone, RustcDecodable, RustcEncodable)]
 pub struct Record {
     lat: f64,
     lon: f64,
