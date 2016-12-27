@@ -1,7 +1,4 @@
-#![cfg_attr(feature="clippy", plugin(clippy))]
-// #![feature(custom_derive, plugin, custom_attribute, type_macros)]
-#[macro_use]
-extern crate lazy_static;
+#[macro_use] extern crate lazy_static;
 extern crate kdtree;
 extern crate rustc_serialize;
 extern crate time;
