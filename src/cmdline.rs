@@ -19,13 +19,13 @@ fn main() {
 
     // println!("{:?}", args);
 
-    let lat = args[1].parse::<f64>().unwrap();
-    let long = args[2].parse::<f64>().unwrap();
+    let lat = args[1].parse::<f64>().expect("Couldn't parse latitude");
+    let long = args[2].parse::<f64>().expect("Couldn't parse longitude");
 
     let loc = Locations::from_file();
     let geocoder = ReverseGeocoder::new(&loc);
 
-    let y = geocoder.search(&[lat, long]).unwrap();
+    let y = geocoder.search(&[lat, long]).expect("Nothing found.");
 
     print_record(y);
 }
