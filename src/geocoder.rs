@@ -68,6 +68,7 @@ impl<'a> ReverseGeocoder<'a> {
     }
 }
 
+#[allow(dead_code)]
 pub fn print_record(record: &Record) {
     println!("({}, {}): {} {} {} {}",
              record.lat,
