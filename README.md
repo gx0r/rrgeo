@@ -1,9 +1,36 @@
 # Rust Reverse Geocoder
 A fast, offline reverse geocoder in Rust, inspired by https://github.com/thampiman/reverse-geocoder
 
+# Usage
+
+## Built in web server
+
+```
+cargo run --bin web
+http://localhost:3000/?lat=55&long=66
+```
+
+## Command line search
+
+```
+cargo run --bin cmd
+cargo run --bin cmd 55 66
+```
+
+```
+➜  rreverse git:(master) ✗ cargo run --bin cmd 55 66
+    Finished dev [unoptimized + debuginfo] target(s) in 0.0 secs
+     Running `target/debug/cmd 55 66`
+1208 ms to load cities.csv
+116 ms to build the KdTree
+(54.79139, 65.98639): Polovinnoye Kurgan  RU
+```
+
 # Performance
 
-Note: most of the performance differences are going to be in time taken loading CSV file and creating k-d tree, not searching the tree. Searching time resembles algorithmic complexity of [k-d tree](https://en.wikipedia.org/wiki/K-d_tree). Python version is partly implemented in C++ meaning it is not a purely Python implementation. (It might be interesting to see how a pure Python version performs.) Node.js version is pure JavaScript e.g. not using C add ons.
+Here we have comparisons between the Rust, Python and Node.js versions.
+
+Most of the performance differences appear to be in time taken to load the CSV file and create the k-d tree, but not searching the tree. Searching time resembles algorithmic complexity of [k-d tree](https://en.wikipedia.org/wiki/K-d_tree). Python version is partly implemented in C++ meaning it is not a purely Python implementation. (It might be interesting to see how a pure Python version performs.) The Node.js version is pure JavaScript, as in, not using C add-ons.
 
 ## Rust --release build
 
