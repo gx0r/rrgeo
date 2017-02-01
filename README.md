@@ -38,7 +38,7 @@ Below we have comparisons between the Rust, Python and Node.js versions.
 
 Most of the performance differences appear to be in time taken to load the CSV file and create the k-d tree, but not searching the tree. Searching time resembles algorithmic complexity of [k-d tree](https://en.wikipedia.org/wiki/K-d_tree). Python version is partly implemented in C++ meaning it is not a purely Python implementation. (It might be interesting to see how a pure Python version performs.) The Node.js version is pure JavaScript, as in, not using C add-ons.
 
-Rust --release web server performance:
+## Rust --release web server performance:
 
 ```
 ➜  wrk git:(master) wrk --latency -t12 -c100 -d10s http://localhost:3000/\?lat\=45\&long\=\66
