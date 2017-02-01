@@ -25,7 +25,11 @@ fn geocoder_middleware(request: &mut Request) -> IronResult<Response> {
     match request.url.query().clone() {
         Some(query) => {
             // println!("{:?}", query);
-            let data = parse(&query).unwrap();
+            let data = match parse(&query) {
+                Ok(t) => t,
+                Err(e) => return Ok(Response::with((status::BadRequest, e.message))),
+            };
+
             // println!("{:?}", data);
             // println!("{:?}", data.is_object());
 
