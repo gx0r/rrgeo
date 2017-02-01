@@ -33,12 +33,26 @@ fn geocoder_middleware(request: &mut Request) -> IronResult<Response> {
             // println!("{:?}", data);
             // println!("{:?}", data.is_object());
 
-            let obj = data.as_object().unwrap();
-            let lat = obj.get("lat").unwrap().as_str().unwrap().parse::<f64>().unwrap();
-            let long = obj.get("long").unwrap().as_str().unwrap().parse::<f64>().unwrap();
+            let obj = match data.as_object() {
+                None => return Ok(Response::with((status::BadRequest, "No object"))),
+                Some(t) => t,
+            };
+
+            let lat = match obj.get("lat") {
+                None => return Ok(Response::with((status::BadRequest, "Missing lat"))),
+                Some(t) => t.as_str().unwrap().parse::<f64>().unwrap(),
+            };
+            
+            let long = match obj.get("long") {
+                None => return Ok(Response::with((status::BadRequest, "Missing long"))),
+                Some(t) => t.as_str().unwrap().parse::<f64>().unwrap(),
+            };
 
             let start = PreciseTime::now();
-            let y = GEOCODER.search(&[lat, long]).unwrap();
+            let y = match GEOCODER.search(&[lat, long]) {
+                Some(t) => t,
+                None => return Ok(Response::with((status::BadRequest, "Geocoder Search Failed"))),
+            };
             let end = PreciseTime::now();
             println!("{} ms to search", start.to(end).num_milliseconds());
 
