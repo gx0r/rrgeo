@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/llambda/rust-reverse-geocoder.svg?branch=master)](https://travis-ci.org/llambda/rust-reverse-geocoder)
+
 # Rust Reverse Geocoder
 A fast, offline reverse geocoder in Rust, inspired by https://github.com/thampiman/reverse-geocoder
 
