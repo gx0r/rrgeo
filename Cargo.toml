@@ -11,6 +11,8 @@ time = "~0.1.36"
 iron = "~0.5.1"
 queryst = "~1.0.1"
 lazy_static = "~0.2.1"
+hyper = "0.11"
+futures = "*"
 
 [[bin]]
 name = "web"
@@ -19,3 +21,7 @@ path = "src/webserver.rs"
 [[bin]]
 name = "cmd"
 path = "src/cmdline.rs"
+
+[[bin]]
+name = "hyper"
+path = "src/hyper.rs"
