@@ -5,12 +5,12 @@ extern crate quick_csv;
 
 #[derive(Debug, Clone, RustcDecodable, RustcEncodable)]
 pub struct Record {
-    lat: f64,
-    lon: f64,
-    name: String,
-    admin1: String,
-    admin2: String,
-    admin3: String,
+    pub lat: f64,
+    pub lon: f64,
+    pub name: String,
+    pub admin1: String,
+    pub admin2: String,
+    pub admin3: String,
 }
 
 pub struct Locations {
