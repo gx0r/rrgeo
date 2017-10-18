@@ -7,7 +7,7 @@ A fast, offline reverse geocoder in Rust, inspired by https://github.com/thampim
 
 ## Built in web server
 
-Currently implemented on Iron and Shio, and partially on async Hyper (Hyper is bare bones and isn't multithreaded yet).
+Currently implemented on [Iron](https://github.com/iron/iron) and [Shio](https://github.com/mehcode/shio-rs), and partially on async [Hyper](https://github.com/hyperium/hyper) (Hyper is bare bones and isn't multithreaded yet).
 
 Run as:
 
