@@ -7,9 +7,73 @@ A fast, offline reverse geocoder in Rust, inspired by https://github.com/thampim
 
 ## Built in web server
 
+Currently implemented on Iron and Shio, and partially on async Hyper (Hyper is bare bones and isn't multithreaded yet).
+
+Run as:
+
 ```
-cargo run --bin web
+cargo run --bin iron
+cargo run --bin shio
+cargo run --bin hyper
 http://localhost:3000/?lat=55&long=66
+```
+
+## Benchmarks 
+
+Shio:
+
+```
+➜  rreverse git:(master) ✗ wrk --latency -t12 -c300 -d10s http://localhost:3000/\?lat\=45\&long\=\66
+Running 10s test @ http://localhost:3000/?lat=45&long=66
+  12 threads and 300 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    96.60ms   41.97ms 320.10ms   74.34%
+    Req/Sec   261.74     42.90   414.00     74.85%
+  Latency Distribution
+     50%   87.27ms
+     75%  112.74ms
+     90%  157.42ms
+     99%  226.52ms
+  31221 requests in 10.02s, 5.63MB read
+Requests/sec:   3114.48
+Transfer/sec:    574.84KB
+```
+
+Iron:
+
+```
+➜  rreverse git:(master) ✗ wrk --latency -t12 -c300 -d10s http://localhost:3000/\?lat\=45\&long\=\66
+Running 10s test @ http://localhost:3000/?lat=45&long=66
+  12 threads and 300 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    25.06ms   23.87ms 541.76ms   91.17%
+    Req/Sec   437.14    268.63     2.10k    57.79%
+  Latency Distribution
+     50%   20.54ms
+     75%   31.31ms
+     90%   46.78ms
+     99%   96.33ms
+  26011 requests in 10.10s, 4.86MB read
+Requests/sec:   2576.08
+Transfer/sec:    493.08KB
+```
+
+Hyper (currently running on 1 core. Multiply by 4 to get realistic requests/sec)
+```
+➜  rreverse git:(master) ✗ wrk --latency -t12 -c300 -d10s http://localhost:3000/\?lat\=45\&long\=\66
+Running 10s test @ http://localhost:3000/?lat=45&long=66
+  12 threads and 300 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   605.71ms   84.19ms 802.87ms   88.40%
+    Req/Sec    51.79     36.01   202.00     68.43%
+  Latency Distribution
+     50%  610.83ms
+     75%  626.19ms
+     90%  642.71ms
+     99%  785.27ms
+  4757 requests in 10.04s, 0.86MB read
+Requests/sec:    473.70
+Transfer/sec:     87.43KB
 ```
 
 ## Command line search

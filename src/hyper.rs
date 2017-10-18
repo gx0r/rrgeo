@@ -53,12 +53,13 @@ impl Service for ReverseGeocoderServer {
             return futures::future::ok(
                 Response::new()
                     // .with_header(ContentLength(PHRASE.len() as u64))
-                    .with_body("missing da query ")
+                    .with_body("missing  query ")
             )
         }
 
         let data = match parse(&query.unwrap()) {
             Ok(t) => t,
+            // This is not good code.
             Err(e) => panic!("doh")
         };
 
