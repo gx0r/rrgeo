@@ -33,34 +33,33 @@ fn geocoder(ctx: Context) -> Response {
         Some(query) => {
             let data = match parse(&query) {
                 Ok(t) => t,
-                Err(e) => return response::Builder::new().status(StatusCode::BadRequest).into(),
+                Err(e) => return response::Builder::new().status(StatusCode::BadRequest).body("Bad querystring").into(),
             };
 
             let obj = match data.as_object() {
                 Some(t) => t,
-                None => return response::Builder::new().status(StatusCode::BadRequest).into(),
+                None => return response::Builder::new().status(StatusCode::BadRequest).body("No data").into(),
             };
 
             let lat = match obj.get("lat") {
                 Some(t) => t.as_str().unwrap().parse::<f64>().unwrap(),
-                None => return response::Builder::new().status(StatusCode::BadRequest).into(),
+                None => return response::Builder::new().status(StatusCode::BadRequest).body("Missing \"lat\" parameter").into(),
             };
             
             let long = match obj.get("long") {
                 Some(t) => t.as_str().unwrap().parse::<f64>().unwrap(),
-                None => return response::Builder::new().status(StatusCode::BadRequest).into(),
+                None => return response::Builder::new().status(StatusCode::BadRequest).body("Missing \"lat\" parameter").into(),
             };
 
             let start = PreciseTime::now();
             let y = match GEOCODER.search(&[lat, long]) {
                 Some(t) => t,
-                None => return response::Builder::new().status(StatusCode::BadRequest).into(),
+                None => return response::Builder::new().status(StatusCode::InternalServerError).body("Search failure").into(),
             };
             let end = PreciseTime::now();
             println!("{} ms to search", start.to(end).num_milliseconds());
 
             response::Builder::new().body(json::encode(y).unwrap())
-            // Response::with((status::Ok, json::encode(y).unwrap()))
         },
         None => response::Builder::new().status(StatusCode::BadRequest).body("Missing lat/long query\n").into()
     }
