@@ -51,13 +51,13 @@ fn geocoder(ctx: Context) -> Response {
                 None => return response::Builder::new().status(StatusCode::BadRequest).body("Missing \"lat\" parameter").into(),
             };
 
-            let start = PreciseTime::now();
+            // let start = PreciseTime::now();
             let y = match GEOCODER.search(&[lat, long]) {
                 Some(t) => t,
                 None => return response::Builder::new().status(StatusCode::InternalServerError).body("Search failure").into(),
             };
-            let end = PreciseTime::now();
-            println!("{} ms to search", start.to(end).num_milliseconds());
+            // let end = PreciseTime::now();
+            // println!("{} ms to search", start.to(end).num_milliseconds());
 
             response::Builder::new().body(json::encode(y).unwrap())
         },

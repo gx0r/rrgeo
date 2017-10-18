@@ -48,13 +48,13 @@ fn geocoder_middleware(request: &mut Request) -> IronResult<Response> {
                 Some(t) => t.as_str().unwrap().parse::<f64>().unwrap(),
             };
 
-            let start = PreciseTime::now();
+            // let start = PreciseTime::now();
             let y = match GEOCODER.search(&[lat, long]) {
                 Some(t) => t,
                 None => return Ok(Response::with((status::BadRequest, "Geocoder Search Failed"))),
             };
-            let end = PreciseTime::now();
-            println!("{} ms to search", start.to(end).num_milliseconds());
+            // let end = PreciseTime::now();
+            // println!("{} ms to search", start.to(end).num_milliseconds());
 
             Ok(Response::with((status::Ok, json::encode(y).unwrap())))
         }
