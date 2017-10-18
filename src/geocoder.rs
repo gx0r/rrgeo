@@ -1,7 +1,8 @@
-use kdtree::KdTree;
-use kdtree::distance::squared_euclidean;
-use time::PreciseTime;
 extern crate quick_csv;
+extern crate kdtree;
+use self::kdtree::KdTree;
+use self::kdtree::distance::squared_euclidean;
+use time::PreciseTime;
 
 #[derive(Debug, Clone, RustcDecodable, RustcEncodable)]
 pub struct Record {
@@ -80,10 +81,10 @@ pub fn print_record(record: &Record) {
 }
 
 mod tests {
-    use super::*;
-
+    
     #[test]
     fn it_works() {
+        use super::*;
         let loc = Locations::from_file();
         let geocoder = ReverseGeocoder::new(&loc);
         let y = geocoder.search(&[44.962786, -93.344722]);
