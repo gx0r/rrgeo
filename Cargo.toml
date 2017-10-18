@@ -16,12 +16,12 @@ futures = "*"
 shio = "0.2.0"
 
 [[bin]]
-name = "web"
-path = "src/webserver.rs"
-
-[[bin]]
 name = "cmd"
 path = "src/cmdline.rs"
+
+[[bin]]
+name = "iron"
+path = "src/iron.rs"
 
 [[bin]]
 name = "hyper"
