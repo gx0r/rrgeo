@@ -1,5 +1,5 @@
-#[macro_use] extern crate lazy_static;
-extern crate kdtree;
+#[macro_use]
+extern crate lazy_static;
 extern crate rustc_serialize;
 extern crate time;
 extern crate iron;
@@ -23,42 +23,42 @@ lazy_static! {
 
 fn geocoder_middleware(request: &mut Request) -> IronResult<Response> {
     match request.url.query() {
+        None => Ok(Response::with((status::BadRequest, "Need a lat/long"))),
         Some(query) => {
             // println!("{:?}", query);
             let data = match parse(&query) {
-                Ok(t) => t,
                 Err(e) => return Ok(Response::with((status::BadRequest, e.message))),
+                Ok(t) => t,
             };
 
             // println!("{:?}", data);
             // println!("{:?}", data.is_object());
 
             let obj = match data.as_object() {
-                None => return Ok(Response::with((status::BadRequest, "No object"))),
                 Some(t) => t,
+                None => return Ok(Response::with((status::BadRequest, "No object"))),
             };
 
             let lat = match obj.get("lat") {
-                None => return Ok(Response::with((status::BadRequest, "Missing lat"))),
                 Some(t) => t.as_str().unwrap().parse::<f64>().unwrap(),
+                None => return Ok(Response::with((status::BadRequest, "Missing lat"))),
             };
             
             let long = match obj.get("long") {
-                None => return Ok(Response::with((status::BadRequest, "Missing long"))),
                 Some(t) => t.as_str().unwrap().parse::<f64>().unwrap(),
+                None => return Ok(Response::with((status::BadRequest, "Missing long"))),
             };
 
             // let start = PreciseTime::now();
             let y = match GEOCODER.search(&[lat, long]) {
-                Some(t) => t,
                 None => return Ok(Response::with((status::BadRequest, "Geocoder Search Failed"))),
+                Some(t) => t,
             };
             // let end = PreciseTime::now();
             // println!("{} ms to search", start.to(end).num_milliseconds());
 
             Ok(Response::with((status::Ok, json::encode(y).unwrap())))
-        }
-        None => Ok(Response::with((status::BadRequest, "Need a lat/long"))),
+        },
     }
 }
 
