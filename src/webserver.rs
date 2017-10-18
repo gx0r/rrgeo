@@ -22,7 +22,7 @@ lazy_static! {
 }
 
 fn geocoder_middleware(request: &mut Request) -> IronResult<Response> {
-    match request.url.query().clone() {
+    match request.url.query() {
         Some(query) => {
             // println!("{:?}", query);
             let data = match parse(&query) {
