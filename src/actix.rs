@@ -4,44 +4,29 @@ extern crate rustc_serialize;
 extern crate time;
 extern crate queryst;
 extern crate actix_web;
-use actix_web::{http, server, App, Path, Responder, HttpRequest, HttpResponse};
+extern crate serde;
+#[macro_use]
+extern crate serde_derive;
+use actix_web::{http, server, App, Query, Responder, HttpRequest, HttpResponse};
 
 mod geocoder;
 use geocoder::Locations;
 use geocoder::ReverseGeocoder;
 use rustc_serialize::json;
-use time::PreciseTime;
-use queryst::parse;
-
 
 lazy_static! {
     static ref LOCATIONS: Locations = Locations::from_file();
     static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
 }
+
 #[derive(Deserialize)]
 struct LatLong {
     lat: f64,
     long: f64,
 }
 
-
-fn index(req: HttpRequest) -> impl Responder {
-
-    let params = req.query();
-    let lat = match params.get("lat") {
-        Some(x) => x,
-        None => return HttpResponse::BadRequest().body("missing lat param"),
-    };
-
-    let long = match params.get("long") {
-        Some(x) => x,
-        None => return HttpResponse::BadRequest().body("missing long param"),
-    };
-
-    let lat_n = lat.parse::<f64>().unwrap_or(0.0);
-    let long_n = long.parse::<f64>().unwrap_or(0.0);
-
-    let y = match GEOCODER.search(&[lat_n, long_n]) {
+fn index(latLong: Query<LatLong>) -> impl Responder {
+    let y = match GEOCODER.search(&[latLong.lat, latLong.long]) {
         None => return HttpResponse::InternalServerError().body("Couldn't match"),
         Some(t) => t,
     };
@@ -53,7 +38,6 @@ fn index(req: HttpRequest) -> impl Responder {
         Err(_) => HttpResponse::InternalServerError().body("Couldn't encode")
     }    
 }
-
 
 fn main() {
     server::new(
