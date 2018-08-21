@@ -4,17 +4,17 @@ version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-kdtree = "^0.4"
+kdtree = "^0.4.0"
 quick-csv = "^0.1.6"
-rustc-serialize = "^0.3.22"
-time = "^0.1.36"
-queryst = "^1.0.1"
-lazy_static = "^1.0.0"
-futures = "0.1.20"
-actix-web = "0.4"
-hyper = "^0.11"
+rustc-serialize = "^0.3.24"
+time = "^0.1.40"
+queryst = "^2.0.0"
+lazy_static = "^1.1.0"
+futures = "0.1.23"
+actix-web = "0.7.3"
+hyper = "^0.12.8"
 iron = "^0.6.0"
-shio = "^0.2.0"
+shio = "^0.3.0"
 
 [[bin]]
 name = "cmd"
