@@ -7,12 +7,39 @@ extern crate actix_web;
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
-use actix_web::{http, server, App, Query, Responder, HttpRequest, HttpResponse};
+use actix_web::{http, server, App, Query, Responder, Json, Result, HttpRequest, HttpResponse, error};
 
 mod geocoder;
-use geocoder::Locations;
-use geocoder::ReverseGeocoder;
-use rustc_serialize::json;
+use geocoder::{
+    Locations,
+    ReverseGeocoder,
+    Record,
+};
+
+#[macro_use] extern crate failure;
+
+#[derive(Fail, Debug)]
+enum MyError {
+   #[fail(display="internal error")]
+   InternalError,
+   #[fail(display="bad request")]
+   BadClientData,
+   #[fail(display="timeout")]
+   Timeout,
+}
+
+impl error::ResponseError for MyError {
+    fn error_response(&self) -> HttpResponse {
+       match *self {
+          MyError::InternalError => HttpResponse::new(
+              http::StatusCode::INTERNAL_SERVER_ERROR),
+          MyError::BadClientData => HttpResponse::new(
+              http::StatusCode::BAD_REQUEST),
+          MyError::Timeout => HttpResponse::new(
+              http::StatusCode::GATEWAY_TIMEOUT),
+       }
+    }
+}
 
 lazy_static! {
     static ref LOCATIONS: Locations = Locations::from_file();
@@ -25,18 +52,15 @@ struct LatLong {
     long: f64,
 }
 
-fn index(latLong: Query<LatLong>) -> impl Responder {
-    let y = match GEOCODER.search(&[latLong.lat, latLong.long]) {
-        None => return HttpResponse::InternalServerError().body("Couldn't match"),
-        Some(t) => t,
-    };
+fn index(lat_long: Query<LatLong>) -> Result<Json<Record>, MyError> {
+    let res = GEOCODER.search(&[lat_long.lat, lat_long.long]);
 
-    match json::encode(y) {
-        Ok(encoded) => HttpResponse::Ok()
-                .content_type("application/json")
-                .body(encoded),   
-        Err(_) => HttpResponse::InternalServerError().body("Couldn't encode")
-    }    
+    match res {
+        Ok(res) => {
+            Ok(Json( (**((*res.get(0).unwrap()).1)).clone() ))
+        },
+        Error => Err(MyError::BadClientData),
+    }
 }
 
 fn main() {

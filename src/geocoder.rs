@@ -1,10 +1,13 @@
 extern crate quick_csv;
 extern crate kdtree;
-use self::kdtree::KdTree;
-use self::kdtree::distance::squared_euclidean;
+use self::kdtree::{
+    KdTree,
+    ErrorKind,
+    distance::squared_euclidean,
+};
 use time::PreciseTime;
 
-#[derive(Debug, Clone, RustcDecodable, RustcEncodable)]
+#[derive(Debug, Clone, RustcDecodable, RustcEncodable, Serialize, Deserialize)]
 pub struct Record {
     pub lat: f64,
     pub lon: f64,
@@ -59,13 +62,8 @@ impl<'a> ReverseGeocoder<'a> {
         println!("{} ms to build the KdTree", start.to(end).num_milliseconds());
     }
 
-    pub fn search(&'a self, loc: &[f64; 2]) -> Option<&'a Record> {
-        let nearest = self.tree.nearest(loc, 1, &squared_euclidean).unwrap();
-        if nearest.is_empty() {
-            None
-        } else {
-            Some(&nearest[0].1)
-        }
+    pub fn search(&self, loc: &[f64; 2]) -> Result<Vec<(f64, &&Record)>, ErrorKind> {
+        self.tree.nearest(loc, 1, &squared_euclidean)
     }
 }
 
