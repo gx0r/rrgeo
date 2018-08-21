@@ -4,7 +4,7 @@ extern crate rustc_serialize;
 extern crate time;
 extern crate queryst;
 extern crate actix_web;
-use actix_web::*;
+use actix_web::{http, server, App, Path, Responder, HttpRequest, HttpResponse};
 
 mod geocoder;
 use geocoder::Locations;
@@ -18,29 +18,47 @@ lazy_static! {
     static ref LOCATIONS: Locations = Locations::from_file();
     static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
 }
+#[derive(Deserialize)]
+struct LatLong {
+    lat: f64,
+    long: f64,
+}
 
-fn index(req: HttpRequest) -> String  {
+
+fn index(req: HttpRequest) -> impl Responder {
 
     let params = req.query();
-    let lat = params.get("lat").unwrap_or("0");
-    let long = params.get("long").unwrap_or("0");
+    let lat = match params.get("lat") {
+        Some(x) => x,
+        None => return HttpResponse::BadRequest().body("missing lat param"),
+    };
 
-    let latN = lat.parse::<f64>().unwrap_or(0.0);
-    let longN = long.parse::<f64>().unwrap_or(0.0);
+    let long = match params.get("long") {
+        Some(x) => x,
+        None => return HttpResponse::BadRequest().body("missing long param"),
+    };
 
-    let y = match GEOCODER.search(&[latN, longN]) {
-        None => return "Search failure".to_string(),
+    let lat_n = lat.parse::<f64>().unwrap_or(0.0);
+    let long_n = long.parse::<f64>().unwrap_or(0.0);
+
+    let y = match GEOCODER.search(&[lat_n, long_n]) {
+        None => return HttpResponse::InternalServerError().body("Couldn't match"),
         Some(t) => t,
     };
 
-    json::encode(y).unwrap_or("{}".to_string())
+    match json::encode(y) {
+        Ok(encoded) => HttpResponse::Ok()
+                .content_type("application/json")
+                .body(encoded),   
+        Err(_) => HttpResponse::InternalServerError().body("Couldn't encode")
+    }    
 }
 
 
 fn main() {
-    HttpServer::new(
-        || Application::new()
-            .resource("/", |r| r.f(index)))
+    server::new(
+        || App::new()
+        .route("/", http::Method::GET, index))
         .bind("127.0.0.1:3000").expect("Can not bind to 127.0.0.1:3000")
         .run();
 }
