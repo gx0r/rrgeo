@@ -1,11 +1,14 @@
 [package]
-name = "hyper-reverse-geocoder"
+name = "reverse-geocoder-hyper"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-actix-web = "0.7.8"
-geocoder = { path = "../geocoder" }
+reversegeocoder = { path = "../geocoder" }
+lazy_static = "1.1.0"
+time = "0.1.40"
+queryst = "2.0.0"
+hyper = "0.12.11"
 
 [[bin]]
 name = "hyper"

@@ -1,12 +1,17 @@
+#![feature(rustc_private)]
+
 #[macro_use]
 extern crate lazy_static;
 extern crate rustc_serialize;
 extern crate time;
 extern crate iron;
 extern crate queryst;
-mod geocoder;
-use geocoder::Locations;
-use geocoder::ReverseGeocoder;
+extern crate reversegeocoder;
+
+use reversegeocoder::{
+    Locations,
+    ReverseGeocoder,
+};
 use iron::prelude::Request;
 use iron::prelude::Response;
 use iron::prelude::IronResult;
