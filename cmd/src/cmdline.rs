@@ -1,12 +1,8 @@
-#![feature(rustc_private)]
-
-extern crate rustc_serialize;
 extern crate time;
 extern crate reverse_geocoder;
 
 use reverse_geocoder::{
     Locations,
-    Record,
     ReverseGeocoder,
     print_record,
 };

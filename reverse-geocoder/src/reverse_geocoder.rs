@@ -1,5 +1,3 @@
-#![feature(rustc_private)]
-
 extern crate rustc_serialize;
 #[macro_use]
 extern crate serde_derive;
