@@ -1,0 +1,18 @@
+[package]
+name = "reverse-geocoder-actix"
+version = "0.1.0"
+authors = ["Grant Miner <xxgsoftware@gmail.com>"]
+
+[dependencies]
+actix-web = "0.7.8"
+reversegeocoder = { path = "../geocoder" }
+lazy_static = "1.1.0"
+time = "0.1.40"
+queryst = "2.0.0"
+serde = "1.0.79"
+serde_derive = "1.0.79"
+failure = "0.1.2"
+
+[[bin]]
+name = "reverse-geocoder-actix"
+path = "src/actix.rs"

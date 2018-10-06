@@ -1,3 +1,6 @@
+#![feature(rustc_private)]
+
+extern crate reversegeocoder;
 #[macro_use]
 extern crate lazy_static;
 extern crate rustc_serialize;
@@ -9,8 +12,7 @@ extern crate serde;
 extern crate serde_derive;
 use actix_web::{http, server, App, Query, Responder, Json, Result, HttpRequest, HttpResponse, error};
 
-mod geocoder;
-use geocoder::{
+use reversegeocoder::{
     Locations,
     ReverseGeocoder,
     Record,

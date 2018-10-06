@@ -1,3 +1,8 @@
+#[macro_use]
+extern crate rustc_serialize;
+#[macro_use]
+extern crate serde_derive;
+extern crate time;
 extern crate quick_csv;
 extern crate kdtree;
 use self::kdtree::{
