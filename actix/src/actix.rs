@@ -1,7 +1,7 @@
 #![feature(rustc_private)]
 #[macro_use]
 extern crate failure;
-extern crate reversegeocoder;
+extern crate reverse_geocoder;
 #[macro_use]
 extern crate lazy_static;
 extern crate actix_web;
@@ -14,7 +14,11 @@ extern crate serde_derive;
 
 use actix_web::{error, http, server, App, HttpResponse, Json, Query, Result};
 
-use reversegeocoder::{Locations, Record, ReverseGeocoder};
+use reverse_geocoder::{
+    Locations,
+    Record,
+    ReverseGeocoder,
+};
 
 #[derive(Fail, Debug)]
 enum MyError {
