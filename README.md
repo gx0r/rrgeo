@@ -12,8 +12,11 @@ Currently implemented on [Iron](https://github.com/iron/iron) and [Shio](https:/
 Run as:
 
 ```
+cargo run -p reverse-geocoder-cmd  --release
 cargo run -p reverse-geocoder-actix --release
 cargo run -p reverse-geocoder-shio  --release 
+cargo run -p reverse-geocoder-hyper  --release 
+cargo run -p reverse-geocoder-iron  --release 
 
 http://localhost:3000/?lat=55&long=66
 ```
