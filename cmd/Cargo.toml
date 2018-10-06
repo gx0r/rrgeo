@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-reversegeocoder = { path = "../geocoder" }
+reverse_geocoder = { path = "../reverse-geocoder" }
 time = "0.1.40"
 
 [[bin]]

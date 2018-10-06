@@ -7,9 +7,9 @@ extern crate time;
 extern crate queryst;
 extern crate hyper;
 extern crate futures;
-extern crate reversegeocoder;
+extern crate reverse_geocoder;
 
-use reversegeocoder::{
+use reverse_geocoder::{
     Locations,
     ReverseGeocoder,
 };

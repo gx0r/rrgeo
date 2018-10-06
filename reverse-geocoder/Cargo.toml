@@ -1,5 +1,5 @@
 [package]
-name = "reversegeocoder"
+name = "reverse_geocoder"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
@@ -13,5 +13,5 @@ serde = "1.0.79"
 serde_derive = "1.0.79"
 
 [lib]
-name = "reversegeocoder"
-path = "src/geocoder.rs"
+name = "reverse_geocoder"
+path = "src/reverse_geocoder.rs"

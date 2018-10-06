@@ -3,7 +3,7 @@
 members = [
     "actix",
     "cmd",
-    "geocoder",
+    "reverse-geocoder",
     # "hyper",
     # "iron",
     # "shio",

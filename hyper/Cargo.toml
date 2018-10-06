@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-reversegeocoder = { path = "../geocoder" }
+reverse_geocoder = { path = "../reverse-geocoder" }
 lazy_static = "1.1.0"
 time = "0.1.40"
 queryst = "2.0.0"

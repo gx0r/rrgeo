@@ -6,9 +6,9 @@ extern crate shio;
 extern crate rustc_serialize;
 extern crate time;
 extern crate queryst;
-extern crate reversegeocoder;
+extern crate reverse_geocoder;
 
-use reversegeocoder::{
+use reverse_geocoder::{
     Locations,
     ReverseGeocoder,
 };
