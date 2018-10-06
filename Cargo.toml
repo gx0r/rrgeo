@@ -3,10 +3,7 @@
 members = [
     "actix",
     "geocoder",
+    "shio",
+    # "hyper",
+    # "iron",
 ]
-
-# [dependencies]
-# rustc-serialize = "0.3.24"
-# serde = "1.0.79"
-# serde_derive = "1.0.79"
-# failure = "0.1.2"

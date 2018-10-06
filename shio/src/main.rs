@@ -1,13 +1,18 @@
+#![feature(rustc_private)]
+
 #[macro_use]
 extern crate lazy_static;
 extern crate shio;
 extern crate rustc_serialize;
 extern crate time;
 extern crate queryst;
-mod geocoder;
-use geocoder::Locations;
-use geocoder::ReverseGeocoder;
-use rustc_serialize::json;
+extern crate reversegeocoder;
+
+use reversegeocoder::{
+    Locations,
+    ReverseGeocoder,
+};
+use self::rustc_serialize::json;
 use time::PreciseTime;
 use queryst::parse;
 use shio::prelude::*;

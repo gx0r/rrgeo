@@ -1,13 +1,11 @@
 [package]
-name = "hyper-reverse-geocoder"
+name = "iron-reverse-geocoder"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-actix-web = "0.7.8"
 geocoder = { path = "../geocoder" }
 
 [[bin]]
-name = "hyper"
-path = "src/hyper.rs"
-hyper = "0.12.11"
+name = "iron"
+path = "src/iron.rs"
