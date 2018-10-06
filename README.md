@@ -61,7 +61,7 @@ Below we have comparisons between the Rust, Python and Node.js versions.
 |--------------|------|--------|
 | Load CSV     | 61ms | 1221ms |
 | Build KdTree | 4ms  | 805ms  |
-| Search       | 2ms  | 0.10ms |
+| Search       | 1.5ms  | 0.5ms |
 
 Most of the performance differences appear to be in time taken to load the CSV file and create the k-d tree, but not searching the tree. Searching time resembles algorithmic complexity of [k-d tree](https://en.wikipedia.org/wiki/K-d_tree). Python version is partly implemented in C++ meaning it is not a purely Python implementation. (It might be interesting to see how a pure Python version performs.) The Node.js version is pure JavaScript, as in, not using C add-ons.
 
