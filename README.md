@@ -13,6 +13,8 @@ Run as:
 
 ```
 cargo run -p reverse-geocoder-actix --release
+cargo run -p reverse-geocoder-shio  --release 
+
 http://localhost:3000/?lat=55&long=66
 ```
 

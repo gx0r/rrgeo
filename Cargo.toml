@@ -4,6 +4,6 @@ members = [
     "actix",
     "geocoder",
     "shio",
-    # "hyper",
-    # "iron",
+    "hyper",
+    "iron",
 ]
