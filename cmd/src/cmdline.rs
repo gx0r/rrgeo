@@ -28,5 +28,5 @@ fn main() {
 
     let y = geocoder.search(&[lat, long]).expect("Nothing found.");
 
-    print_record(y);
+    print_record(y.get(0).unwrap().1);
 }
