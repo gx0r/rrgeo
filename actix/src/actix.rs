@@ -1,4 +1,3 @@
-#![feature(rustc_private)]
 #[macro_use]
 extern crate failure;
 extern crate reverse_geocoder;
@@ -6,7 +5,6 @@ extern crate reverse_geocoder;
 extern crate lazy_static;
 extern crate actix_web;
 extern crate queryst;
-extern crate rustc_serialize;
 extern crate serde;
 extern crate time;
 #[macro_use]
