@@ -7,14 +7,22 @@ use reverse_geocoder::{
     print_record,
 };
 
-use std::env;
-use std::process::exit;
+use std::{
+    env,
+    process::{
+        exit,
+    },
+};
+
+use time::{
+    PreciseTime,
+};
 
 fn main() {
     let args: Vec<_> = env::args().collect();
 
     if args.len() < 3 {
-        print!("Usage: rreverse lat long\n e.g., rreverse 44.962786 -93.344722\n\n");
+        eprint!("Usage: rreverse lat long\n e.g., rreverse 44.962786 -93.344722\n\n");
         exit(1);
     }
 
@@ -24,7 +32,10 @@ fn main() {
     let loc = Locations::from_file();
     let geocoder = ReverseGeocoder::new(&loc);
 
+    let start = PreciseTime::now();
     let y = geocoder.search(&[lat, long]).expect("Nothing found.");
+    let end = PreciseTime::now();
+    eprintln!("{} ms to search", start.to(end).num_milliseconds());
 
     print_record(y.get(0).unwrap().1);
 }
