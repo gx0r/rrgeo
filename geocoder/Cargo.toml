@@ -1,0 +1,43 @@
+[package]
+name = "reversegeocoder"
+version = "0.1.0"
+authors = ["Grant Miner <xxgsoftware@gmail.com>"]
+
+[dependencies]
+kdtree = "0.5.1"
+quick-csv = "0.1.6"
+rustc-serialize = "0.3.24"
+time = "0.1.40"
+# queryst = "2.0.0"
+#lazy_static = "1.1.0"
+futures = "0.1.24"
+# iron = "0.6.0"
+# shio = "0.3.0"
+serde = "1.0.79"
+serde_derive = "1.0.79"
+# failure = "0.1.2"
+# serde_derive = "1.0.79"
+
+[lib]
+name = "reversegeocoder"
+path = "src/geocoder.rs"
+
+# [[bin]]
+# name = "cmd"
+# path = "src/cmdline.rs"
+
+# [[bin]]
+# name = "iron"
+# path = "src/iron.rs"
+
+# [[bin]]
+# name = "hyper"
+# path = "src/hyper.rs"
+
+# [[bin]]
+# name = "shio"
+# path = "src/shio.rs"
+
+# [[bin]]
+# name = "actix"
+# path = "src/actix.rs"

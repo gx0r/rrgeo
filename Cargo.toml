@@ -1,40 +1,12 @@
-[package]
-name = "rreverse"
-version = "0.1.0"
-authors = ["Grant Miner <xxgsoftware@gmail.com>"]
+[workspace]
 
-[dependencies]
-kdtree = "0.5.1"
-quick-csv = "0.1.6"
-rustc-serialize = "0.3.24"
-time = "0.1.40"
-queryst = "2.0.0"
-lazy_static = "1.1.0"
-futures = "0.1.24"
-actix-web = "0.7.8"
-hyper = "0.12.11"
-iron = "0.6.0"
-shio = "0.3.0"
-serde = "1.0.79"
-serde_derive = "1.0.79"
-failure = "0.1.2"
+members = [
+    "actix",
+    "geocoder",
+]
 
-[[bin]]
-name = "cmd"
-path = "src/cmdline.rs"
-
-[[bin]]
-name = "iron"
-path = "src/iron.rs"
-
-[[bin]]
-name = "hyper"
-path = "src/hyper.rs"
-
-[[bin]]
-name = "shio"
-path = "src/shio.rs"
-
-[[bin]]
-name = "actix"
-path = "src/actix.rs"
+# [dependencies]
+# rustc-serialize = "0.3.24"
+# serde = "1.0.79"
+# serde_derive = "1.0.79"
+# failure = "0.1.2"
