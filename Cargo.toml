@@ -4,7 +4,7 @@ members = [
     "actix",
     "cmd",
     "geocoder",
-    "hyper",
-    "iron",
-    "shio",
+    # "hyper",
+    # "iron",
+    # "shio",
 ]
