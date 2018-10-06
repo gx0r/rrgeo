@@ -52,9 +52,39 @@ fn index(lat_long: Query<LatLong>) -> Result<Json<Record>, MyError> {
     }
 }
 
+fn create_app() -> App {
+    App::new()
+        .route("/", http::Method::GET, index)
+}
+
+
 fn main() {
-    server::new(|| App::new().route("/", http::Method::GET, index))
+    server::new(|| create_app())
         .bind("127.0.0.1:3000")
         .expect("Can not bind to 127.0.0.1:3000")
         .run();
+}
+
+
+#[cfg(test)]
+mod tests {
+    extern crate bytes;
+    use self::bytes::Bytes;
+
+    use actix_web::{http, HttpMessage};
+    use super::create_app;
+
+    #[test]
+    fn it_serves_results_on_actix() {
+        use actix_web::test::TestServer;
+
+        let mut srv = TestServer::with_factory(create_app);
+
+        let request = srv.client(http::Method::GET, "/?lat=44.962786&long=-93.344722").finish().unwrap();
+        let response = srv.execute(request.send()).unwrap();
+        assert!(response.status().is_success());
+
+        let bytes = srv.execute(response.body()).unwrap();
+        assert_eq!(bytes, Bytes::from_static(b"{\"lat\":44.9483,\"lon\":-93.34801,\"name\":\"Saint Louis Park\",\"admin1\":\"Minnesota\",\"admin2\":\"Hennepin County\",\"admin3\":\"US\"}"));
+    }
 }

@@ -890,6 +890,7 @@ name = "reverse-geocoder-actix"
 version = "0.1.0"
 dependencies = [
  "actix-web 0.7.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bytes 0.4.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "failure 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "queryst 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
