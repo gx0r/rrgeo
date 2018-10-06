@@ -21,7 +21,22 @@ http://localhost:3000/?lat=55&long=66
 Actix:
 
 ```
-
+➜  rreverse git:(master) ✗ wrk --latency -t12 -c300 -d10s http://localhost:3000/\?lat\=45\&long\=\66
+Requests/sec:   3618.82
+Transfer/sec:    713.87KB
+Running 10s test @ http://localhost:3000/?lat=45&long=66
+  12 threads and 300 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    82.49ms   15.37ms 263.86ms   88.64%
+    Req/Sec   303.99     47.14   580.00     71.39%
+  Latency Distribution
+     50%   78.64ms
+     75%   85.52ms
+     90%   97.52ms
+     99%  145.04ms
+  36549 requests in 10.09s, 7.04MB read
+Requests/sec:   3620.74
+Transfer/sec:    714.25KB
 ```
 
 Shio:
