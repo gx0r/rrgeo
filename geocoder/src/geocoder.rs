@@ -1,4 +1,5 @@
-#[macro_use]
+#![feature(rustc_private)]
+
 extern crate rustc_serialize;
 #[macro_use]
 extern crate serde_derive;
@@ -91,17 +92,17 @@ mod tests {
         let loc = Locations::from_file();
         let geocoder = ReverseGeocoder::new(&loc);
         let y = geocoder.search(&[44.962786, -93.344722]);
-        assert_eq!(y.is_some(), true);
+        assert_eq!(y.is_ok(), true);
         let slp = y.unwrap();
 
-        assert_eq!(slp.name, "Saint Louis Park");
+        assert_eq!(slp.get(0).unwrap().1.name, "Saint Louis Park");
 
         // [44.894519, -93.308702] is 60 St W @ Penn Ave S, Minneapolis, Minnesota; however, this is physically closer to Richfield
         let mpls = geocoder.search(&[44.894519, -93.308702]).unwrap();
-        assert_eq!(mpls.name, "Richfield");
+        assert_eq!(mpls.get(0).unwrap().1.name, "Richfield");
 
         // [44.887055, -93.334204] is HWY 62 and Valley View Road, whish is in Edina
         let edina = geocoder.search(&[44.887055, -93.334204]).unwrap();
-        assert_eq!(edina.name, "Edina");
+        assert_eq!(edina.get(0).unwrap().1.name, "Edina");
     }
 }
