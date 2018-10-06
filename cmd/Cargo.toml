@@ -1,17 +1,12 @@
 [package]
-name = "reverse-geocoder-hyper"
+name = "reverse-geocoder-cmd"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
 reversegeocoder = { path = "../geocoder" }
-lazy_static = "1.1.0"
 time = "0.1.40"
-queryst = "2.0.0"
-hyper = "0.11"
-futures = "0.1.24"
 
 [[bin]]
-name = "hyper"
-path = "src/hyper.rs"
-hyper = "0.12.11"
+name = "reverse-geocoder-cmd"
+path = "src/cmdline.rs"

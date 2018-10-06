@@ -2,8 +2,9 @@
 
 members = [
     "actix",
+    "cmd",
     "geocoder",
-    "shio",
     "hyper",
     "iron",
+    "shio",
 ]

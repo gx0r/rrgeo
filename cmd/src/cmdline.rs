@@ -1,9 +1,14 @@
+#![feature(rustc_private)]
+
 extern crate rustc_serialize;
 extern crate time;
-mod geocoder;
-use geocoder::Locations;
-use geocoder::ReverseGeocoder;
-use geocoder::print_record;
+extern crate reversegeocoder;
+use reversegeocoder::{
+    Locations,
+    ReverseGeocoder,
+    print_record,
+};
+
 use std::env;
 use std::process::exit;
 
