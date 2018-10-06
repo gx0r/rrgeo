@@ -13,6 +13,9 @@ serde = "1.0.79"
 serde_derive = "1.0.79"
 failure = "0.1.2"
 
+[dev-dependencies]
+bytes = "0.4.10"
+
 [[bin]]
 name = "reverse-geocoder-actix"
 path = "src/actix.rs"

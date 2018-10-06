@@ -82,10 +82,11 @@ pub fn print_record(record: &Record) {
              record.admin3);
 }
 
+#[cfg(test)]
 mod tests {
     
     #[test]
-    fn it_works() {
+    fn it_finds_3_places() {
         use super::*;
         let loc = Locations::from_file();
         let geocoder = ReverseGeocoder::new(&loc);
