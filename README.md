@@ -29,7 +29,7 @@ Example usage:
 cargo run -p reverse-geocoder-actix --release
 ```
 
-Navigate to [the local web server](http://localhost:3000/?lat=55&long=66).
+Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
 
 ## Benchmarks 
 
