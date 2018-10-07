@@ -1,15 +1,19 @@
 extern crate rustc_serialize;
-#[macro_use]
-extern crate serde_derive;
 extern crate time;
 extern crate quick_csv;
 extern crate kdtree;
+#[macro_use] extern crate failure;
+#[macro_use] extern crate serde_derive;
+
 use self::kdtree::{
     KdTree,
     ErrorKind,
     distance::squared_euclidean,
 };
 use time::PreciseTime;
+use std::path::PathBuf;
+
+use failure::Error;
 
 #[derive(Debug, Clone, RustcDecodable, RustcEncodable, Serialize, Deserialize)]
 pub struct Record {
@@ -26,14 +30,31 @@ pub struct Locations {
 }
 
 impl Locations {
-    pub fn from_file() -> Locations {
-        let start = PreciseTime::now();
+    pub fn from_memory() -> Locations {
         let mut records = Vec::new();
-
-        let reader = quick_csv::Csv::from_file("cities.csv").unwrap().has_header(true);
+        let my_str = include_str!("../../cities.csv");
+        let reader = quick_csv::Csv::from_string(my_str).has_header(true);
 
         for read_record in reader {
             let record: Record = read_record.unwrap().decode().unwrap();
+            records.push(([record.lat, record.lon], record));
+        }
+        Locations { records: records }
+    }
+
+    pub fn from_path(path: Option<PathBuf>) -> Result<Locations, Error> {
+        let start = PreciseTime::now();
+        let mut records = Vec::new();
+
+        let path = match path {
+            Some(path) => path,
+            None => PathBuf::from("cities.csv"),
+        };
+
+        let reader = quick_csv::Csv::from_file(path).unwrap().has_header(true);
+
+        for read_record in reader {
+            let record: Record = read_record?.decode()?;
             records.push(([record.lat, record.lon], record));
         }
 
@@ -41,7 +62,7 @@ impl Locations {
 
         println!("{} ms to load cities.csv", start.to(end).num_milliseconds());
 
-        Locations { records: records }
+        Ok(Locations { records: records })
     }
 }
 
@@ -88,7 +109,7 @@ mod tests {
     #[test]
     fn it_finds_3_places() {
         use super::*;
-        let loc = Locations::from_file();
+        let loc = Locations::from_memory();
         let geocoder = ReverseGeocoder::new(&loc);
         let y = geocoder.search(&[44.962786, -93.344722]);
         assert_eq!(y.is_ok(), true);
