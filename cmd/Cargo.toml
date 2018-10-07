@@ -5,7 +5,7 @@ authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
 reverse_geocoder = { path = "../reverse-geocoder" }
-time = "0.1.40"
+time = "^0.1"
 
 [[bin]]
 name = "reverse-geocoder-cmd"

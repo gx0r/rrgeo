@@ -4,13 +4,13 @@ version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-kdtree = "0.5.1"
-quick-csv = "0.1.6"
-rustc-serialize = "0.3.24"
-time = "0.1.40"
-serde = "1.0.79"
-serde_derive = "1.0.79"
-failure = "0.1.2"
+kdtree = "^0.5"
+quick-csv = "^0.1"
+rustc-serialize = "^0.3"
+time = "^0.1"
+serde = "^1.0"
+serde_derive = "^1.0"
+failure = "^0.1"
 
 [lib]
 name = "reverse_geocoder"
