@@ -2,10 +2,11 @@
 
 # Rust Reverse Geocoder
 A fast, offline reverse geocoder in Rust, inspired by [one written in Python](https://github.com/thampiman/reverse-geocoder).
+Given a latitude and longitude, this program returns the geographically closest city (using the data from the included `cities.csv` file).
 
-Currently implemented on [Actix](https://actix.rs/) and as a command-line utility. Makes use of [Cargo workspaces](https://doc.rust-lang.org/book/second-edition/ch14-03-cargo-workspaces.html).
+This program is implemented as a library, an [Actix](https://actix.rs/) REST API, an [Iron](https://github.com/iron/iron) REST API, and as a command-line utility, thanks to [Cargo workspaces](https://doc.rust-lang.org/book/second-edition/ch14-03-cargo-workspaces.html).
 
-(Previously implemented on [Iron](https://github.com/iron/iron), [Shio](https://github.com/mehcode/shio-rs), and [Hyper](https://github.com/hyperium/hyper) but needs work to run on those libraries again.)
+(Previously implemented on [Shio](https://github.com/mehcode/shio-rs) and [Hyper](https://github.com/hyperium/hyper) HTTP libraries. Needs work to run on those libraries again.)
 
 # Usage
 
@@ -35,23 +36,42 @@ Navigate to [the local web server](http://localhost:3000/?lat=55&long=66).
 Actix:
 
 ```
-➜  rreverse git:(master) ✗ wrk --latency -t12 -c300 -d10s http://localhost:3000/\?lat\=45\&long\=\66
-Requests/sec:   3618.82
-Transfer/sec:    713.87KB
+> wrk --latency -t12 -c300 -d10s http://localhost:3000/\?lat\=45\&long\=\66
 Running 10s test @ http://localhost:3000/?lat=45&long=66
   12 threads and 300 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    82.49ms   15.37ms 263.86ms   88.64%
-    Req/Sec   303.99     47.14   580.00     71.39%
+    Latency    72.26ms    5.13ms 147.29ms   97.72%
+    Req/Sec   346.16     41.61   696.00     71.05%
   Latency Distribution
-     50%   78.64ms
-     75%   85.52ms
-     90%   97.52ms
-     99%  145.04ms
-  36549 requests in 10.09s, 7.04MB read
-Requests/sec:   3620.74
-Transfer/sec:    714.25KB
+     50%   73.14ms
+     75%   73.30ms
+     90%   73.65ms
+     99%   77.40ms
+  41492 requests in 10.10s, 7.99MB read
+Requests/sec:   4108.98
+Transfer/sec:    810.56KB
+
 ```
+
+Iron:
+
+```
+> wrk --latency -t12 -c300 -d10s http://localhost:3000/\?lat\=45\&long\=\66
+Running 10s test @ http://localhost:3000/?lat=45&long=66
+  12 threads and 300 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    18.31ms    9.55ms  96.31ms   68.82%
+    Req/Sec   501.05    329.71     1.17k    53.82%
+  Latency Distribution
+     50%   16.89ms
+     75%   22.91ms
+     90%   31.18ms
+     99%   45.23ms
+  35232 requests in 10.08s, 6.59MB read
+Requests/sec:   3493.90
+Transfer/sec:    668.75KB
+```
+
 
 # Performance
 
