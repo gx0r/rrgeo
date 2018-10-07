@@ -4,17 +4,17 @@ version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-actix-web = "0.7.8"
+actix-web = "^0.7"
 reverse_geocoder = { path = "../reverse-geocoder" }
-lazy_static = "1.1.0"
-time = "0.1.40"
-queryst = "2.0.0"
-serde = "1.0.79"
-serde_derive = "1.0.79"
-failure = "0.1.2"
+lazy_static = "^1.1"
+time = "^0.1"
+queryst = "^2.0"
+serde = "^1.0"
+serde_derive = "^1.0"
+failure = "^0.1"
 
 [dev-dependencies]
-bytes = "0.4.10"
+bytes = "^0.4"
 
 [[bin]]
 name = "reverse-geocoder-actix"

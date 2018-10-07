@@ -6,10 +6,10 @@ edition = "2018"
 
 [dependencies]
 reverse_geocoder = { path = "../reverse-geocoder" }
-shio = "0.3.0"
-lazy_static = "1.1.0"
-time = "0.1.40"
-queryst = "2.0.0"
+shio = "^0.3"
+lazy_static = "^1.1"
+time = "^0.1"
+queryst = "^2.0"
 
 [[bin]]
 name = "reverse-geocoder-shio"
