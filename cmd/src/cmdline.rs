@@ -29,7 +29,7 @@ fn main() {
     let lat = args[1].parse::<f64>().expect("Couldn't parse latitude");
     let long = args[2].parse::<f64>().expect("Couldn't parse longitude");
 
-    let loc = Locations::from_file();
+    let loc = Locations::from_memory();
     let geocoder = ReverseGeocoder::new(&loc);
 
     let start = PreciseTime::now();

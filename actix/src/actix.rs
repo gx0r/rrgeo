@@ -33,7 +33,7 @@ impl error::ResponseError for MyError {
 }
 
 lazy_static! {
-    static ref LOCATIONS: Locations = Locations::from_file();
+    static ref LOCATIONS: Locations = Locations::from_memory();
     static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
 }
 
