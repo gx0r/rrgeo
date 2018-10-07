@@ -5,6 +5,6 @@ members = [
     "cmd",
     "reverse-geocoder",
     # "hyper",
-    # "iron",
+    "iron",
     # "shio",
 ]
