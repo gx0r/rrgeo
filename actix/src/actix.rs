@@ -18,16 +18,21 @@ use reverse_geocoder::{
     ReverseGeocoder,
 };
 
+use failure::Error;
+
 #[derive(Fail, Debug)]
 enum MyError {
     #[fail(display = "bad request")]
     BadClientData,
+    #[fail(display = "not found")]
+    NotFound,
 }
 
 impl error::ResponseError for MyError {
     fn error_response(&self) -> HttpResponse {
         match *self {
             MyError::BadClientData => HttpResponse::new(http::StatusCode::BAD_REQUEST),
+            MyError::NotFound => HttpResponse::new(http::StatusCode::BAD_REQUEST),
         }
     }
 }
@@ -43,12 +48,12 @@ struct LatLong {
     long: f64,
 }
 
-fn index(lat_long: Query<LatLong>) -> Result<Json<Record>, MyError> {
-    let res = GEOCODER.search(&[lat_long.lat, lat_long.long]);
+fn index(lat_long: Query<LatLong>) -> Result<Json<Record>, Error> {
+    let res = GEOCODER.search(&[lat_long.lat, lat_long.long])?;
 
-    match res {
-        Ok(res) => Ok(Json((**((*res.get(0).unwrap()).1)).clone())),
-        Err(_e) => Err(MyError::BadClientData),
+    match res.len() {
+        0 => Err(Error::from(MyError::NotFound)),
+        _ => Ok(Json((*((res.get(0).unwrap()).1)).clone())),
     }
 }
 
