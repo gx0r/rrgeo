@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/llambda/rust-reverse-geocoder.svg?branch=master)](https://travis-ci.org/llambda/rust-reverse-geocoder)
+[![Build Status](https://travis-ci.org/llambda/rrgeo.svg?branch=master)](https://travis-ci.org/llambda/rrgeo)
 
 # Rust Reverse Geocoder
 A fast, offline reverse geocoder in Rust, inspired by [one written in Python](https://github.com/thampiman/reverse-geocoder).
@@ -15,7 +15,7 @@ This program is implemented as a library, an [Actix](https://actix.rs/) REST API
 Example usage:
 
 ```
-> cargo run -p reverse-geocoder-cmd --release 40 -73
+> cargo run -p rrgeo-cmd --release 40 -73
 71 ms to load cities.csv
 3 ms to build the KdTree
 (40.72788, -73.09761): West Sayville New York Suffolk County US
@@ -26,7 +26,8 @@ Example usage:
 Example usage:
 
 ```
-cargo run -p reverse-geocoder-actix --release
+cargo run -p rrgeo-actix --release
+cargo run -p rrgeo-iron --release
 ```
 
 Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
@@ -36,40 +37,42 @@ Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
 Actix:
 
 ```
-> wrk --latency -t12 -c300 -d10s http://localhost:3000/\?lat\=45\&long\=\66
-Running 10s test @ http://localhost:3000/?lat=45&long=66
-  12 threads and 300 connections
+> wrk --latency http://localhost:3000/\?lat\=40\&long\=\-73
+Running 10s test @ http://localhost:3000/?lat=40&long=-73
+  2 threads and 10 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    72.26ms    5.13ms 147.29ms   97.72%
-    Req/Sec   346.16     41.61   696.00     71.05%
+    Latency     2.47ms    0.87ms  13.01ms   74.17%
+    Req/Sec     2.02k    39.42     2.07k    79.50%
   Latency Distribution
-     50%   73.14ms
-     75%   73.30ms
-     90%   73.65ms
-     99%   77.40ms
-  41492 requests in 10.10s, 7.99MB read
-Requests/sec:   4108.98
-Transfer/sec:    810.56KB
+     50%    1.96ms
+     75%    3.86ms
+     90%    3.93ms
+     99%    4.06ms
+  40170 requests in 10.00s, 8.58MB read
+Requests/sec:   4015.31
+Transfer/sec:      0.86MB
+
 
 ```
 
 Iron:
 
 ```
-> wrk --latency -t12 -c300 -d10s http://localhost:3000/\?lat\=45\&long\=\66
-Running 10s test @ http://localhost:3000/?lat=45&long=66
-  12 threads and 300 connections
+> wrk --latency http://localhost:3000/\?lat\=40\&long\=\-73
+Running 10s test @ http://localhost:3000/?lat=40&long=-73
+  2 threads and 10 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    18.31ms    9.55ms  96.31ms   68.82%
-    Req/Sec   501.05    329.71     1.17k    53.82%
+    Latency     2.55ms    1.15ms  25.73ms   76.03%
+    Req/Sec     1.99k   110.23     2.20k    82.50%
   Latency Distribution
-     50%   16.89ms
-     75%   22.91ms
-     90%   31.18ms
-     99%   45.23ms
-  35232 requests in 10.08s, 6.59MB read
-Requests/sec:   3493.90
-Transfer/sec:    668.75KB
+     50%    1.96ms
+     75%    3.35ms
+     90%    3.92ms
+     99%    5.95ms
+  39563 requests in 10.01s, 8.23MB read
+Requests/sec:   3954.05
+Transfer/sec:    841.78KB
+
 ```
 
 

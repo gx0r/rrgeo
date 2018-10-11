@@ -1,5 +1,5 @@
 [package]
-name = "reverse-geocoder-cmd"
+name = "rrgeo-cmd"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
@@ -8,5 +8,5 @@ reverse_geocoder = { path = "../reverse-geocoder" }
 time = "^0.1"
 
 [[bin]]
-name = "reverse-geocoder-cmd"
+name = "rrgeo-cmd"
 path = "src/cmdline.rs"

@@ -1,5 +1,5 @@
 [package]
-name = "reverse-geocoder-hyper"
+name = "rrgeo-hyper"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
@@ -12,6 +12,6 @@ hyper = "^0.11"
 futures = "^0.1"
 
 [[bin]]
-name = "hyper"
+name = "rrgeo-hyper"
 path = "src/hyper.rs"
 # hyper = "0.12.11"
