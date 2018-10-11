@@ -1,5 +1,5 @@
 [package]
-name = "reverse-geocoder-actix"
+name = "rrgeo-actix"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
@@ -17,5 +17,5 @@ failure = "^0.1"
 bytes = "^0.4"
 
 [[bin]]
-name = "reverse-geocoder-actix"
+name = "rrgeo-actix"
 path = "src/actix.rs"

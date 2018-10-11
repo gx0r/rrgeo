@@ -1,5 +1,5 @@
 [package]
-name = "reverse-geocoder-iron"
+name = "rrgeo-iron"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
@@ -12,5 +12,5 @@ queryst = "^2.0"
 serde_json = "^1.0"
 
 [[bin]]
-name = "iron"
+name = "rrgeo-iron"
 path = "src/iron.rs"

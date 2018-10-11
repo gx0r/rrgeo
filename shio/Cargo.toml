@@ -1,5 +1,5 @@
 [package]
-name = "reverse-geocoder-shio"
+name = "rrgeo-shio"
 version = "0.1.0"
 authors = ["Grant Miner <llambda@users.noreply.github.com>"]
 edition = "2018"
@@ -12,5 +12,5 @@ time = "^0.1"
 queryst = "^2.0"
 
 [[bin]]
-name = "reverse-geocoder-shio"
+name = "rrgeo-shio"
 path = "src/main.rs"
