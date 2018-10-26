@@ -34,7 +34,20 @@ Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
 
 ## Benchmarks 
 
-Actix:
+The core library ([measured with criterion](https://github.com/japaric/criterion.rs)):
+
+```
+Benchmarking search: Warming up for 3.0000 s5 ms to build the KdTree
+search                  time:   [1.1530 ms 1.1639 ms 1.1748 ms]                    
+                        change: [-2.6577% -1.4078% -0.0250%] (p = 0.04 < 0.05)
+                        Change within noise threshold.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+```
+
+
+Served over [Actix Web](https://actix.rs/):
 
 ```
 > wrk --latency http://localhost:3000/\?lat\=40\&long\=\-73
@@ -55,7 +68,7 @@ Transfer/sec:      0.86MB
 
 ```
 
-Iron:
+Served over [Iron](http://ironframework.io/):
 
 ```
 > wrk --latency http://localhost:3000/\?lat\=40\&long\=\-73
@@ -84,7 +97,7 @@ Below we have comparisons between the Rust, Python and Node.js versions.
 |--------------|------|--------|
 | Load CSV     | 61ms | 1221ms |
 | Build KdTree | 4ms  | 805ms  |
-| Search       | 1.5ms  | 0.5ms |
+| Search       | 1.1ms  | 0.5ms |
 
 Most of the performance differences appear to be in time taken to load the CSV file and create the k-d tree, but not searching the tree. Searching time resembles algorithmic complexity of [k-d tree](https://en.wikipedia.org/wiki/K-d_tree). Python version is partly implemented in C++ meaning it is not a purely Python implementation. (It might be interesting to see how a pure Python version performs.) The Node.js version is pure JavaScript, as in, not using C add-ons.
 
