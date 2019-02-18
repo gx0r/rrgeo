@@ -37,6 +37,7 @@ Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
 The core library ([measured with criterion](https://github.com/japaric/criterion.rs)):
 
 ```
+> cargo bench
 Benchmarking search: Warming up for 3.0000 s5 ms to build the KdTree
 search                  time:   [1.1530 ms 1.1639 ms 1.1748 ms]                    
                         change: [-2.6577% -1.4078% -0.0250%] (p = 0.04 < 0.05)
@@ -50,6 +51,7 @@ Found 1 outliers among 100 measurements (1.00%)
 Served over [Actix Web](https://actix.rs/):
 
 ```
+> cargo run --release --bin rrgeo-actix
 > wrk --latency http://localhost:3000/\?lat\=40\&long\=\-73
 Running 10s test @ http://localhost:3000/?lat=40&long=-73
   2 threads and 10 connections
@@ -71,6 +73,7 @@ Transfer/sec:      0.86MB
 Served over [Iron](http://ironframework.io/):
 
 ```
+> cargo run --release --bin rrgeo-iron
 > wrk --latency http://localhost:3000/\?lat\=40\&long\=\-73
 Running 10s test @ http://localhost:3000/?lat=40&long=-73
   2 threads and 10 connections
