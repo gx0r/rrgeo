@@ -7,7 +7,7 @@ edition = "2018"
 [dependencies]
 reverse_geocoder = { path = "../reverse-geocoder" }
 shio = "^0.3"
-lazy_static = "^1.1"
+lazy_static = "^1.4"
 time = "^0.1"
 queryst = "^2.0"
 
