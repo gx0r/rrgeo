@@ -6,7 +6,7 @@ authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 [dependencies]
 actix-web = "^1.0.5"
 reverse_geocoder = { path = "../reverse-geocoder" }
-lazy_static = "^1.3.0"
+lazy_static = "^1.4"
 time = "^0.1"
 queryst = "^2.0"
 serde = "^1.0"
