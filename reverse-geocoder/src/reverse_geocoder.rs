@@ -94,7 +94,7 @@ impl<'a> ReverseGeocoder<'a> {
 
 #[allow(dead_code)]
 pub fn print_record(record: &Record) {
-    println!("({}, {}): {} {} {} {}",
+    println!("({}, {}): {}, {}, {}, {}",
              record.lat,
              record.lon,
              record.name,
