@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 
 [dependencies]
-actix-web = "^1.0.5"
+actix-web = "1.0.7"
 reverse_geocoder = { path = "../reverse-geocoder" }
 lazy_static = "^1.4"
 time = "^0.1"
