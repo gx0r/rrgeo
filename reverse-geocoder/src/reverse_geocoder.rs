@@ -73,7 +73,7 @@ pub struct ReverseGeocoder<'a> {
 impl<'a> ReverseGeocoder<'a> {
     pub fn new(loc: &'a Locations) -> ReverseGeocoder<'a> {
         let mut reverse_geocoder =
-            ReverseGeocoder::<'a> { tree: KdTree::new_with_capacity(2, loc.records.len()) };
+            ReverseGeocoder::<'a> { tree: KdTree::with_capacity(2, loc.records.len()) };
         reverse_geocoder.initialize(loc);
         reverse_geocoder
     }

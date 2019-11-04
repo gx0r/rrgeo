@@ -4,5 +4,4 @@ members = [
     "actix",
     "cmd",
     "reverse-geocoder",
-    "iron",
 ]
