@@ -14,6 +14,7 @@ queryst = "^2.0"
 serde = "^1.0"
 serde_derive = "^1.0"
 failure = "^0.1"
+env_logger = "*"
 
 [dev-dependencies]
 bytes = "0.5.3"
