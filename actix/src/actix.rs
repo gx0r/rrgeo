@@ -16,8 +16,6 @@ use failure::Error;
 
 #[derive(Fail, Debug)]
 enum MyError {
-    #[fail(display = "bad request")]
-    BadClientData,
     #[fail(display = "not found")]
     NotFound,
 }
@@ -25,15 +23,9 @@ enum MyError {
 impl error::ResponseError for MyError {
     fn error_response(&self) -> HttpResponse {
         match *self {
-            MyError::BadClientData => HttpResponse::new(http::StatusCode::BAD_REQUEST),
             MyError::NotFound => HttpResponse::new(http::StatusCode::BAD_REQUEST),
         }
     }
-}
-
-lazy_static! {
-    static ref LOCATIONS: Locations = Locations::from_memory();
-    static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
 }
 
 #[derive(Deserialize)]
@@ -43,6 +35,11 @@ struct LatLong {
 }
 
 async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, Error> {
+    lazy_static! {
+        static ref LOCATIONS: Locations = Locations::from_memory();
+        static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
+    }
+
     let res = GEOCODER.search(&[lat_long.lat, lat_long.long])?;
 
     match res.len() {
@@ -71,11 +68,9 @@ async fn main() -> std::io::Result<()> {
 mod tests {
     use super::*;
     extern crate bytes;
-    use self::bytes::Bytes;
 
     use actix_web::dev::Service;
     use actix_web::{http, test, web, App};
-    use super::index;
 
     #[actix_rt::test]
     async fn it_serves_results_on_actix() -> Result<(), Error> {
@@ -95,7 +90,7 @@ mod tests {
             _ => panic!("Response error"),
         };
 
-        assert_eq!(*response_body, Bytes::from_static(b"{\"lat\":44.9483,\"lon\":-93.34801,\"name\":\"Saint Louis Park\",\"admin1\":\"Minnesota\",\"admin2\":\"Hennepin County\",\"admin3\":\"US\"}"));
+        assert_eq!(response_body, r##"{"lat":44.9483,"lon":-93.34801,"name":"Saint Louis Park","admin1":"Minnesota","admin2":"Hennepin County","admin3":"US"}"##);
 
         Ok(())
     }
