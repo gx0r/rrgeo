@@ -1,16 +1,12 @@
-extern crate rustc_serialize;
-extern crate time;
-extern crate quick_csv;
-extern crate kdtree;
 #[macro_use] extern crate failure;
 #[macro_use] extern crate serde_derive;
 
-use self::kdtree::{
+use kdtree::{
     KdTree,
     ErrorKind,
     distance::squared_euclidean,
 };
-use time::PreciseTime;
+use time::Instant;
 use std::path::PathBuf;
 
 use failure::Error;
@@ -43,7 +39,7 @@ impl Locations {
     }
 
     pub fn from_path(path: Option<PathBuf>) -> Result<Locations, Error> {
-        let start = PreciseTime::now();
+        let start = Instant::now();
         let mut records = Vec::new();
 
         let path = match path {
@@ -58,9 +54,9 @@ impl Locations {
             records.push(([record.lat, record.lon], record));
         }
 
-        let end = PreciseTime::now();
+        let end = Instant::now();
 
-        println!("{} ms to load cities.csv", start.to(end).num_milliseconds());
+        println!("{} ms to load cities.csv", (end - start).whole_milliseconds());
 
         Ok(Locations { records: records })
     }
@@ -79,12 +75,12 @@ impl<'a> ReverseGeocoder<'a> {
     }
 
     fn initialize(&mut self, loc: &'a Locations) {
-        let start = PreciseTime::now();
+        let start = Instant::now();
         for record in &loc.records {
             self.tree.add(&record.0, &record.1).unwrap();
         }
-        let end = PreciseTime::now();
-        println!("{} ms to build the KdTree", start.to(end).num_milliseconds());
+        let end = Instant::now();
+        println!("{} ms to build the KdTree", (end - start).whole_milliseconds());
     }
 
     pub fn search(&self, loc: &[f64; 2]) -> Result<Vec<(f64, &&Record)>, ErrorKind> {

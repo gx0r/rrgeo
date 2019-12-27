@@ -2,6 +2,7 @@
 name = "reverse_geocoder"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
+edition = "2018"
 
 [dependencies]
 kdtree = "^0.6"

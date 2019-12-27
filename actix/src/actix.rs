@@ -1,13 +1,7 @@
 #[macro_use]
 extern crate failure;
-extern crate reverse_geocoder;
 #[macro_use]
 extern crate lazy_static;
-#[macro_use]
-extern crate actix_web;
-extern crate queryst;
-extern crate serde;
-extern crate time;
 #[macro_use]
 extern crate serde_derive;
 use actix_web::{error, http, middleware, web, App, HttpServer, HttpResponse, Result};
@@ -59,9 +53,12 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, Error
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
+    std::env::set_var("RUST_LOG", "actix_web=info");
+    env_logger::init();
+
     HttpServer::new(|| {
         App::new()
-            // .wrap(middleware::Logger::default())
+            .wrap(middleware::Logger::default())
             .route("/", web::get().to(index))
     })
     .keep_alive(10)
