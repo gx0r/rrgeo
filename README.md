@@ -7,8 +7,6 @@ A fast reverse geocoder. Inspired by [reverse-geocoder](https://github.com/thamp
 
 This crate is implemented as a library, an [Actix](https://actix.rs/) REST API, an [Iron](https://github.com/iron/iron) REST API, and as a command-line utility, thanks to [Cargo workspaces](https://doc.rust-lang.org/book/second-edition/ch14-03-cargo-workspaces.html).
 
-(Previously implemented on [Shio](https://github.com/mehcode/shio-rs) and [Hyper](https://github.com/hyperium/hyper) HTTP libraries. Needs work to run on those libraries again.)
-
 # Usage
 
 ## Command line search
@@ -28,7 +26,6 @@ Example usage:
 
 ```
 cargo run -p rrgeo-actix --release
-cargo run -p rrgeo-iron --release
 ```
 
 Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
