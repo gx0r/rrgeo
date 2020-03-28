@@ -6,7 +6,7 @@ use kdtree::{
     ErrorKind,
     distance::squared_euclidean,
 };
-use time::Instant;
+// use time::Instant;
 use std::path::PathBuf;
 
 use failure::Error;
@@ -75,11 +75,11 @@ impl<'a> ReverseGeocoder<'a> {
     }
 
     fn initialize(&mut self, loc: &'a Locations) {
-        let start = Instant::now();
+        // let start = Instant::now();
         for record in &loc.records {
             self.tree.add(&record.0, &record.1).unwrap();
         }
-        let end = Instant::now();
+        // let end = Instant::now();
         // println!("{} ms to build the KdTree", (end - start).whole_milliseconds());
     }
 
