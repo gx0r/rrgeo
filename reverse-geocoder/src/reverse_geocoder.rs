@@ -1,8 +1,8 @@
 #![deny(missing_docs)]
-//!A library for fast, offline reverse geocoding. The location data are from [GeoNames](http://www.geonames.org/).
+//! A library for fast, offline reverse geocoding. The location data are from [GeoNames](http://www.geonames.org/).
 //!
 //! # Usage
-//!First, add this to your Cargo.toml
+//! First, add this to your Cargo.toml
 //!
 //! ```toml
 //! [dependencies]
@@ -138,8 +138,8 @@ impl fmt::Display for Record {
 
 #[cfg(test)]
 mod tests {
-    use failure::Error;
     use super::*;
+    use failure::Error;
 
     #[test]
     fn it_finds_3_places() {
