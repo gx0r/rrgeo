@@ -45,7 +45,7 @@ impl Locations {
             None => PathBuf::from("cities.csv"),
         };
 
-        let reader = quick_csv::Csv::from_file(path).unwrap().has_header(true);
+        let reader = quick_csv::Csv::from_file(path)?.has_header(true);
 
         for read_record in reader {
             let record: Record = read_record?.decode()?;
@@ -99,10 +99,11 @@ impl fmt::Display for Record {
 
 #[cfg(test)]
 mod tests {
+    use failure::Error;
+    use super::*;
 
     #[test]
     fn it_finds_3_places() {
-        use super::*;
         let loc = Locations::from_memory();
         let geocoder = ReverseGeocoder::new(&loc);
         let y = geocoder.search(&[44.962786, -93.344722]);
@@ -118,5 +119,13 @@ mod tests {
         // [44.887055, -93.334204] is HWY 62 and Valley View Road, whish is in Edina
         let edina = geocoder.search(&[44.887055, -93.334204]).unwrap();
         assert_eq!(edina.get(0).unwrap().1.name, "Edina");
+    }
+
+    #[test]
+    fn locations_from_path() -> Result<(), Error> {
+        let loc = Locations::from_path(Some("./cities.csv".into()))?;
+        ReverseGeocoder::new(&loc);
+
+        Ok(())
     }
 }
