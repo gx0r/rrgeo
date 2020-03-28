@@ -9,7 +9,7 @@ actix-rt = "1.0.0"
 actix-web = "2.0.0"
 reverse_geocoder = { path = "../reverse-geocoder" }
 lazy_static = "^1.4"
-time = "0.2.1"
+time = "0.2.9"
 queryst = "^2.0"
 serde = "^1.0"
 serde_derive = "^1.0"
@@ -17,7 +17,7 @@ failure = "^0.1"
 env_logger = "*"
 
 [dev-dependencies]
-bytes = "0.5.3"
+bytes = "0.5.4"
 
 [[bin]]
 name = "rrgeo-actix"
