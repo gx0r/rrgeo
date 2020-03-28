@@ -1,15 +1,13 @@
-#[macro_use] extern crate failure;
-#[macro_use] extern crate serde_derive;
+#[macro_use]
+extern crate failure;
+#[macro_use]
+extern crate serde_derive;
 
-use kdtree::{
-    KdTree,
-    ErrorKind,
-    distance::squared_euclidean,
-};
+use kdtree::{distance::squared_euclidean, ErrorKind, KdTree};
 // use time::Instant;
-use std::path::PathBuf;
-use std::fmt;
 use failure::Error;
+use std::fmt;
+use std::path::PathBuf;
 
 #[derive(Debug, Clone, RustcDecodable, RustcEncodable, Serialize, Deserialize)]
 pub struct Record {
@@ -68,8 +66,9 @@ pub struct ReverseGeocoder<'a> {
 
 impl<'a> ReverseGeocoder<'a> {
     pub fn new(loc: &'a Locations) -> ReverseGeocoder<'a> {
-        let mut reverse_geocoder =
-            ReverseGeocoder::<'a> { tree: KdTree::with_capacity(2, loc.records.len()) };
+        let mut reverse_geocoder = ReverseGeocoder::<'a> {
+            tree: KdTree::with_capacity(2, loc.records.len()),
+        };
         reverse_geocoder.initialize(loc);
         reverse_geocoder
     }
@@ -90,19 +89,17 @@ impl<'a> ReverseGeocoder<'a> {
 
 impl fmt::Display for Record {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "({}, {}): {}, {}, {}, {}",
-            self.lat,
-            self.lon,
-            self.name,
-            self.admin1,
-            self.admin2,
-            self.admin3)
+        write!(
+            f,
+            "({}, {}): {}, {}, {}, {}",
+            self.lat, self.lon, self.name, self.admin1, self.admin2, self.admin3
+        )
     }
 }
 
 #[cfg(test)]
 mod tests {
-    
+
     #[test]
     fn it_finds_3_places() {
         use super::*;
