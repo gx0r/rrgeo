@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/llambda/rrgeo.svg?branch=master)](https://travis-ci.org/llambda/rrgeo)
 
-# Rust Reverse Geocoder
+# [Rust Reverse Geocoder](https://crates.io/crates/reverse_geocoder)
 A fast reverse geocoder. Inspired by [reverse-geocoder](https://github.com/thampiman/reverse-geocoder).
 
 `rrgeo` takes a latitude and longitude as input and returns the closest city, country, latitude, and longitude, using a k-d tree to efficiently find the nearest neighbour based on a known list of locations. This can be useful if you need to reverse geocode a large number of coordinates quickly.
