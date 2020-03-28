@@ -8,7 +8,7 @@ use kdtree::{
 };
 // use time::Instant;
 use std::path::PathBuf;
-
+use std::fmt;
 use failure::Error;
 
 #[derive(Debug, Clone, RustcDecodable, RustcEncodable, Serialize, Deserialize)]
@@ -88,15 +88,16 @@ impl<'a> ReverseGeocoder<'a> {
     }
 }
 
-#[allow(dead_code)]
-pub fn print_record(record: &Record) {
-    println!("({}, {}): {}, {}, {}, {}",
-             record.lat,
-             record.lon,
-             record.name,
-             record.admin1,
-             record.admin2,
-             record.admin3);
+impl fmt::Display for Record {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "({}, {}): {}, {}, {}, {}",
+            self.lat,
+            self.lon,
+            self.name,
+            self.admin1,
+            self.admin2,
+            self.admin3)
+    }
 }
 
 #[cfg(test)]
