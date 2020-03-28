@@ -3,12 +3,16 @@ name = "reverse_geocoder"
 version = "0.1.0"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 edition = "2018"
+description = "Offline reverse geocoder library"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/llambda/rrgeo"
+categories = ["science"]
 
 [dependencies]
 kdtree = "^0.6"
 quick-csv = "^0.1"
 rustc-serialize = "^0.3"
-time = "0.2.1"
+time = "0.2.9"
 serde = "^1.0"
 serde_derive = "^1.0"
 failure = "^0.1"
@@ -23,5 +27,5 @@ path = "src/reverse_geocoder.rs"
 
 
 [[bench]]
-name = "my_benchmark"
+name = "benchmark"
 harness = false

@@ -39,7 +39,7 @@ impl Locations {
     }
 
     pub fn from_path(path: Option<PathBuf>) -> Result<Locations, Error> {
-        let start = Instant::now();
+        // let start = Instant::now();
         let mut records = Vec::new();
 
         let path = match path {
@@ -54,9 +54,9 @@ impl Locations {
             records.push(([record.lat, record.lon], record));
         }
 
-        let end = Instant::now();
+        // let end = Instant::now();
 
-        println!("{} ms to load cities.csv", (end - start).whole_milliseconds());
+        // println!("{} ms to load cities.csv", (end - start).whole_milliseconds());
 
         Ok(Locations { records: records })
     }
@@ -80,7 +80,7 @@ impl<'a> ReverseGeocoder<'a> {
             self.tree.add(&record.0, &record.1).unwrap();
         }
         let end = Instant::now();
-        println!("{} ms to build the KdTree", (end - start).whole_milliseconds());
+        // println!("{} ms to build the KdTree", (end - start).whole_milliseconds());
     }
 
     pub fn search(&self, loc: &[f64; 2]) -> Result<Vec<(f64, &&Record)>, ErrorKind> {
