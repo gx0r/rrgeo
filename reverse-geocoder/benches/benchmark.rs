@@ -1,12 +1,10 @@
-#[macro_use] extern crate criterion;
-#[macro_use] extern crate lazy_static;
+#[macro_use]
+extern crate criterion;
+#[macro_use]
+extern crate lazy_static;
 extern crate reverse_geocoder;
 
-use reverse_geocoder::{
-    Locations,
-    Record,
-    ReverseGeocoder,
-};
+use reverse_geocoder::{Locations, ReverseGeocoder};
 
 use criterion::Criterion;
 
@@ -16,7 +14,7 @@ lazy_static! {
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("search", |b| b.iter(|| GEOCODER.search(&[45.0, 54.0]) ));
+    c.bench_function("search", |b| b.iter(|| GEOCODER.search(&[45.0, 54.0])));
 }
 
 criterion_group!(benches, criterion_benchmark);
