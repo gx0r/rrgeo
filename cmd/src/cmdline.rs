@@ -4,7 +4,6 @@ extern crate reverse_geocoder;
 use reverse_geocoder::{
     Locations,
     ReverseGeocoder,
-    print_record,
 };
 
 use std::{
@@ -37,5 +36,5 @@ fn main() {
     let end = PreciseTime::now();
     eprintln!("{} ms to search", start.to(end).num_milliseconds());
 
-    print_record(y.get(0).unwrap().1);
+    println!("{}", y.get(0).unwrap().1);
 }
