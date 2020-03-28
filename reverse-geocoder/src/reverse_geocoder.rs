@@ -28,7 +28,7 @@ pub struct Locations {
 impl Locations {
     pub fn from_memory() -> Locations {
         let mut records = Vec::new();
-        let my_str = include_str!("../../cities.csv");
+        let my_str = include_str!("../cities.csv");
         let reader = quick_csv::Csv::from_string(my_str).has_header(true);
 
         for read_record in reader {
