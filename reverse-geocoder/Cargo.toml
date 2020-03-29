@@ -1,9 +1,9 @@
 [package]
 name = "reverse_geocoder"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Grant Miner <xxgsoftware@gmail.com>"]
 edition = "2018"
-description = "Offline reverse geocoder library"
+description = "Offline reverse geocoder library."
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/llambda/rrgeo"
 categories = ["science"]

@@ -6,7 +6,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! reverse_geocoder = "^1.0.0"
+//! reverse_geocoder = "^1.0.1"
 //! ```
 //!
 //! Next:
