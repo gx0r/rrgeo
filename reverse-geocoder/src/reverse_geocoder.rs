@@ -26,7 +26,7 @@
 #[macro_use]
 extern crate serde_derive;
 
-use kdtree::{distance::squared_euclidean, ErrorKind, KdTree};
+use kdtree::{distance::squared_euclidean, KdTree};
 // use time::Instant;
 use std::fmt;
 use std::path::PathBuf;
@@ -62,13 +62,13 @@ pub struct Locations {
     records: Vec<([f64; 2], Record)>,
 }
 
-/// ReverseGeocodeError
+/// Reverse Geocoder's ErrorKind
 #[derive(Debug)]
-pub enum ReverseGeocodeError {
+pub enum ErrorKind {
     /// Couldn't find a result.
     NoResultsFound,
     /// Issue with the underlying k-d tree.
-    KdTreeError(ErrorKind),
+    KdTreeError(kdtree::ErrorKind),
 }
 
 impl Locations {
@@ -135,10 +135,10 @@ impl<'a> ReverseGeocoder<'a> {
     }
 
     /// Search for the closest record to a given lat/long. Returns Result<Vec<(distance, record)>>.
-    pub fn search(&self, loc: &[f64; 2]) -> Result<SearchResult, ReverseGeocodeError> {
+    pub fn search(&self, loc: &[f64; 2]) -> Result<SearchResult, ErrorKind> {
         let nearest = match self.tree.nearest(loc, 1, &squared_euclidean) {
             Ok(nearest) => nearest,
-            Err(error) => return Err(ReverseGeocodeError::KdTreeError(error)),
+            Err(error) => return Err(ErrorKind::KdTreeError(error)),
         };
         if nearest.len() > 0 {
             let found = *nearest.get(0).unwrap();
@@ -147,7 +147,7 @@ impl<'a> ReverseGeocoder<'a> {
                 record: found.1,
             })
         } else {
-            Err(ReverseGeocodeError::NoResultsFound)
+            Err(ErrorKind::NoResultsFound)
         }
     }
 }

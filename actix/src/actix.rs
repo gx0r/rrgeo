@@ -8,31 +8,29 @@ use reverse_geocoder::{
     Locations,
     Record,
     ReverseGeocoder,
-    ReverseGeocodeError,
 };
 use std::fmt;
 
 #[derive(Debug)]
-enum MyError {
+enum ReverseGeocodeWebError {
     NotFound,
     InternalError,
 }
 
-
-impl fmt::Display for MyError {
+impl fmt::Display for ReverseGeocodeWebError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            MyError::NotFound => write!(f, "Not found"),
-            MyError::InternalError => write!(f, "Internal error"),
+            ReverseGeocodeWebError::NotFound => write!(f, "Not found"),
+            ReverseGeocodeWebError::InternalError => write!(f, "Internal error"),
         }
     }
 }
 
-impl error::ResponseError for MyError {
+impl error::ResponseError for ReverseGeocodeWebError {
     fn error_response(&self) -> HttpResponse {
         match *self {
-            MyError::NotFound => HttpResponse::new(http::StatusCode::NOT_FOUND),
-            MyError::InternalError => HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR),
+            ReverseGeocodeWebError::NotFound => HttpResponse::new(http::StatusCode::NOT_FOUND),
+            ReverseGeocodeWebError::InternalError => HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR),
         }
     }
 }
@@ -43,7 +41,7 @@ struct LatLong {
     long: f64,
 }
 
-async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, MyError> {
+async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, ReverseGeocodeWebError> {
     lazy_static! {
         static ref LOCATIONS: Locations = Locations::from_memory();
         static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
@@ -52,8 +50,8 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, MyErr
     let search_result = match GEOCODER.search(&[lat_long.lat, lat_long.long]) {
         Ok(result) => result,
         Err(error) => match error {
-            ReverseGeocodeError::NoResultsFound => return Err(MyError::NotFound),
-            ReverseGeocodeError::KdTreeError(_error_kind) => return Err(MyError::InternalError),
+            reverse_geocoder::ErrorKind::NoResultsFound => return Err(ReverseGeocodeWebError::NotFound),
+            reverse_geocoder::ErrorKind::KdTreeError(_error_kind) => return Err(ReverseGeocodeWebError::InternalError),
         }
     };
 
@@ -85,7 +83,7 @@ mod tests {
     use actix_web::{http, test, web, App};
 
     #[actix_rt::test]
-    async fn it_serves_results_on_actix() -> Result<(), MyError> {
+    async fn it_serves_results_on_actix() -> Result<(), ReverseGeocodeWebError> {
         let mut app = test::init_service(
             App::new().route("/", web::get().to(index))
         )
