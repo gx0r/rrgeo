@@ -1,6 +1,4 @@
 #[macro_use]
-extern crate failure;
-#[macro_use]
 extern crate lazy_static;
 #[macro_use]
 extern crate serde_derive;
@@ -10,20 +8,31 @@ use reverse_geocoder::{
     Locations,
     Record,
     ReverseGeocoder,
+    ReverseGeocodeError,
 };
+use std::fmt;
 
-use failure::Error;
-
-#[derive(Fail, Debug)]
+#[derive(Debug)]
 enum MyError {
-    #[fail(display = "not found")]
     NotFound,
+    InternalError,
+}
+
+
+impl fmt::Display for MyError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            MyError::NotFound => write!(f, "Not found"),
+            MyError::InternalError => write!(f, "Internal error"),
+        }
+    }
 }
 
 impl error::ResponseError for MyError {
     fn error_response(&self) -> HttpResponse {
         match *self {
-            MyError::NotFound => HttpResponse::new(http::StatusCode::BAD_REQUEST),
+            MyError::NotFound => HttpResponse::new(http::StatusCode::NOT_FOUND),
+            MyError::InternalError => HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR),
         }
     }
 }
@@ -34,18 +43,21 @@ struct LatLong {
     long: f64,
 }
 
-async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, Error> {
+async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, MyError> {
     lazy_static! {
         static ref LOCATIONS: Locations = Locations::from_memory();
         static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
     }
 
-    let res = GEOCODER.search(&[lat_long.lat, lat_long.long])?;
+    let res = match GEOCODER.search(&[lat_long.lat, lat_long.long]) {
+        Ok(result) => result,
+        Err(error) => match error {
+            ReverseGeocodeError::NoResultsFound => return Err(MyError::NotFound),
+            ReverseGeocodeError::KdTreeError(_error_kind) => return Err(MyError::InternalError),
+        }
+    };
 
-    match res.len() {
-        0 => Err(Error::from(MyError::NotFound)),
-        _ => Ok(web::Json((*((res.get(0).unwrap()).1)).clone())),
-    }
+    Ok(web::Json((*res.1).clone()))
 }
 
 #[actix_rt::main]
@@ -73,7 +85,7 @@ mod tests {
     use actix_web::{http, test, web, App};
 
     #[actix_rt::test]
-    async fn it_serves_results_on_actix() -> Result<(), Error> {
+    async fn it_serves_results_on_actix() -> Result<(), MyError> {
         let mut app = test::init_service(
             App::new().route("/", web::get().to(index))
         )
