@@ -32,9 +32,10 @@ fn main() {
     let geocoder = ReverseGeocoder::new(&loc);
 
     let start = PreciseTime::now();
-    let y = geocoder.search(&[lat, long]).expect("Nothing found.");
+    let pair = geocoder.search(&[lat, long]).expect("Nothing found.");
     let end = PreciseTime::now();
     eprintln!("{} ms to search", start.to(end).num_milliseconds());
 
-    println!("{}", y.get(0).unwrap().1);
+    println!("Location: {}", pair.1);
+    println!("Distance: {}", pair.0);
 }
