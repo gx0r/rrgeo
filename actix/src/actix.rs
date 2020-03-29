@@ -49,7 +49,7 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, MyErr
         static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
     }
 
-    let res = match GEOCODER.search(&[lat_long.lat, lat_long.long]) {
+    let search_result = match GEOCODER.search(&[lat_long.lat, lat_long.long]) {
         Ok(result) => result,
         Err(error) => match error {
             ReverseGeocodeError::NoResultsFound => return Err(MyError::NotFound),
@@ -57,7 +57,7 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, MyErr
         }
     };
 
-    Ok(web::Json((*res.1).clone()))
+    Ok(web::Json((*search_result.record).clone()))
 }
 
 #[actix_rt::main]

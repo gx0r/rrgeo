@@ -17,9 +17,9 @@
 //! fn main() {
 //!     let loc = Locations::from_memory();
 //!     let geocoder = ReverseGeocoder::new(&loc);
-//!     let pair = geocoder.search(&[45.0, 54.0]).expect("Search error.");
-//!     println!("Distance {}", pair.0);
-//!     println!("Record {}", pair.1);
+//!     let search_result = geocoder.search(&[45.0, 54.0]).expect("Search error.");
+//!     println!("Distance {}", search_result.distance);
+//!     println!("Record {}", search_result.record);
 //! }
 //!```
 
@@ -47,6 +47,14 @@ pub struct Record {
     pub admin2: String,
     /// Administrative district 3
     pub admin3: String,
+}
+
+/// Search result from querying a lat/long.
+pub struct SearchResult<'a> {
+    /// Distance away from given lat/long.
+    pub distance: f64,
+    /// Closest place information.
+    pub record: &'a Record,
 }
 
 /// A set of location records.
@@ -127,13 +135,17 @@ impl<'a> ReverseGeocoder<'a> {
     }
 
     /// Search for the closest record to a given lat/long. Returns Result<Vec<(distance, record)>>.
-    pub fn search(&self, loc: &[f64; 2]) -> Result<(f64, &&Record), ReverseGeocodeError> {
+    pub fn search(&self, loc: &[f64; 2]) -> Result<SearchResult, ReverseGeocodeError> {
         let nearest = match self.tree.nearest(loc, 1, &squared_euclidean) {
             Ok(nearest) => nearest,
             Err(error) => return Err(ReverseGeocodeError::KdTreeError(error)),
         };
         if nearest.len() > 0 {
-            Ok(*nearest.get(0).unwrap())
+            let found = *nearest.get(0).unwrap();
+            Ok(SearchResult {
+                distance: found.0,
+                record: found.1,
+            })
         } else {
             Err(ReverseGeocodeError::NoResultsFound)
         }
@@ -160,15 +172,15 @@ mod tests {
         let geocoder = ReverseGeocoder::new(&loc);
         let slp = geocoder.search(&[44.962786, -93.344722]).unwrap();
 
-        assert_eq!(slp.1.name, "Saint Louis Park");
+        assert_eq!(slp.record.name, "Saint Louis Park");
 
         // [44.894519, -93.308702] is 60 St W @ Penn Ave S, Minneapolis, Minnesota; however, this is physically closer to Richfield
         let mpls = geocoder.search(&[44.894519, -93.308702]).unwrap();
-        assert_eq!(mpls.1.name, "Richfield");
+        assert_eq!(mpls.record.name, "Richfield");
 
         // [44.887055, -93.334204] is HWY 62 and Valley View Road, whish is in Edina
         let edina = geocoder.search(&[44.887055, -93.334204]).unwrap();
-        assert_eq!(edina.1.name, "Edina");
+        assert_eq!(edina.record.name, "Edina");
     }
 
     #[test]
