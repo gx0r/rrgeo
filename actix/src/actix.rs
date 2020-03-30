@@ -2,7 +2,7 @@
 extern crate lazy_static;
 #[macro_use]
 extern crate serde_derive;
-use actix_web::{error, http, middleware, web, App, HttpServer, HttpResponse, Result};
+use actix_web::{http, middleware, web, App, HttpServer, HttpResponse, Result};
 
 use reverse_geocoder::{
     Locations,
@@ -26,9 +26,9 @@ impl fmt::Display for ReverseGeocodeWebError {
     }
 }
 
-impl error::ResponseError for ReverseGeocodeWebError {
+impl actix_web::error::ResponseError for ReverseGeocodeWebError {
     fn error_response(&self) -> HttpResponse {
-        match *self {
+        match self {
             ReverseGeocodeWebError::NotFound => HttpResponse::new(http::StatusCode::NOT_FOUND),
             ReverseGeocodeWebError::InternalError => HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR),
         }
@@ -47,7 +47,7 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, Rever
         static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
     }
 
-    let search_result = match GEOCODER.search(&[lat_long.lat, lat_long.long]) {
+    let search_result = match GEOCODER.search((lat_long.lat, lat_long.long)) {
         Ok(result) => result,
         Err(error) => match error {
             reverse_geocoder::ErrorKind::NoResultsFound => return Err(ReverseGeocodeWebError::NotFound),
@@ -55,7 +55,7 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, Rever
         }
     };
 
-    Ok(web::Json((*search_result.record).clone()))
+    Ok(web::Json(search_result.record.clone()))
 }
 
 #[actix_rt::main]

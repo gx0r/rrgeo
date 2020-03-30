@@ -17,7 +17,8 @@
 //! fn main() {
 //!     let loc = Locations::from_memory();
 //!     let geocoder = ReverseGeocoder::new(&loc);
-//!     let search_result = geocoder.search(&[45.0, 54.0]).expect("Search error.");
+//!     let coords = (45.0, 54.0);
+//!     let search_result = geocoder.search(coords).expect("Search error.");
 //!     println!("Distance {}", search_result.distance);
 //!     println!("Record {}", search_result.record);
 //! }
@@ -30,7 +31,7 @@ use kdtree::{distance::squared_euclidean, KdTree};
 // use time::Instant;
 use std::fmt;
 use std::path::PathBuf;
-use std::error::Error;
+use std::error;
 
 /// A parsed location.
 #[derive(Debug, Clone, RustcDecodable, RustcEncodable, Serialize, Deserialize)]
@@ -86,14 +87,9 @@ impl Locations {
     }
 
     /// Supply your own path to a CSV file.
-    pub fn from_path(path: Option<PathBuf>) -> Result<Locations, Box<dyn Error>> {
+    pub fn from_path(path: PathBuf) -> Result<Locations, Box<dyn error::Error>> {
         // let start = Instant::now();
         let mut records = Vec::new();
-
-        let path = match path {
-            Some(path) => path,
-            None => PathBuf::from("cities.csv"),
-        };
 
         let reader = quick_csv::Csv::from_file(path)?.has_header(true);
 
@@ -134,20 +130,20 @@ impl<'a> ReverseGeocoder<'a> {
         // println!("{} ms to build the KdTree", (end - start).whole_milliseconds());
     }
 
-    /// Search for the closest record to a given lat/long. Returns Result<Vec<(distance, record)>>.
-    pub fn search(&self, loc: &[f64; 2]) -> Result<SearchResult, ErrorKind> {
-        let nearest = match self.tree.nearest(loc, 1, &squared_euclidean) {
+    /// Search for the closest record to a given (latitude, longitude).
+    pub fn search(&self, loc: (f64, f64)) -> Result<SearchResult, ErrorKind> {
+        let nearest = match self.tree.nearest(&[loc.0, loc.1], 1, &squared_euclidean) {
             Ok(nearest) => nearest,
             Err(error) => return Err(ErrorKind::KdTreeError(error)),
         };
-        if nearest.len() > 0 {
-            let found = *nearest.get(0).unwrap();
-            Ok(SearchResult {
-                distance: found.0,
-                record: found.1,
-            })
-        } else {
-            Err(ErrorKind::NoResultsFound)
+        match nearest.get(0) {
+            Some(nearest) => {
+                Ok(SearchResult {
+                    distance: nearest.0,
+                    record: nearest.1,
+                })
+            },
+            None => Err(ErrorKind::NoResultsFound),
         }
     }
 }
@@ -170,22 +166,22 @@ mod tests {
     fn it_finds_3_places() {
         let loc = Locations::from_memory();
         let geocoder = ReverseGeocoder::new(&loc);
-        let slp = geocoder.search(&[44.962786, -93.344722]).unwrap();
+        let slp = geocoder.search((44.962786, -93.344722)).unwrap();
 
         assert_eq!(slp.record.name, "Saint Louis Park");
 
         // [44.894519, -93.308702] is 60 St W @ Penn Ave S, Minneapolis, Minnesota; however, this is physically closer to Richfield
-        let mpls = geocoder.search(&[44.894519, -93.308702]).unwrap();
+        let mpls = geocoder.search((44.894519, -93.308702)).unwrap();
         assert_eq!(mpls.record.name, "Richfield");
 
         // [44.887055, -93.334204] is HWY 62 and Valley View Road, whish is in Edina
-        let edina = geocoder.search(&[44.887055, -93.334204]).unwrap();
+        let edina = geocoder.search((44.887055, -93.334204)).unwrap();
         assert_eq!(edina.record.name, "Edina");
     }
 
     #[test]
-    fn locations_from_path() -> Result<(), Box<dyn Error>> {
-        let loc = Locations::from_path(Some("./cities.csv".into()))?;
+    fn locations_from_path() -> Result<(), Box<dyn error::Error>> {
+        let loc = Locations::from_path("./cities.csv".into())?;
         ReverseGeocoder::new(&loc);
 
         Ok(())
