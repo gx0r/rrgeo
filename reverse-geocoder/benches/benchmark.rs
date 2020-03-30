@@ -14,7 +14,7 @@ lazy_static! {
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("search", |b| b.iter(|| GEOCODER.search(&[45.0, 54.0])));
+    c.bench_function("search", |b| b.iter(|| GEOCODER.search((45.0, 54.0))));
 }
 
 criterion_group!(benches, criterion_benchmark);

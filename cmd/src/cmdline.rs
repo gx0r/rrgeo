@@ -32,7 +32,7 @@ fn main() {
     let geocoder = ReverseGeocoder::new(&loc);
 
     let start = PreciseTime::now();
-    let search_result = geocoder.search(&[lat, long]).expect("Nothing found.");
+    let search_result = geocoder.search((lat, long)).expect("Nothing found.");
     let end = PreciseTime::now();
     eprintln!("{} ms to search", start.to(end).num_milliseconds());
 
