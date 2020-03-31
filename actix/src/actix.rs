@@ -50,8 +50,12 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, Rever
     let search_result = match GEOCODER.search((lat_long.lat, lat_long.long)) {
         Ok(result) => result,
         Err(error) => match error {
-            reverse_geocoder::ErrorKind::NoResultsFound => return Err(ReverseGeocodeWebError::NotFound),
-            reverse_geocoder::ErrorKind::KdTreeError(_error_kind) => return Err(ReverseGeocodeWebError::InternalError),
+            reverse_geocoder::SearchError::NotFound => return Err(ReverseGeocodeWebError::NotFound),
+            reverse_geocoder::SearchError::KdTreeError(error_kind) => match error_kind {
+                reverse_geocoder::KdTreeErrorKind::WrongDimension => return Err(ReverseGeocodeWebError::InternalError),
+                reverse_geocoder::KdTreeErrorKind::NonFiniteCoordinate => return Err(ReverseGeocodeWebError::NotFound),
+                reverse_geocoder::KdTreeErrorKind::ZeroCapacity => return Err(ReverseGeocodeWebError::InternalError),
+            }
         }
     };
 
