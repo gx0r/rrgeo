@@ -180,10 +180,18 @@ mod tests {
     }
 
     #[test]
-    fn locations_from_path() -> Result<(), Box<dyn error::Error>> {
+    fn it_loads_locations_from_a_path() -> Result<(), Box<dyn error::Error>> {
         let loc = Locations::from_path("./cities.csv".into())?;
         ReverseGeocoder::new(&loc);
 
         Ok(())
+    }
+
+    #[test]
+    fn it_returns_an_error_given_an_infinite_coordinate() {
+        let loc = Locations::from_memory();
+        let geocoder = ReverseGeocoder::new(&loc);
+        let fail = geocoder.search((std::f64::INFINITY, 54.0));
+        assert!(fail.is_err());
     }
 }
