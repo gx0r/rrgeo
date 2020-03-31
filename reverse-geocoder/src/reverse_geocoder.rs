@@ -27,6 +27,9 @@
 #[macro_use]
 extern crate serde_derive;
 
+/// Re-export this type so clients can pattern-match on errors.
+pub type KdTreeErrorKind = kdtree::ErrorKind;
+
 use kdtree::{distance::squared_euclidean, KdTree};
 // use time::Instant;
 use std::fmt;
@@ -63,13 +66,14 @@ pub struct Locations {
     records: Vec<([f64; 2], Record)>,
 }
 
+
 /// Reverse Geocoder's ErrorKind
 #[derive(Debug)]
-pub enum ErrorKind {
+pub enum SearchError {
     /// Couldn't find a result.
-    NoResultsFound,
+    NotFound,
     /// Issue with the underlying k-d tree.
-    KdTreeError(kdtree::ErrorKind),
+    KdTreeError(KdTreeErrorKind),
 }
 
 impl Locations {
@@ -131,10 +135,10 @@ impl<'a> ReverseGeocoder<'a> {
     }
 
     /// Search for the closest record to a given (latitude, longitude).
-    pub fn search(&self, loc: (f64, f64)) -> Result<SearchResult, ErrorKind> {
+    pub fn search(&self, loc: (f64, f64)) -> Result<SearchResult, SearchError> {
         let nearest = match self.tree.nearest(&[loc.0, loc.1], 1, &squared_euclidean) {
             Ok(nearest) => nearest,
-            Err(error) => return Err(ErrorKind::KdTreeError(error)),
+            Err(error) => return Err(SearchError::KdTreeError(error)),
         };
         match nearest.get(0) {
             Some(nearest) => {
@@ -143,7 +147,7 @@ impl<'a> ReverseGeocoder<'a> {
                     record: nearest.1,
                 })
             },
-            None => Err(ErrorKind::NoResultsFound),
+            None => Err(SearchError::NotFound),
         }
     }
 }
