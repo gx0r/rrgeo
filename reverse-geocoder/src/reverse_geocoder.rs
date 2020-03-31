@@ -76,6 +76,28 @@ pub enum SearchError {
     KdTreeError(KdTreeErrorKind),
 }
 
+impl fmt::Display for SearchError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            SearchError::NotFound => write!(f, "Not found."),
+            SearchError::KdTreeError(kind) => match kind {
+                KdTreeErrorKind::WrongDimension => write!(f, "Internal k-d tree error: wrong dimension."),
+                KdTreeErrorKind::NonFiniteCoordinate => write!(f, "Non-finite coordinate supplied."),
+                KdTreeErrorKind::ZeroCapacity => write!(f, "Internal k-d tree error: zero capacity."),
+            },
+        }
+    }
+}
+impl std::error::Error for SearchError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            SearchError::NotFound => None,
+            SearchError::KdTreeError(kind) => Some(kind),
+        }
+    }
+}
+
+
 impl Locations {
     /// Use the built-in cities.csv.
     pub fn from_memory() -> Locations {
