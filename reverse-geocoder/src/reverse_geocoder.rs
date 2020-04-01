@@ -27,9 +27,6 @@
 #[macro_use]
 extern crate serde_derive;
 
-/// Re-export this type so clients can pattern-match on errors.
-pub type KdTreeErrorKind = kdtree::ErrorKind;
-
 use kdtree::{distance::squared_euclidean, KdTree};
 // use time::Instant;
 use std::fmt;
@@ -65,38 +62,6 @@ pub struct SearchResult<'a> {
 pub struct Locations {
     records: Vec<([f64; 2], Record)>,
 }
-
-
-/// Reverse Geocoder's ErrorKind
-#[derive(Debug)]
-pub enum SearchError {
-    /// Couldn't find a result.
-    NotFound,
-    /// Issue with the underlying k-d tree.
-    KdTreeError(KdTreeErrorKind),
-}
-
-impl fmt::Display for SearchError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            SearchError::NotFound => write!(f, "Not found."),
-            SearchError::KdTreeError(kind) => match kind {
-                KdTreeErrorKind::WrongDimension => write!(f, "Internal k-d tree error: wrong dimension."),
-                KdTreeErrorKind::NonFiniteCoordinate => write!(f, "Non-finite coordinate supplied."),
-                KdTreeErrorKind::ZeroCapacity => write!(f, "Internal k-d tree error: zero capacity."),
-            },
-        }
-    }
-}
-impl std::error::Error for SearchError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            SearchError::NotFound => None,
-            SearchError::KdTreeError(kind) => Some(kind),
-        }
-    }
-}
-
 
 impl Locations {
     /// Use the built-in cities.csv.
@@ -156,20 +121,24 @@ impl<'a> ReverseGeocoder<'a> {
         // println!("{} ms to build the KdTree", (end - start).whole_milliseconds());
     }
 
-    /// Search for the closest record to a given (latitude, longitude).
-    pub fn search(&self, loc: (f64, f64)) -> Result<SearchResult, SearchError> {
+    /// Search for the closest record to a given (latitude, longitude). Non-finite numbers will always return None.
+    pub fn search(&self, loc: (f64, f64)) -> Option<SearchResult> {
         let nearest = match self.tree.nearest(&[loc.0, loc.1], 1, &squared_euclidean) {
             Ok(nearest) => nearest,
-            Err(error) => return Err(SearchError::KdTreeError(error)),
+            Err(error) => match error {
+                kdtree::ErrorKind::WrongDimension => panic!("Internal error, kdtree::ErrorKind::WrongDimension should never occur"),
+                kdtree::ErrorKind::NonFiniteCoordinate => return None,
+                kdtree::ErrorKind::ZeroCapacity => panic!("Internal error, kdtree::ErrorKind::ZeroCapacity should never occur"),
+            },
         };
         match nearest.get(0) {
             Some(nearest) => {
-                Ok(SearchResult {
+                Some(SearchResult {
                     distance: nearest.0,
                     record: nearest.1,
                 })
             },
-            None => Err(SearchError::NotFound),
+            None => None,
         }
     }
 }
@@ -208,16 +177,35 @@ mod tests {
     #[test]
     fn it_loads_locations_from_a_path() -> Result<(), Box<dyn error::Error>> {
         let loc = Locations::from_path("./cities.csv".into())?;
-        ReverseGeocoder::new(&loc);
-
+        let geocoder = ReverseGeocoder::new(&loc);
+        let search_result = geocoder.search((45.0, 54.0));
+        assert!(search_result.is_some());
         Ok(())
     }
 
     #[test]
-    fn it_returns_an_error_given_an_infinite_coordinate() {
+    fn it_loads_locations_from_a_nearly_blank_file() -> Result<(), Box<dyn error::Error>> {
+        let loc = Locations::from_path("./nearly-blank.csv".into())?;
+        let geocoder = ReverseGeocoder::new(&loc);
+        let search_result = geocoder.search((45.0, 54.0));
+        assert!(search_result.is_none());
+        Ok(())
+    }
+
+    #[test]
+    fn it_loads_locations_from_a_blank_file() -> Result<(), Box<dyn error::Error>> {
+        let loc = Locations::from_path("./blank.csv".into())?;
+        let geocoder = ReverseGeocoder::new(&loc);
+        let search_result = geocoder.search((std::f64::INFINITY, 54.0));
+        assert!(search_result.is_none());
+        Ok(())
+    }
+
+    #[test]
+    fn it_returns_none_given_an_infinite_coordinate() {
         let loc = Locations::from_memory();
         let geocoder = ReverseGeocoder::new(&loc);
-        let fail = geocoder.search((std::f64::INFINITY, 54.0));
-        assert!(fail.is_err());
+        let search_result = geocoder.search((std::f64::INFINITY, 54.0));
+        assert!(search_result.is_none());
     }
 }
