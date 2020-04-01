@@ -14,14 +14,12 @@ use std::fmt;
 #[derive(Debug)]
 enum ReverseGeocodeWebError {
     NotFound,
-    InternalError,
 }
 
 impl fmt::Display for ReverseGeocodeWebError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             ReverseGeocodeWebError::NotFound => write!(f, "Not found"),
-            ReverseGeocodeWebError::InternalError => write!(f, "Internal error"),
         }
     }
 }
@@ -30,7 +28,6 @@ impl actix_web::error::ResponseError for ReverseGeocodeWebError {
     fn error_response(&self) -> HttpResponse {
         match self {
             ReverseGeocodeWebError::NotFound => HttpResponse::new(http::StatusCode::NOT_FOUND),
-            ReverseGeocodeWebError::InternalError => HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR),
         }
     }
 }
@@ -48,15 +45,8 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, Rever
     }
 
     let search_result = match GEOCODER.search((lat_long.lat, lat_long.long)) {
-        Ok(result) => result,
-        Err(error) => match error {
-            reverse_geocoder::SearchError::NotFound => return Err(ReverseGeocodeWebError::NotFound),
-            reverse_geocoder::SearchError::KdTreeError(error_kind) => match error_kind {
-                reverse_geocoder::KdTreeErrorKind::WrongDimension => return Err(ReverseGeocodeWebError::InternalError),
-                reverse_geocoder::KdTreeErrorKind::NonFiniteCoordinate => return Err(ReverseGeocodeWebError::NotFound),
-                reverse_geocoder::KdTreeErrorKind::ZeroCapacity => return Err(ReverseGeocodeWebError::InternalError),
-            }
-        }
+        Some(result) => result,
+        None => return Err(ReverseGeocodeWebError::NotFound),
     };
 
     Ok(web::Json(search_result.record.clone()))
