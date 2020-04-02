@@ -196,7 +196,7 @@ mod tests {
     fn it_loads_locations_from_a_blank_file() -> Result<(), Box<dyn error::Error>> {
         let loc = Locations::from_path("./blank.csv".into())?;
         let geocoder = ReverseGeocoder::new(&loc);
-        let search_result = geocoder.search((std::f64::INFINITY, 54.0));
+        let search_result = geocoder.search((45.0, 54.0));
         assert!(search_result.is_none());
         Ok(())
     }
