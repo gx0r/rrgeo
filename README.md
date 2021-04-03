@@ -54,15 +54,9 @@ The core library ([measured with criterion](https://github.com/japaric/criterion
 
 ```
 > cargo bench
-Benchmarking search: Warming up for 3.0000 s
-Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 11.7s or reduce sample count to 40.
-search                  time:   [2.3144 ms 2.3440 ms 2.3760 ms]
-                        change: [-3.7824% -1.2338% +1.6347%] (p = 0.36 > 0.05)
-                        No change in performance detected.
-Found 6 outliers among 100 measurements (6.00%)
+search                  time:   [2.0303 ms 2.0399 ms 2.0502 ms]
+Found 2 outliers among 100 measurements (2.00%)
   2 (2.00%) high mild
-  4 (4.00%) high severe
-
 ```
 
 Served via [Actix Web](https://actix.rs/):
@@ -72,91 +66,90 @@ Served via [Actix Web](https://actix.rs/):
 > oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
 Summary:
   Success rate: 1.0000
-  Total:        5.0166 secs
-  Slowest:      0.0531 secs
-  Fastest:      0.0023 secs
-  Average:      0.0166 secs
-  Requests/sec: 2985.8853
+  Total:        5.0209 secs
+  Slowest:      0.0744 secs
+  Fastest:      0.0025 secs
+  Average:      0.0195 secs
+  Requests/sec: 2541.7942
 
-  Total data:   1.47 MiB
-  Size/request: 103.00 B
-  Size/sec:     300.34 KiB
+  Total data:   1.40 MiB
+  Size/request: 115.00 B
+  Size/sec:     285.46 KiB
 
 Response time histogram:
-  0.004 [606]  |■■■■
-  0.009 [2031] |■■■■■■■■■■■■■■■
-  0.013 [4248] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.017 [3815] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.022 [2415] |■■■■■■■■■■■■■■■■■■
-  0.026 [1097] |■■■■■■■■
-  0.030 [542]  |■■■■
-  0.035 [130]  |
-  0.039 [55]   |
-  0.043 [34]   |
-  0.048 [6]    |
+  0.005 [465]  |■■■
+  0.010 [1390] |■■■■■■■■■
+  0.015 [4609] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.020 [3029] |■■■■■■■■■■■■■■■■■■■■■
+  0.025 [1483] |■■■■■■■■■■
+  0.031 [900]  |■■■■■■
+  0.036 [467]  |■■■
+  0.041 [190]  |■
+  0.046 [104]  |
+  0.051 [79]   |
+  0.056 [46]   |
 
 Latency distribution:
-  10% in 0.0092 secs
-  25% in 0.0124 secs
-  50% in 0.0158 secs
-  75% in 0.0206 secs
-  90% in 0.0252 secs
-  95% in 0.0284 secs
-  99% in 0.0347 secs
+  10% in 0.0107 secs
+  25% in 0.0148 secs
+  50% in 0.0177 secs
+  75% in 0.0230 secs
+  90% in 0.0306 secs
+  95% in 0.0355 secs
+  99% in 0.0478 secs
 
 Details (average, fastest, slowest):
-  DNS+dialup:   0.0043 secs, 0.0008 secs, 0.0099 secs
+  DNS+dialup:   0.0055 secs, 0.0010 secs, 0.0125 secs
   DNS-lookup:   0.0000 secs, 0.0000 secs, 0.0001 secs
 
 Status code distribution:
-  [200] 14979 responses
+  [200] 12762 responses
 ```
 
-Served via Warp:
+Served via [Warp](https://github.com/seanmonstar/warp):
 
 ```
 > cargo run --release --bin rrgeo-warp
 Summary:
-Summary:
   Success rate: 1.0000
-  Total:        5.0006 secs
-  Slowest:      0.2553 secs
-  Fastest:      0.0113 secs
-  Average:      0.1263 secs
-  Requests/sec: 388.9503
+  Total:        5.0042 secs
+  Slowest:      0.1389 secs
+  Fastest:      0.0023 secs
+  Average:      0.0202 secs
+  Requests/sec: 2464.1392
 
-  Total data:   275.42 KiB
-  Size/request: 145.00 B
-  Size/sec:     55.08 KiB
+  Total data:   1.82 MiB
+  Size/request: 155.00 B
+  Size/sec:     372.99 KiB
 
 Response time histogram:
-  0.022 [9]    |
-  0.044 [10]   |
-  0.067 [8]    |
-  0.089 [9]    |
-  0.111 [78]   |■
-  0.133 [1793] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.155 [0]    |
-  0.177 [0]    |
-  0.200 [0]    |
-  0.222 [0]    |
-  0.244 [38]   |
+  0.005 [383]  |■■
+  0.011 [995]  |■■■■■■■
+  0.016 [4299] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.021 [3705] |■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.027 [1707] |■■■■■■■■■■■■
+  0.032 [780]  |■■■■■
+  0.037 [274]  |■■
+  0.042 [81]   |
+  0.048 [50]   |
+  0.053 [7]    |
+  0.058 [50]   |
 
 Latency distribution:
-  10% in 0.1229 secs
-  25% in 0.1239 secs
-  50% in 0.1250 secs
-  75% in 0.1266 secs
-  90% in 0.1277 secs
-  95% in 0.1285 secs
-  99% in 0.2504 secs
+  10% in 0.0125 secs
+  25% in 0.0160 secs
+  50% in 0.0187 secs
+  75% in 0.0233 secs
+  90% in 0.0288 secs
+  95% in 0.0329 secs
+  99% in 0.0432 secs
 
 Details (average, fastest, slowest):
-  DNS+dialup:   0.0045 secs, 0.0009 secs, 0.0097 secs
+  DNS+dialup:   0.0052 secs, 0.0008 secs, 0.0116 secs
   DNS-lookup:   0.0000 secs, 0.0000 secs, 0.0001 secs
 
 Status code distribution:
-  [200] 1945 responses
+  [200] 12331 responses
 ```
 
 
