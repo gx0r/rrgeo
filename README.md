@@ -7,8 +7,8 @@ A fast reverse geocoder in Rust. Inspired by Python [reverse-geocoder](https://g
 - [2.0.0 Docs](https://docs.rs/reverse_geocoder/2.0.0/reverse_geocoder/index.html)
 - [1.0.1 Docs](https://docs.rs/reverse_geocoder/1.0.1/reverse_geocoder/)
 
-## Description 
- 
+## Description
+
 `rrgeo` takes a latitude and longitude as input and returns the closest city, country, latitude, and longitude, using a k-d tree to efficiently find the nearest neighbour based on a known list of locations. This can be useful if you need to reverse geocode a large number of coordinates quickly, or just need the rough location of coordinates but don't want the expense or complication of an online reverse geocoder.
 
 This crate is implemented as a [library](https://crates.io/crates/reverse_geocoder), an [Actix](https://actix.rs/) REST API, a [Warp](https://seanmonstar.com/post/176530511587/warp) REST API, and as a command-line utility, thanks to [Cargo workspaces](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html).
@@ -46,17 +46,15 @@ cargo run -p rrgeo-warp --release
 
 Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
 
-## Benchmarks 
+## Benchmarks
 
-Benchmarked on Intel Core i7 4790K at 4.00GHz.
+Benchmarked on Apple M1.
 
 The core library ([measured with criterion](https://github.com/japaric/criterion.rs)):
 
 ```
 > cargo bench
-search                  time:   [2.0303 ms 2.0399 ms 2.0502 ms]
-Found 2 outliers among 100 measurements (2.00%)
-  2 (2.00%) high mild
+search                  time:   [518.99 us 535.48 us 553.21 us]
 ```
 
 Served via [Actix Web](https://actix.rs/):
@@ -65,91 +63,93 @@ Served via [Actix Web](https://actix.rs/):
 > cargo run --release --bin rrgeo-actix
 > oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
 Summary:
-  Success rate: 1.0000
-  Total:        5.0209 secs
-  Slowest:      0.0744 secs
-  Fastest:      0.0025 secs
-  Average:      0.0195 secs
-  Requests/sec: 2541.7942
+  Success rate:	1.0000
+  Total:	5.0069 secs
+  Slowest:	0.1105 secs
+  Fastest:	0.0012 secs
+  Average:	0.0079 secs
+  Requests/sec:	5773.4290
 
-  Total data:   1.40 MiB
-  Size/request: 115.00 B
-  Size/sec:     285.46 KiB
+  Total data:	3.17 MiB
+  Size/request:	115 B
+  Size/sec:	648.38 KiB
 
 Response time histogram:
-  0.005 [465]  |■■■
-  0.010 [1390] |■■■■■■■■■
-  0.015 [4609] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.020 [3029] |■■■■■■■■■■■■■■■■■■■■■
-  0.025 [1483] |■■■■■■■■■■
-  0.031 [900]  |■■■■■■
-  0.036 [467]  |■■■
-  0.041 [190]  |■
-  0.046 [104]  |
-  0.051 [79]   |
-  0.056 [46]   |
+  0.002 [451]  |■
+  0.004 [4146] |■■■■■■■■■■■■■
+  0.006 [9914] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.008 [7200] |■■■■■■■■■■■■■■■■■■■■■■■
+  0.010 [4414] |■■■■■■■■■■■■■■
+  0.012 [1915] |■■■■■■
+  0.014 [557]  |■
+  0.016 [160]  |
+  0.018 [59]   |
+  0.020 [18]   |
+  0.023 [73]   |
 
 Latency distribution:
-  10% in 0.0107 secs
-  25% in 0.0148 secs
-  50% in 0.0177 secs
-  75% in 0.0230 secs
-  90% in 0.0306 secs
-  95% in 0.0355 secs
-  99% in 0.0478 secs
+  10% in 0.0048 secs
+  25% in 0.0059 secs
+  50% in 0.0073 secs
+  75% in 0.0093 secs
+  90% in 0.0113 secs
+  95% in 0.0126 secs
+  99% in 0.0157 secs
 
 Details (average, fastest, slowest):
-  DNS+dialup:   0.0055 secs, 0.0010 secs, 0.0125 secs
-  DNS-lookup:   0.0000 secs, 0.0000 secs, 0.0001 secs
+  DNS+dialup:	0.0018 secs, 0.0013 secs, 0.0029 secs
+  DNS-lookup:	0.0002 secs, 0.0000 secs, 0.0013 secs
 
 Status code distribution:
-  [200] 12762 responses
+  [200] 28907 responses
+
 ```
 
 Served via [Warp](https://github.com/seanmonstar/warp):
 
 ```
 > cargo run --release --bin rrgeo-warp
+> oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
 Summary:
-  Success rate: 1.0000
-  Total:        5.0042 secs
-  Slowest:      0.1389 secs
-  Fastest:      0.0023 secs
-  Average:      0.0202 secs
-  Requests/sec: 2464.1392
+  Success rate:	1.0000
+  Total:	5.0040 secs
+  Slowest:	0.0812 secs
+  Fastest:	0.0008 secs
+  Average:	0.0078 secs
+  Requests/sec:	5883.9353
 
-  Total data:   1.82 MiB
-  Size/request: 155.00 B
-  Size/sec:     372.99 KiB
+  Total data:	4.35 MiB
+  Size/request:	155 B
+  Size/sec:	890.63 KiB
 
 Response time histogram:
-  0.005 [383]  |■■
-  0.011 [995]  |■■■■■■■
-  0.016 [4299] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.021 [3705] |■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.027 [1707] |■■■■■■■■■■■■
-  0.032 [780]  |■■■■■
-  0.037 [274]  |■■
-  0.042 [81]   |
-  0.048 [50]   |
-  0.053 [7]    |
-  0.058 [50]   |
+  0.002 [1237] |■■■■
+  0.004 [3309] |■■■■■■■■■■■
+  0.006 [7022] |■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.008 [8985] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.010 [5565] |■■■■■■■■■■■■■■■■■■■
+  0.012 [2402] |■■■■■■■■
+  0.014 [648]  |■■
+  0.016 [173]  |
+  0.019 [35]   |
+  0.021 [7]    |
+  0.023 [60]   |
 
 Latency distribution:
-  10% in 0.0125 secs
-  25% in 0.0160 secs
-  50% in 0.0187 secs
-  75% in 0.0233 secs
-  90% in 0.0288 secs
-  95% in 0.0329 secs
-  99% in 0.0432 secs
+  10% in 0.0041 secs
+  25% in 0.0058 secs
+  50% in 0.0077 secs
+  75% in 0.0095 secs
+  90% in 0.0113 secs
+  95% in 0.0123 secs
+  99% in 0.0151 secs
 
 Details (average, fastest, slowest):
-  DNS+dialup:   0.0052 secs, 0.0008 secs, 0.0116 secs
-  DNS-lookup:   0.0000 secs, 0.0000 secs, 0.0001 secs
+  DNS+dialup:	0.0015 secs, 0.0013 secs, 0.0019 secs
+  DNS-lookup:	0.0001 secs, 0.0000 secs, 0.0004 secs
 
 Status code distribution:
-  [200] 12331 responses
+  [200] 29443 responses
 ```
 
 

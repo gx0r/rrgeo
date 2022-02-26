@@ -9,9 +9,9 @@ lazy_static = "^1.4"
 reverse_geocoder = { path = "../reverse-geocoder" }
 serde = "^1.0"
 serde_derive = "^1.0"
-time = "0.3.5"
-tokio = { version = "1.0.1", features = ["full"] }
-warp = "^0.3.1"
+time = "^0.3.7"
+tokio = { version = "^1.17.0", features = ["full"] }
+warp = "^0.3.2"
 
 [dev-dependencies]
 bytes = "^1.0.1"

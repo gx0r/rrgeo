@@ -1,8 +1,9 @@
-use actix_web::{http, middleware, web, App, HttpResponse, HttpServer, Result};
+use actix_web::{http::{self, KeepAlive}, middleware, web, App, HttpResponse, HttpServer, Result};
 use lazy_static::lazy_static;
 use reverse_geocoder::{Locations, Record, ReverseGeocoder};
 use serde_derive::Deserialize;
 use std::fmt;
+use std::time::Duration;
 
 #[derive(Debug)]
 enum ReverseGeocodeWebError {
@@ -55,7 +56,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Logger::default())
             .route("/", web::get().to(index))
     })
-    .keep_alive(10)
+    .keep_alive(KeepAlive::Timeout(Duration::from_secs(10)))
     .bind("127.0.0.1:3000")?
     .run()
     .await
@@ -66,12 +67,13 @@ mod tests {
     use super::*;
     extern crate bytes;
 
+    use actix_web::body::{MessageBody};
     use actix_web::dev::Service;
     use actix_web::{http, test, web, App};
 
-    #[actix_rt::test]
+    #[actix_web::test]
     async fn it_serves_results_on_actix() -> Result<(), ReverseGeocodeWebError> {
-        let mut app = test::init_service(App::new().route("/", web::get().to(index))).await;
+        let app = test::init_service(App::new().route("/", web::get().to(index))).await;
 
         let req = test::TestRequest::get()
             .uri("/?lat=44.962786&long=-93.344722")
@@ -81,10 +83,7 @@ mod tests {
 
         assert_eq!(resp.status(), http::StatusCode::OK);
 
-        let response_body = match resp.response().body().as_ref() {
-            Some(actix_web::body::Body::Bytes(bytes)) => bytes,
-            _ => panic!("Response error"),
-        };
+        let response_body = resp.into_body().try_into_bytes().unwrap();
 
         assert_eq!(
             response_body,
