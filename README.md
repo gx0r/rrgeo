@@ -50,7 +50,10 @@ Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
 
 Benchmarked on Apple M1.
 
-The core library ([measured with criterion](https://github.com/japaric/criterion.rs)):
+  * Core library benchmarked with `cargo bench` and [criterion](https://github.com/japaric/criterion.rs)
+  * Web servers benchmarked with [oha](https://github.com/hatoo/oha)
+
+Core library:
 
 ```
 > cargo bench
