@@ -17,8 +17,8 @@
 
 use kdtree::{distance::squared_euclidean, KdTree};
 // use time::Instant;
-use serde_derive::{Serialize, Deserialize};
 use csv::ReaderBuilder;
+use serde_derive::{Deserialize, Serialize};
 use std::error;
 use std::fmt;
 use std::path::Path;

@@ -1,6 +1,6 @@
 use reverse_geocoder::{Locations, ReverseGeocoder, SearchResult};
-use std::{env, process::exit};
 use std::error::Error;
+use std::{env, process::exit};
 use time::Instant;
 
 fn main() -> Result<(), Box<dyn Error>> {

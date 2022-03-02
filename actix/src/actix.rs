@@ -1,4 +1,7 @@
-use actix_web::{http::{self, KeepAlive}, middleware, web, App, HttpResponse, HttpServer, Result};
+use actix_web::{
+    http::{self, KeepAlive},
+    middleware, web, App, HttpResponse, HttpServer, Result,
+};
 use lazy_static::lazy_static;
 use reverse_geocoder::{Locations, Record, ReverseGeocoder};
 use serde_derive::Deserialize;
@@ -67,7 +70,7 @@ mod tests {
     use super::*;
     extern crate bytes;
 
-    use actix_web::body::{MessageBody};
+    use actix_web::body::MessageBody;
     use actix_web::dev::Service;
     use actix_web::{http, test, web, App};
 

@@ -16,12 +16,11 @@ lazy_static! {
 
 #[tokio::main]
 async fn main() {
-
     let hello = warp::any()
         .and(warp::query::<LatLong>())
-        .map(|lat_long: LatLong| { warp::reply::json(&GEOCODER.search((lat_long.lat, lat_long.long))) });
+        .map(|lat_long: LatLong| {
+            warp::reply::json(&GEOCODER.search((lat_long.lat, lat_long.long)))
+        });
 
-    warp::serve(hello)
-        .run(([127, 0, 0, 1], 3000))
-        .await;
+    warp::serve(hello).run(([127, 0, 0, 1], 3000)).await;
 }
