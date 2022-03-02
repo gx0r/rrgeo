@@ -2,7 +2,7 @@
 name = "rrgeo-cmd"
 version = "0.1.0"
 authors = ["Grant Miner <gx0r@protonmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 reverse_geocoder = { path = "../reverse-geocoder" }
