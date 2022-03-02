@@ -1,6 +1,6 @@
 [package]
 name = "reverse_geocoder"
-version = "2.0.1"
+version = "3.0.0"
 authors = ["Grant Miner <gx0r@protonmail.com>"]
 edition = "2021"
 description = "Offline reverse geocoder library."
@@ -8,6 +8,11 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/gx0r/rrgeo"
 categories = ["science"]
 keywords = ["reverse", "geocoding", "geocoder", "location"]
+include = [
+    "**/*.rs",
+    "cities.csv",
+    "Cargo.toml",
+]
 
 [dependencies]
 kdtree = "^0.6"

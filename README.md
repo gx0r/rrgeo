@@ -4,8 +4,9 @@ A fast reverse geocoder in Rust. Inspired by Python [reverse-geocoder](https://g
 ## Links
 
 - [Crate](https://crates.io/crates/reverse_geocoder)
-- [2.0.0 Docs](https://docs.rs/reverse_geocoder/2.0.0/reverse_geocoder/index.html)
-- [1.0.1 Docs](https://docs.rs/reverse_geocoder/1.0.1/reverse_geocoder/)
+- [Latest Docs](https://docs.rs/reverse_geocoder/)
+- [v2 Docs](https://docs.rs/reverse_geocoder/2.0.0/reverse_geocoder/index.html)
+- [v1 Docs](https://docs.rs/reverse_geocoder/1.0.1/reverse_geocoder/)
 
 ## Description
 
@@ -21,9 +22,9 @@ Example usage:
 
 ```
 > cargo run -p rrgeo-cmd --release 40 -73
-71 ms to load cities.csv
-3 ms to build the KdTree
-(40.72788, -73.09761): West Sayville New York Suffolk County US
+0 ms to search
+Location: (40.72788, -73.09761): West Sayville, New York, Suffolk County, US
+Distance: 0.539337006499999
 ```
 
 ### Actix Web Server
@@ -57,7 +58,7 @@ Core library:
 
 ```
 > cargo bench
-search                  time:   [518.99 us 535.48 us 553.21 us]
+search                  time:   [489.30 us 490.03 us 490.94 us]
 ```
 
 Served via [Actix Web](https://actix.rs/):
