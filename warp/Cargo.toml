@@ -2,7 +2,7 @@
 name = "rrgeo-warp"
 version = "0.1.0"
 authors = ["Grant Miner <ggcode1@users.noreply.github.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 lazy_static = "^1.4"
