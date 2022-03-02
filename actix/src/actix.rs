@@ -87,7 +87,7 @@ mod tests {
 
         assert_eq!(
             response_body,
-            r##"{"lat":44.9483,"lon":-93.34801,"name":"Saint Louis Park","admin1":"Minnesota","admin2":"Hennepin County","admin3":"US"}"##
+            r##"{"lat":44.9483,"lon":-93.34801,"name":"Saint Louis Park","admin1":"Minnesota","admin2":"Hennepin County","cc":"US"}"##
         );
 
         Ok(())

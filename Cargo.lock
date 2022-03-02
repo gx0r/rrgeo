@@ -1240,15 +1240,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "quick-csv"
-version = "0.1.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "edf4b7701db7d2e4c9c010f21eebd8676a50f79223a0cf858162d24bff47338c"
-dependencies = [
- "rustc-serialize",
-]
-
-[[package]]
 name = "quick-error"
 version = "1.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1320,9 +1311,9 @@ dependencies = [
 
 [[package]]
 name = "redox_syscall"
-version = "0.2.10"
+version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8383f39639269cde97d255a32bdb68c047337295414940c68bdd30c2e13203ff"
+checksum = "8380fe0152551244f0747b1bf41737e0f8a74f97a14ccefd1148187271634f3c"
 dependencies = [
  "bitflags",
 ]
@@ -1386,10 +1377,9 @@ name = "reverse_geocoder"
 version = "2.0.1"
 dependencies = [
  "criterion",
+ "csv",
  "kdtree",
  "lazy_static",
- "quick-csv",
- "rustc-serialize",
  "serde",
  "serde_derive",
 ]
@@ -1430,12 +1420,6 @@ dependencies = [
  "tokio",
  "warp",
 ]
-
-[[package]]
-name = "rustc-serialize"
-version = "0.3.24"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dcf128d1287d2ea9d80910b5f1120d0b8eede3fbf1abe91c40d39ea7d51e6fda"
 
 [[package]]
 name = "rustc_version"

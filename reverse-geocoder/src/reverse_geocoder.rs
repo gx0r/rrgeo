@@ -18,12 +18,13 @@
 use kdtree::{distance::squared_euclidean, KdTree};
 // use time::Instant;
 use serde_derive::{Serialize, Deserialize};
+use csv::ReaderBuilder;
 use std::error;
 use std::fmt;
 use std::path::Path;
 
 /// A parsed location.
-#[derive(Debug, Clone, RustcDecodable, RustcEncodable, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Record {
     /// Latitude
     pub lat: f64,
@@ -35,8 +36,8 @@ pub struct Record {
     pub admin1: String,
     /// Administrative district 2
     pub admin2: String,
-    /// Administrative district 3
-    pub admin3: String,
+    /// Country Code
+    pub cc: String,
 }
 
 /// Search result from querying a lat/long.
@@ -58,12 +59,16 @@ impl Locations {
     pub fn from_memory() -> Locations {
         let mut records = Vec::new();
         let my_str = include_str!("../cities.csv");
-        let reader = quick_csv::Csv::from_string(my_str).has_header(true);
 
-        for read_record in reader {
-            let record: Record = read_record.unwrap().decode().unwrap();
+        let mut reader = ReaderBuilder::new()
+            .has_headers(true)
+            .from_reader(my_str.as_bytes());
+
+        for record in reader.deserialize() {
+            let record: Record = record.unwrap();
             records.push(([record.lat, record.lon], record));
         }
+
         Locations { records: records }
     }
 
@@ -72,10 +77,12 @@ impl Locations {
         // let start_load = Instant::now();
         let mut records = Vec::new();
 
-        let reader = quick_csv::Csv::from_file(file_path)?.has_header(true);
+        let mut reader = ReaderBuilder::new()
+            .has_headers(true)
+            .from_path(file_path)?;
 
-        for read_record in reader {
-            let record: Record = read_record?.decode()?;
+        for record in reader.deserialize() {
+            let record: Record = record?;
             records.push(([record.lat, record.lon], record));
         }
 
@@ -137,7 +144,7 @@ impl fmt::Display for Record {
         write!(
             f,
             "({}, {}): {}, {}, {}, {}",
-            self.lat, self.lon, self.name, self.admin1, self.admin2, self.admin3
+            self.lat, self.lon, self.name, self.admin1, self.admin2, self.cc
         )
     }
 }

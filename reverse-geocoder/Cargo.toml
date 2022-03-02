@@ -11,9 +11,8 @@ keywords = ["reverse", "geocoding", "geocoder", "location"]
 
 [dependencies]
 kdtree = "^0.6"
-quick-csv = "^0.1"
-rustc-serialize = "^0.3"
-# time = "0.2.9"
+csv = "^1.1.6"
+#  time = "0.3.7"
 serde = "^1.0"
 serde_derive = "^1.0"
 
