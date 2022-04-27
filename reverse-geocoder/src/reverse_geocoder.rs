@@ -15,7 +15,7 @@
 //! }
 //!```
 
-use kdtree::{distance::squared_euclidean, KdTree};
+use kiddo::{distance::squared_euclidean, KdTree, ErrorKind};
 // use time::Instant;
 use csv::ReaderBuilder;
 use serde_derive::{Deserialize, Serialize};
@@ -24,7 +24,7 @@ use std::fmt;
 use std::path::Path;
 
 /// A parsed location.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Record {
     /// Latitude
     pub lat: f64,
@@ -69,7 +69,7 @@ impl Locations {
             records.push(([record.lat, record.lon], record));
         }
 
-        Locations { records: records }
+        Locations { records }
     }
 
     /// Supply your own path to a CSV file.
@@ -87,20 +87,20 @@ impl Locations {
         }
 
         // eprintln!("{} ms to load csv", start_load.elapsed().whole_milliseconds());
-        Ok(Locations { records: records })
+        Ok(Locations { records })
     }
 }
 
 /// A reverse geocoder.
 pub struct ReverseGeocoder<'a> {
-    tree: KdTree<f64, &'a Record, &'a [f64; 2]>,
+    tree: KdTree<f64, &'a Record, 2>,
 }
 
 impl<'a> ReverseGeocoder<'a> {
     /// Create a new reverse geocoder from a set of locations.
     pub fn new(loc: &'a Locations) -> ReverseGeocoder<'a> {
         let mut reverse_geocoder = ReverseGeocoder::<'a> {
-            tree: KdTree::with_capacity(2, loc.records.len()),
+            tree: KdTree::new()
         };
         reverse_geocoder.initialize(loc);
         reverse_geocoder
@@ -117,25 +117,20 @@ impl<'a> ReverseGeocoder<'a> {
 
     /// Search for the closest record to a given (latitude, longitude). Non-finite numbers will always return None.
     pub fn search(&self, loc: (f64, f64)) -> Option<SearchResult> {
-        let nearest = match self.tree.nearest(&[loc.0, loc.1], 1, &squared_euclidean) {
+        let nearest = match self.tree.nearest_one(&[loc.0, loc.1], &squared_euclidean) {
             Ok(nearest) => nearest,
             Err(error) => match error {
-                kdtree::ErrorKind::WrongDimension => {
-                    panic!("Internal error, kdtree::ErrorKind::WrongDimension should never occur")
-                }
-                kdtree::ErrorKind::NonFiniteCoordinate => return None,
-                kdtree::ErrorKind::ZeroCapacity => {
+                ErrorKind::Empty => return None,
+                ErrorKind::NonFiniteCoordinate => return None,
+                ErrorKind::ZeroCapacity => {
                     panic!("Internal error, kdtree::ErrorKind::ZeroCapacity should never occur")
                 }
             },
         };
-        match nearest.get(0) {
-            Some(nearest) => Some(SearchResult {
-                distance: nearest.0,
-                record: nearest.1,
-            }),
-            None => None,
-        }
+        Some(SearchResult {
+            distance: nearest.0,
+            record: nearest.1,
+        })
     }
 }
 
