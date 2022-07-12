@@ -21,7 +21,7 @@ reverse_geocoder = "3.0"
 
 ```
 > cargo bench
-search                  time:   [489.30 us 490.03 us 490.94 us]
+search                  time:   [416.30 ns 416.39 ns 416.49 ns]
 ```
 
 ## License
