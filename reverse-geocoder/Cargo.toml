@@ -15,7 +15,7 @@ include = [
 ]
 
 [dependencies]
-kdtree = "^0.6"
+kiddo = "0.2"
 csv = "^1.1.6"
 #  time = "0.3.7"
 serde = "^1.0"
