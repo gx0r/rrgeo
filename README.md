@@ -62,6 +62,54 @@ Core library:
 search                  time:   [416.30 ns 416.39 ns 416.49 ns]
 ```
 
+
+Served via [Axum](https://crates.io/crates/axum):
+
+```
+> cargo run -p rrgeo-axum --release
+>  oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
+Summary:
+  Success rate:	1.0000
+  Total:	5.0017 secs
+  Slowest:	0.0259 secs
+  Fastest:	0.0000 secs
+  Average:	0.0003 secs
+  Requests/sec:	186333.9800
+
+  Total data:	134.21 MiB
+  Size/request:	151 B
+  Size/sec:	26.83 MiB
+
+Response time histogram:
+  0.000 [19568]  |■■
+  0.000 [100727] |■■■■■■■■■■■■
+  0.000 [259463] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.000 [252285] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.000 [173138] |■■■■■■■■■■■■■■■■■■■■■
+  0.000 [81145]  |■■■■■■■■■■
+  0.001 [29013]  |■■■
+  0.001 [10079]  |■
+  0.001 [3434]   |
+  0.001 [1350]   |
+  0.001 [1789]   |
+
+Latency distribution:
+  10% in 0.0002 secs
+  25% in 0.0002 secs
+  50% in 0.0003 secs
+  75% in 0.0003 secs
+  90% in 0.0004 secs
+  95% in 0.0004 secs
+  99% in 0.0006 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0015 secs, 0.0012 secs, 0.0017 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0001 secs
+
+Status code distribution:
+  [200] 931991 responses
+```
+
 Served via [Actix Web](https://actix.rs/):
 
 ```

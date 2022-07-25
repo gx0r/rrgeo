@@ -2,6 +2,7 @@
 
 members = [
     "actix",
+    "axum",
     "cmd",
     "reverse-geocoder",
     "warp",
