@@ -10,7 +10,7 @@ reverse_geocoder = { path = "../reverse-geocoder" }
 serde = "^1.0"
 serde_derive = "^1.0"
 time = "^0.3.7"
-tokio = { version = "^1.17.0", features = ["full"] }
+tokio = { version = "^1.24.2", features = ["full"] }
 warp = "^0.3.2"
 
 [dev-dependencies]
