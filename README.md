@@ -60,132 +60,128 @@ search                  time:   [416.30 ns 416.39 ns 416.49 ns]
 >  oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
 Summary:
   Success rate:	1.0000
-  Total:	5.0017 secs
-  Slowest:	0.0259 secs
+  Total:	5.0009 secs
+  Slowest:	0.0115 secs
   Fastest:	0.0000 secs
   Average:	0.0003 secs
-  Requests/sec:	186333.9800
+  Requests/sec:	171372.8673
 
-  Total data:	134.21 MiB
+  Total data:	123.42 MiB
   Size/request:	151 B
-  Size/sec:	26.83 MiB
+  Size/sec:	24.68 MiB
 
 Response time histogram:
-  0.000 [19568]  |■■
-  0.000 [100727] |■■■■■■■■■■■■
-  0.000 [259463] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.000 [252285] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.000 [173138] |■■■■■■■■■■■■■■■■■■■■■
-  0.000 [81145]  |■■■■■■■■■■
-  0.001 [29013]  |■■■
-  0.001 [10079]  |■
-  0.001 [3434]   |
-  0.001 [1350]   |
-  0.001 [1789]   |
+  0.000 [1]      |
+  0.001 [856908] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.002 [22]     |
+  0.003 [54]     |
+  0.005 [7]      |
+  0.006 [7]      |
+  0.007 [8]      |
+  0.008 [4]      |
+  0.009 [4]      |
+  0.010 [2]      |
+  0.012 [4]      |
 
 Latency distribution:
   10% in 0.0002 secs
   25% in 0.0002 secs
   50% in 0.0003 secs
-  75% in 0.0003 secs
+  75% in 0.0004 secs
   90% in 0.0004 secs
-  95% in 0.0004 secs
+  95% in 0.0005 secs
   99% in 0.0006 secs
 
 Details (average, fastest, slowest):
-  DNS+dialup:	0.0015 secs, 0.0012 secs, 0.0017 secs
-  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0001 secs
+  DNS+dialup:	0.0014 secs, 0.0010 secs, 0.0019 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0003 secs
 
 Status code distribution:
-  [200] 931991 responses
+  [200] 857021 responses
 ```
 
 </details>
 
 <details>
-<summary>
-Served via Actix Web
-</summary>
+<summary>Served via Actix Web</summary>
 
 ```
 > cargo run --release --bin rrgeo-actix
 > oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
 Summary:
   Success rate:	1.0000
-  Total:	5.0008 secs
-  Slowest:	0.2505 secs
+  Total:	5.0007 secs
+  Slowest:	0.2903 secs
   Fastest:	0.0000 secs
   Average:	0.0003 secs
-  Requests/sec:	164159.8709
+  Requests/sec:	161291.4437
 
-  Total data:	86.90 MiB
+  Total data:	85.38 MiB
   Size/request:	111 B
-  Size/sec:	17.38 MiB
+  Size/sec:	17.07 MiB
 
 Response time histogram:
-  0.000 [395294] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.000 [209631] |■■■■■■■■■■■■■■■■
-  0.000 [88554]  |■■■■■■■
-  0.000 [53553]  |■■■■
-  0.000 [30225]  |■■
-  0.000 [13830]  |■
-  0.001 [7100]   |
-  0.001 [4594]   |
-  0.001 [3040]   |
-  0.001 [1890]   |
-  0.001 [13218]  |■
+  0.000 [1]      |
+  0.029 [805611] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.058 [379]    |
+  0.087 [192]    |
+  0.116 [111]    |
+  0.145 [231]    |
+  0.174 [15]     |
+  0.203 [6]      |
+  0.232 [6]      |
+  0.261 [11]     |
+  0.290 [1]      |
 
 Latency distribution:
-  10% in 0.0000 secs
+  10% in 0.0001 secs
   25% in 0.0001 secs
   50% in 0.0001 secs
   75% in 0.0002 secs
-  90% in 0.0003 secs
-  95% in 0.0004 secs
-  99% in 0.0012 secs
+  90% in 0.0004 secs
+  95% in 0.0005 secs
+  99% in 0.0017 secs
 
 Details (average, fastest, slowest):
-  DNS+dialup:	0.0017 secs, 0.0013 secs, 0.0020 secs
+  DNS+dialup:	0.0015 secs, 0.0013 secs, 0.0017 secs
   DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0003 secs
 
 Status code distribution:
-  [200] 820929 responses
+  [200] 806564 responses
 
 ```
 </details>
 
 <details>
-<summary>
-Served via Warp
-</summary>
+<summary>Served via Warp</summary>
 
 ```
 > cargo run --release --bin rrgeo-warp
 > oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
 Summary:
   Success rate:	1.0000
-  Total:	5.0022 secs
-  Slowest:	0.0158 secs
+  Total:	5.0009 secs
+  Slowest:	0.0134 secs
   Fastest:	0.0000 secs
   Average:	0.0003 secs
-  Requests/sec:	183796.4070
+  Requests/sec:	180231.7215
 
-  Total data:	132.40 MiB
+  Total data:	129.79 MiB
   Size/request:	151 B
-  Size/sec:	26.47 MiB
+  Size/sec:	25.95 MiB
 
 Response time histogram:
-  0.000 [20392]  |■■
-  0.000 [102885] |■■■■■■■■■■■■
-  0.000 [269371] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.000 [242570] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.000 [159505] |■■■■■■■■■■■■■■■■■■
-  0.000 [71758]  |■■■■■■■■
-  0.001 [27128]  |■■■
-  0.001 [11721]  |■
-  0.001 [5919]   |
-  0.001 [3213]   |
-  0.001 [4918]   |
+  0.000 [1]      |
+  0.001 [901133] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.003 [77]     |
+  0.004 [24]     |
+  0.005 [58]     |
+  0.007 [3]      |
+  0.008 [7]      |
+  0.009 [8]      |
+  0.011 [3]      |
+  0.012 [2]      |
+  0.013 [2]      |
 
 Latency distribution:
   10% in 0.0002 secs
@@ -194,14 +190,14 @@ Latency distribution:
   75% in 0.0003 secs
   90% in 0.0004 secs
   95% in 0.0005 secs
-  99% in 0.0007 secs
+  99% in 0.0006 secs
 
 Details (average, fastest, slowest):
-  DNS+dialup:	0.0017 secs, 0.0010 secs, 0.0019 secs
-  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0002 secs
+  DNS+dialup:	0.0014 secs, 0.0010 secs, 0.0019 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0003 secs
 
 Status code distribution:
-  [200] 919380 responses
+  [200] 901318 responses
 ```
 
 </details>
