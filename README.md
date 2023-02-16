@@ -13,7 +13,7 @@ A fast reverse geocoder in Rust. Inspired by Python [reverse-geocoder](https://g
 
 `rrgeo` takes a latitude and longitude as input and returns the closest city, country, latitude, and longitude, using a k-d tree to efficiently find the nearest neighbour based on a known list of locations. This can be useful if you need to reverse geocode a large number of coordinates quickly, or just need the rough location of coordinates but don't want the expense or complication of an online reverse geocoder.
 
-This crate is implemented as a [library](https://crates.io/crates/reverse_geocoder), an [Actix](https://actix.rs/) REST API, a [Warp](https://seanmonstar.com/post/176530511587/warp) REST API, and as a command-line utility, thanks to [Cargo workspaces](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html).
+This project contains (via [Cargo workspaces](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html)) a [library](https://crates.io/crates/reverse_geocoder), a [Axum](https://github.com/tokio-rs/axum) REST API, an [Actix](https://actix.rs/) REST API, a [Warp](https://seanmonstar.com/post/176530511587/warp) REST API, and a command-line utility.
 
 ## Usage
 
@@ -28,25 +28,15 @@ Location: (40.72788, -73.09761): West Sayville, New York, Suffolk County, US
 Distance: 0.539337006499999
 ```
 
-### Actix Web Server
+### Web Servers
 
 Example usage:
 
 ```
+cargo run -p rrgeo-axum --release
 cargo run -p rrgeo-actix --release
-```
-
-Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
-
-### Warp Web Server
-
-Example usage:
-
-```
 cargo run -p rrgeo-warp --release
 ```
-
-Navigate to [the local web server](http://localhost:3000/?lat=40&long=-73).
 
 ## Benchmarks
 
@@ -62,8 +52,8 @@ Core library:
 search                  time:   [416.30 ns 416.39 ns 416.49 ns]
 ```
 
-
-Served via [Axum](https://crates.io/crates/axum):
+<details>
+<summary>Served via Axum</summary>
 
 ```
 > cargo run -p rrgeo-axum --release
@@ -110,7 +100,12 @@ Status code distribution:
   [200] 931991 responses
 ```
 
-Served via [Actix Web](https://actix.rs/):
+</details>
+
+<details>
+<summary>
+Served via Actix Web
+</summary>
 
 ```
 > cargo run --release --bin rrgeo-actix
@@ -157,8 +152,12 @@ Status code distribution:
   [200] 820929 responses
 
 ```
+</details>
 
-Served via [Warp](https://github.com/seanmonstar/warp):
+<details>
+<summary>
+Served via Warp
+</summary>
 
 ```
 > cargo run --release --bin rrgeo-warp
@@ -204,6 +203,9 @@ Details (average, fastest, slowest):
 Status code distribution:
   [200] 919380 responses
 ```
+
+</details>
+
 
 ## License
 
