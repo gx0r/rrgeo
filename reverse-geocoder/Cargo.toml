@@ -15,7 +15,7 @@ include = [
 ]
 
 [dependencies]
-kiddo = "0.2.4"
+kiddo = "0.2.5"
 csv = "1.2.0"
 #  time = "0.3.7"
 serde = "^1.0"
