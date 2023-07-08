@@ -1,9 +1,4 @@
 [workspace]
+resolver = "2"
 
-members = [
-    "actix",
-    "axum",
-    "cmd",
-    "reverse-geocoder",
-    "warp",
-]
+members = ["actix", "axum", "cmd", "reverse-geocoder", "warp"]
