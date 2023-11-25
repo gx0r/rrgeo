@@ -11,7 +11,7 @@ keywords = ["reverse", "geocoding", "geocoder", "location"]
 include = ["**/*.rs", "cities.csv", "Cargo.toml"]
 
 [dependencies]
-kiddo = "0.2.5"
+kiddo = "3"
 csv = "1.2.0"
 #  time = "0.3.7"
 serde = "^1.0"

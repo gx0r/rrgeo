@@ -1,4 +1,4 @@
-use reverse_geocoder::{Locations, ReverseGeocoder, SearchResult};
+use reverse_geocoder::ReverseGeocoder;
 use std::error::Error;
 use std::{env, process::exit};
 use time::Instant;
@@ -14,14 +14,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     let lat = args[1].parse::<f64>()?;
     let long = args[2].parse::<f64>()?;
 
-    let loc = Locations::from_memory();
-    let geocoder = ReverseGeocoder::new(&loc);
+    let geocoder = ReverseGeocoder::new();
 
     let start = Instant::now();
-    let search_result: SearchResult = geocoder.search((lat, long)).expect("Nothing found.");
+    let search_result = geocoder.search((lat, long)).expect("Nothing found.");
     eprintln!("{} ms to search", start.elapsed().whole_milliseconds());
 
-    println!("Location: {}", search_result.record);
+    println!("Location: {}", search_result.record.name);
     println!("Distance: {}", search_result.distance);
 
     Ok(())

@@ -1,12 +1,11 @@
 use axum::{extract::Query, http::StatusCode, response::IntoResponse, routing::get, Json, Router};
 use lazy_static::lazy_static;
-use reverse_geocoder::{Locations, ReverseGeocoder};
+use reverse_geocoder::ReverseGeocoder;
 use serde::Deserialize;
 use std::net::SocketAddr;
 
 lazy_static! {
-    static ref LOCATIONS: Locations = Locations::from_memory();
-    static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
+    static ref GEOCODER: ReverseGeocoder = ReverseGeocoder::new();
 }
 
 #[tokio::main]
