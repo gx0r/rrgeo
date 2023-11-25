@@ -3,7 +3,7 @@ use actix_web::{
     middleware, web, App, HttpResponse, HttpServer, Result,
 };
 use lazy_static::lazy_static;
-use reverse_geocoder::{Locations, Record, ReverseGeocoder};
+use reverse_geocoder::{Record, ReverseGeocoder};
 use serde_derive::Deserialize;
 use std::fmt;
 use std::time::Duration;
@@ -37,8 +37,7 @@ struct LatLong {
 
 async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, ReverseGeocodeWebError> {
     lazy_static! {
-        static ref LOCATIONS: Locations = Locations::from_memory();
-        static ref GEOCODER: ReverseGeocoder<'static> = ReverseGeocoder::new(&LOCATIONS);
+        static ref GEOCODER: ReverseGeocoder = ReverseGeocoder::new();
     }
 
     let search_result = match GEOCODER.search((lat_long.lat, lat_long.long)) {
