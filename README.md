@@ -49,7 +49,7 @@ Core library:
 
 ```
 > cargo bench
-search                  time:   [315.15 ns 315.85 ns 316.51 ns]
+time:   [154.16 ns 155.34 ns 157.00 ns]
 ```
 
 <details>
@@ -60,28 +60,28 @@ search                  time:   [315.15 ns 315.85 ns 316.51 ns]
 >  oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
 Summary:
   Success rate:	100.00%
-  Total:	5.0008 secs
-  Slowest:	0.0850 secs
+  Total:	5.0004 secs
+  Slowest:	0.0099 secs
   Fastest:	0.0000 secs
   Average:	0.0002 secs
-  Requests/sec:	212162.3166
+  Requests/sec:	221767.0303
 
-  Total data:	152.79 MiB
-  Size/request:	151 B
-  Size/sec:	30.55 MiB
+  Total data:	162.86 MiB
+  Size/request:	154 B
+  Size/sec:	32.57 MiB
 
 Response time histogram:
   0.000 [1]       |
-  0.009 [1060933] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.017 [0]       |
-  0.026 [0]       |
-  0.034 [0]       |
-  0.043 [0]       |
-  0.051 [0]       |
-  0.060 [0]       |
-  0.068 [0]       |
-  0.077 [0]       |
-  0.085 [50]      |
+  0.001 [1108827] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.002 [21]      |
+  0.003 [49]      |
+  0.004 [9]       |
+  0.005 [4]       |
+  0.006 [1]       |
+  0.007 [1]       |
+  0.008 [2]       |
+  0.009 [1]       |
+  0.010 [2]       |
 
 Response time distribution:
   10.00% in 0.0001 secs
@@ -92,15 +92,15 @@ Response time distribution:
   95.00% in 0.0004 secs
   99.00% in 0.0005 secs
   99.90% in 0.0006 secs
-  99.99% in 0.0008 secs
+  99.99% in 0.0009 secs
 
 
 Details (average, fastest, slowest):
-  DNS+dialup:	0.0014 secs, 0.0010 secs, 0.0022 secs
-  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0008 secs
+  DNS+dialup:	0.0016 secs, 0.0011 secs, 0.0019 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0002 secs
 
 Status code distribution:
-  [200] 1060984 responses
+  [200] 1108918 responses
 ```
 
 </details>
@@ -113,47 +113,47 @@ Status code distribution:
 > oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
 Summary:
   Success rate:	100.00%
-  Total:	5.0003 secs
-  Slowest:	0.2662 secs
+  Total:	5.0007 secs
+  Slowest:	0.2502 secs
   Fastest:	0.0000 secs
-  Average:	0.0003 secs
-  Requests/sec:	196005.8198
+  Average:	0.0002 secs
+  Requests/sec:	204563.3764
 
-  Total data:	103.75 MiB
-  Size/request:	111 B
-  Size/sec:	20.75 MiB
+  Total data:	106.34 MiB
+  Size/request:	109 B
+  Size/sec:	21.26 MiB
 
 Response time histogram:
-  0.000 [1]      |
-  0.027 [978934] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.053 [416]    |
-  0.080 [218]    |
-  0.106 [140]    |
-  0.133 [301]    |
-  0.160 [29]     |
-  0.186 [21]     |
-  0.213 [9]      |
-  0.240 [3]      |
-  0.266 [18]     |
+  0.000 [1]       |
+  0.025 [1021753] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.050 [432]     |
+  0.075 [165]     |
+  0.100 [101]     |
+  0.125 [218]     |
+  0.150 [266]     |
+  0.175 [7]       |
+  0.200 [1]       |
+  0.225 [7]       |
+  0.250 [12]      |
 
 Response time distribution:
   10.00% in 0.0000 secs
   25.00% in 0.0001 secs
   50.00% in 0.0001 secs
   75.00% in 0.0001 secs
-  90.00% in 0.0003 secs
-  95.00% in 0.0004 secs
-  99.00% in 0.0010 secs
-  99.90% in 0.0348 secs
-  99.99% in 0.1274 secs
+  90.00% in 0.0002 secs
+  95.00% in 0.0003 secs
+  99.00% in 0.0011 secs
+  99.90% in 0.0323 secs
+  99.99% in 0.1263 secs
 
 
 Details (average, fastest, slowest):
-  DNS+dialup:	0.0015 secs, 0.0012 secs, 0.0029 secs
-  DNS-lookup:	0.0002 secs, 0.0000 secs, 0.0013 secs
+  DNS+dialup:	0.0015 secs, 0.0012 secs, 0.0019 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0002 secs
 
 Status code distribution:
-  [200] 980090 responses
+  [200] 1022963 responses
 
 ```
 </details>
@@ -164,30 +164,30 @@ Status code distribution:
 ```
 > cargo run --release --bin rrgeo-warp
 > oha http://localhost:3000/\?lat\=40\&long\=\-73 -z 5sec
-Summary:
+SuSummary:
   Success rate:	100.00%
-  Total:	5.0002 secs
-  Slowest:	0.0030 secs
+  Total:	5.0003 secs
+  Slowest:	0.0111 secs
   Fastest:	0.0000 secs
   Average:	0.0002 secs
-  Requests/sec:	225022.8641
+  Requests/sec:	232498.2550
 
-  Total data:	162.03 MiB
-  Size/request:	151 B
-  Size/sec:	32.40 MiB
+  Total data:	170.74 MiB
+  Size/request:	154 B
+  Size/sec:	34.15 MiB
 
 Response time histogram:
-  0.000 [1]      |
-  0.000 [975102] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.001 [148843] |■■■■
-  0.001 [1053]   |
-  0.001 [100]    |
-  0.002 [4]      |
-  0.002 [3]      |
-  0.002 [0]      |
-  0.002 [8]      |
-  0.003 [29]     |
-  0.003 [14]     |
+  0.000 [1]       |
+  0.001 [1162216] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.002 [167]     |
+  0.003 [52]      |
+  0.004 [56]      |
+  0.006 [56]      |
+  0.007 [4]       |
+  0.008 [3]       |
+  0.009 [1]       |
+  0.010 [1]       |
+  0.011 [2]       |
 
 Response time distribution:
   10.00% in 0.0001 secs
@@ -196,17 +196,17 @@ Response time distribution:
   75.00% in 0.0003 secs
   90.00% in 0.0003 secs
   95.00% in 0.0004 secs
-  99.00% in 0.0005 secs
-  99.90% in 0.0006 secs
-  99.99% in 0.0010 secs
+  99.00% in 0.0004 secs
+  99.90% in 0.0007 secs
+  99.99% in 0.0038 secs
 
 
 Details (average, fastest, slowest):
-  DNS+dialup:	0.0016 secs, 0.0013 secs, 0.0019 secs
-  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0002 secs
+  DNS+dialup:	0.0018 secs, 0.0013 secs, 0.0025 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0005 secs
 
 Status code distribution:
-  [200] 1125157 responses
+  [200] 1162559 responses
 ```
 
 </details>
