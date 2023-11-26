@@ -40,11 +40,7 @@ async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, Rever
         static ref GEOCODER: ReverseGeocoder = ReverseGeocoder::new();
     }
 
-    let search_result = match GEOCODER.search((lat_long.lat, lat_long.long)) {
-        Some(result) => result,
-        None => return Err(ReverseGeocodeWebError::NotFound),
-    };
-
+    let search_result = GEOCODER.search((lat_long.lat, lat_long.long));
     Ok(web::Json(search_result.record.clone()))
 }
 

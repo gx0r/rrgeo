@@ -2,12 +2,12 @@
 //!
 //! # Usage
 //! ```
-//! use reverse_geocoder::{Locations, ReverseGeocoder, SearchResult};
+//! use reverse_geocoder::{ReverseGeocoder, SearchResult};
 //!
 //! fn main() {
 //!     let geocoder = ReverseGeocoder::new();
 //!     let coords = (40.7831, -73.9712);
-//!     let search_result = geocoder.search(coords).expect("Nothing found.");
+//!     let search_result = geocoder.search(coords);
 //!     println!("Distance {}", search_result.distance);
 //!     println!("Record {}", search_result.record);
 //! }
@@ -119,10 +119,15 @@ impl ReverseGeocoder {
             records.push(([record.lat, record.lon], record));
         }
 
+        if records.len() < 1 {
+            return Err(Box::new(std::io::Error::other("Need one or more records")));
+        }
+
         let mut tree = KdTree::new();
         records.iter().enumerate().for_each(|(idx, city)| {
             tree.add(&city.1.as_xyz(), idx);
         });
+
         Ok(ReverseGeocoder {
             locations: records,
             tree,
@@ -130,20 +135,15 @@ impl ReverseGeocoder {
     }
 
     /// Search for the closest record to a given (latitude, longitude).
-    pub fn search(&self, loc: (f64, f64)) -> Option<SearchResult> {
+    pub fn search(&self, loc: (f64, f64)) -> SearchResult {
         let query = degrees_lat_lng_to_unit_sphere(loc.0, loc.1);
         let nearest_neighbor = self.tree.nearest_one::<SquaredEuclidean>(&query);
-
-        if nearest_neighbor.item >= self.locations.len() {
-            return None;
-        }
-
         let nearest = &self.locations[nearest_neighbor.item as usize];
 
-        Some(SearchResult {
+        SearchResult {
             distance: nearest_neighbor.distance,
             record: &nearest.1,
-        })
+        }
     }
 }
 
@@ -155,50 +155,44 @@ mod tests {
     fn it_finds_4_places() {
         let geocoder = ReverseGeocoder::new();
 
-        let slp = geocoder.search((40.7831, -73.9712)).unwrap();
+        let slp = geocoder.search((40.7831, -73.9712));
         assert_eq!(slp.record.name, "Manhattan");
 
-        let slp = geocoder.search((44.962786, -93.344722)).unwrap();
+        let slp = geocoder.search((44.962786, -93.344722));
 
         assert_eq!(slp.record.name, "Saint Louis Park");
 
         // [44.894519, -93.308702] is 60 St W @ Penn Ave S, Minneapolis, Minnesota; however, this is physically closer to Richfield
-        let mpls = geocoder.search((44.894519, -93.308702)).unwrap();
+        let mpls = geocoder.search((44.894519, -93.308702));
         assert_eq!(mpls.record.name, "Richfield");
 
         // [44.887055, -93.334204] is HWY 62 and Valley View Road, whish is in Edina
-        let edina = geocoder.search((44.887055, -93.334204)).unwrap();
+        let edina = geocoder.search((44.887055, -93.334204));
         assert_eq!(edina.record.name, "Edina");
     }
 
     #[test]
     fn it_loads_locations_from_a_path() -> Result<(), Box<dyn error::Error>> {
         let geocoder = ReverseGeocoder::from_path("./cities.csv")?;
-        let search_result = geocoder.search((45.0, 54.0));
-        assert!(search_result.is_some());
+        geocoder.search((45.0, 54.0));
         Ok(())
     }
 
     #[test]
-    fn it_handles_a_nearly_blank_file() -> Result<(), Box<dyn error::Error>> {
-        let geocoder = ReverseGeocoder::from_path("./nearly-blank.csv")?;
-        let search_result = geocoder.search((45.0, 54.0));
-        assert!(search_result.is_none());
-        Ok(())
+    fn it_handles_a_nearly_blank_file() {
+        let geocoder = ReverseGeocoder::from_path("./nearly-blank.csv");
+        assert!(geocoder.is_err());
     }
 
     #[test]
-    fn it_handles_a_blank_file() -> Result<(), Box<dyn error::Error>> {
-        let geocoder = ReverseGeocoder::from_path("./blank.csv")?;
-        let search_result = geocoder.search((45.0, 54.0));
-        assert!(search_result.is_none());
-        Ok(())
+    fn it_handles_a_blank_file() {
+        let geocoder = ReverseGeocoder::from_path("./blank.csv");
+        assert!(geocoder.is_err());
     }
 
     #[test]
     fn it_handles_an_infinite_coordinate() {
         let geocoder = ReverseGeocoder::new();
-        let search_result = geocoder.search((std::f64::INFINITY, 54.0));
-        assert!(search_result.is_some());
+        geocoder.search((std::f64::INFINITY, 54.0));
     }
 }
