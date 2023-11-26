@@ -1,33 +1,8 @@
-use actix_web::{
-    http::{self, KeepAlive},
-    middleware, web, App, HttpResponse, HttpServer, Result,
-};
+use actix_web::{http::KeepAlive, middleware, web, App, HttpServer, Result};
 use lazy_static::lazy_static;
 use reverse_geocoder::{Record, ReverseGeocoder};
 use serde_derive::Deserialize;
-use std::fmt;
 use std::time::Duration;
-
-#[derive(Debug)]
-enum ReverseGeocodeWebError {
-    NotFound,
-}
-
-impl fmt::Display for ReverseGeocodeWebError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            ReverseGeocodeWebError::NotFound => write!(f, "Not found"),
-        }
-    }
-}
-
-impl actix_web::error::ResponseError for ReverseGeocodeWebError {
-    fn error_response(&self) -> HttpResponse {
-        match self {
-            ReverseGeocodeWebError::NotFound => HttpResponse::new(http::StatusCode::NOT_FOUND),
-        }
-    }
-}
 
 #[derive(Deserialize)]
 struct LatLong {
@@ -35,7 +10,7 @@ struct LatLong {
     long: f64,
 }
 
-async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>, ReverseGeocodeWebError> {
+async fn index(lat_long: web::Query<LatLong>) -> Result<web::Json<Record>> {
     lazy_static! {
         static ref GEOCODER: ReverseGeocoder = ReverseGeocoder::new();
     }
@@ -70,7 +45,7 @@ mod tests {
     use actix_web::{http, test, web, App};
 
     #[actix_web::test]
-    async fn it_serves_results_on_actix() -> Result<(), ReverseGeocodeWebError> {
+    async fn it_serves_results_on_actix() {
         let app = test::init_service(App::new().route("/", web::get().to(index))).await;
 
         let req = test::TestRequest::get()
@@ -87,7 +62,5 @@ mod tests {
             response_body,
             r##"{"lat":44.9483,"lon":-93.34801,"name":"Saint Louis Park","admin1":"Minnesota","admin2":"Hennepin County","cc":"US"}"##
         );
-
-        Ok(())
     }
 }
