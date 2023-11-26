@@ -152,8 +152,8 @@ mod tests {
     fn it_finds_4_places() {
         let geocoder = ReverseGeocoder::new();
 
-        let slp = geocoder.search((40.7831, -73.9712));
-        assert_eq!(slp.record.name, "Manhattan");
+        let manhattan = geocoder.search((40.7831, -73.9712));
+        assert_eq!(manhattan.record.name, "Manhattan");
 
         let slp = geocoder.search((44.962786, -93.344722));
 
