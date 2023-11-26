@@ -17,7 +17,6 @@ use kiddo::float::{distance::SquaredEuclidean, kdtree::KdTree};
 // use time::Instant;
 use csv::ReaderBuilder;
 use serde_derive::{Deserialize, Serialize};
-use std::error;
 use std::fmt;
 use std::path::Path;
 
@@ -104,9 +103,7 @@ impl ReverseGeocoder {
         }
     }
 
-    pub fn from_path<P: AsRef<Path>>(
-        file_path: P,
-    ) -> Result<ReverseGeocoder, Box<dyn error::Error>> {
+    pub fn from_path<P: AsRef<Path>>(file_path: P) -> Result<ReverseGeocoder, std::io::Error> {
         // let start_load = Instant::now();
         let mut records = Vec::new();
 
@@ -120,7 +117,7 @@ impl ReverseGeocoder {
         }
 
         if records.len() < 1 {
-            return Err(Box::new(std::io::Error::other("Need one or more records")));
+            return Err(std::io::Error::other("Need one or more records"));
         }
 
         let mut tree = KdTree::new();
@@ -172,7 +169,7 @@ mod tests {
     }
 
     #[test]
-    fn it_loads_locations_from_a_path() -> Result<(), Box<dyn error::Error>> {
+    fn it_loads_locations_from_a_path() -> Result<(), std::io::Error> {
         let geocoder = ReverseGeocoder::from_path("./cities.csv")?;
         geocoder.search((45.0, 54.0));
         Ok(())
