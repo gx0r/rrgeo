@@ -2,7 +2,7 @@ use axum::{extract::Query, http::StatusCode, response::IntoResponse, routing::ge
 use lazy_static::lazy_static;
 use reverse_geocoder::ReverseGeocoder;
 use serde::Deserialize;
-use std::net::SocketAddr;
+use tokio::net::TcpListener;
 
 lazy_static! {
     static ref GEOCODER: ReverseGeocoder = ReverseGeocoder::new();
@@ -13,11 +13,13 @@ async fn main() {
     tracing_subscriber::fmt::init();
 
     let app = Router::new().route("/", get(query));
+    let addr = "127.0.0.1:3000";
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let listener = TcpListener::bind(addr).await.unwrap();
+
     tracing::debug!("listening on {}", addr);
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
+
+    axum::serve(listener, app.into_make_service())
         .await
         .unwrap();
 }

@@ -5,7 +5,7 @@ authors = ["Grant Miner <gx0r@protonmail.com>"]
 edition = "2021"
 
 [dependencies]
-axum = "0.6.20"
+axum = "0.7.1"
 lazy_static = "^1.4"
 reverse_geocoder = { path = "../reverse-geocoder" }
 serde = { version = "1.0", features = ["derive"] }
