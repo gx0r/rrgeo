@@ -14,8 +14,8 @@ include = ["**/*.rs", "cities.csv", "Cargo.toml"]
 kiddo = "^4.2.0"
 csv = "^1.3.0"
 #  time = "0.3.7"
-serde = "1.0.197"
-serde_derive = "1.0.197"
+serde = "^1.0.203"
+serde_derive = "^1.0.203"
 
 [dev-dependencies]
 criterion = "^0.5.1"
