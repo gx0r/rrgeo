@@ -132,7 +132,7 @@ impl ReverseGeocoder {
     }
 
     /// Search for the closest record to a given (latitude, longitude).
-    pub fn search(&self, loc: (f64, f64)) -> SearchResult {
+    pub fn search(&self, loc: (f64, f64)) -> SearchResult<'_> {
         let query = degrees_lat_lng_to_unit_sphere(loc.0, loc.1);
         let nearest_neighbor = self.tree.nearest_one::<SquaredEuclidean>(&query);
         let nearest = &self.locations[nearest_neighbor.item as usize];

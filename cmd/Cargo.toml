@@ -5,8 +5,7 @@ authors = ["Grant Miner <gx0r@protonmail.com>"]
 edition = "2021"
 
 [dependencies]
-reverse_geocoder = { path = "../reverse-geocoder" }
-time = "^0.3.34"
+reverse_geocoder = { workspace = true }
 
 [[bin]]
 name = "rrgeo-cmd"
