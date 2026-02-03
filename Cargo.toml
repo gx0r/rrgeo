@@ -9,7 +9,7 @@ reverse_geocoder = { path = "reverse-geocoder" }
 # External dependencies
 actix-web = "4.11.0"
 axum = "0.8.4"
-bytes = "1.10.1"
+bytes = "1.11.1"
 criterion = "0.7.0"
 csv = "1.3.1"
 env_logger = "0.11.8"
